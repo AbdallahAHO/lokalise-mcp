@@ -1,4 +1,14 @@
-# Changelog
+## [1.0.1] - 2025-07-16
+
+### Added
+- New features go here
+
+### Changed
+- Changes go here
+
+### Fixed
+- Bug fixes go here
+
 
 All notable changes to this project will be documented in this file.
 
