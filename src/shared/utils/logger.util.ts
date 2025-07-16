@@ -2,6 +2,7 @@ import * as crypto from "node:crypto";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
+import { PACKAGE_NAME } from "./constants.util.js";
 
 /**
  * Format a timestamp for logging
@@ -117,25 +118,9 @@ function isDebugEnabledForModule(modulePath: string): boolean {
 // Generate a unique session ID for this process
 const SESSION_ID = crypto.randomUUID();
 
-// Get the package name from environment variables or default to 'mcp-server'
+// Get the package name from constants
 const getPkgName = (): string => {
-	try {
-		// Try to get it from package.json first if available
-		const packageJsonPath = path.resolve(process.cwd(), "package.json");
-		if (fs.existsSync(packageJsonPath)) {
-			const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
-			if (packageJson.name) {
-				// Extract the last part of the name if it's scoped
-				const match = packageJson.name.match(/(@[\w-]+\/)?(.+)/);
-				return match ? match[2] : packageJson.name;
-			}
-		}
-	} catch {
-		// Silently fail and use default
-	}
-
-	// Fallback to environment variable or default
-	return process.env.PACKAGE_NAME || "mcp-server";
+	return PACKAGE_NAME;
 };
 
 // MCP logs directory setup
@@ -150,37 +135,59 @@ const LOG_FILEPATH = path.join(MCP_DATA_DIR, LOG_FILENAME);
 // Flag to track if file logging is available
 let FILE_LOGGING_AVAILABLE = false;
 
-// Safely initialize file logging
-try {
-	// Ensure the MCP data directory exists
-	if (!fs.existsSync(MCP_DATA_DIR)) {
-		fs.mkdirSync(MCP_DATA_DIR, { recursive: true });
-	}
-
-	// Write initial log header
-	fs.writeFileSync(
-		LOG_FILEPATH,
-		`# ${CLI_NAME} Log Session\n` +
-			`Session ID: ${SESSION_ID}\n` +
-			`Started: ${new Date().toISOString()}\n` +
-			`Process ID: ${process.pid}\n` +
-			`Working Directory: ${process.cwd()}\n` +
-			`Command: ${process.argv.join(" ")}\n\n` +
-			"## Log Entries\n\n",
-		"utf8",
-	);
-
-	FILE_LOGGING_AVAILABLE = true;
-} catch (error) {
-	// File logging failed, but don't crash the process
-	console.warn(
-		`Warning: Could not initialize log file at ${LOG_FILEPATH}: ${error}. Logs will only appear in console.`,
-	);
-	FILE_LOGGING_AVAILABLE = false;
-}
+// Flag to track if we've attempted to initialize file logging
+let FILE_LOGGING_INITIALIZED = false;
 
 // Logger singleton to track initialization
 let isLoggerInitialized = false;
+
+// Lazy initialization of file logging
+function initializeFileLogging(): void {
+	if (FILE_LOGGING_INITIALIZED) {
+		return;
+	}
+
+	FILE_LOGGING_INITIALIZED = true;
+
+	try {
+		// Ensure the MCP data directory exists
+		if (!fs.existsSync(MCP_DATA_DIR)) {
+			fs.mkdirSync(MCP_DATA_DIR, { recursive: true });
+		}
+
+		// Write initial log header
+		fs.writeFileSync(
+			LOG_FILEPATH,
+			`# ${CLI_NAME} Log Session\n` +
+				`Session ID: ${SESSION_ID}\n` +
+				`Started: ${new Date().toISOString()}\n` +
+				`Process ID: ${process.pid}\n` +
+				`Working Directory: ${process.cwd()}\n` +
+				`Command: ${process.argv.join(" ")}\n\n` +
+				"## Log Entries\n\n",
+			"utf8",
+		);
+
+		FILE_LOGGING_AVAILABLE = true;
+
+		// Log initialization message only once
+		if (!isLoggerInitialized) {
+			console.info(
+				`[${getTimestamp()}] [INFO] [domains/registry.ts] Logger initialized with session ID: ${SESSION_ID}`,
+			);
+			console.info(
+				`[${getTimestamp()}] [INFO] [domains/registry.ts] Logs will be saved to: ${LOG_FILEPATH}`,
+			);
+			isLoggerInitialized = true;
+		}
+	} catch (error) {
+		// File logging failed, but don't crash the process
+		console.warn(
+			`Warning: Could not initialize log file at ${LOG_FILEPATH}: ${error}. Logs will only appear in console.`,
+		);
+		FILE_LOGGING_AVAILABLE = false;
+	}
+}
 
 /**
  * Logger class for consistent logging across the application.
@@ -215,13 +222,6 @@ class Logger {
 	constructor(context?: string, modulePath = "") {
 		this.context = context;
 		this.modulePath = modulePath;
-
-		// Log initialization message only once
-		if (!isLoggerInitialized) {
-			this.info(`Logger initialized with session ID: ${Logger.sessionId}`);
-			this.info(`Logs will be saved to: ${Logger.logFilePath}`);
-			isLoggerInitialized = true;
-		}
 	}
 
 	/**
@@ -303,6 +303,9 @@ class Logger {
 				logMessage += ` ${formattedArgs.map((arg) => (typeof arg === "string" ? arg : safeStringify(arg))).join(" ")}`;
 			}
 		}
+
+		// Initialize file logging on first use
+		initializeFileLogging();
 
 		// Write to log file if available
 		if (FILE_LOGGING_AVAILABLE) {
