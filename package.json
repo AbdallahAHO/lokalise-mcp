@@ -1,0 +1,111 @@
+{
+	"name": "lokalise-mcp",
+	"version": "1.0.0",
+	"description": "The Lokalise MCP Server brings Lokalise's localization power to Claude and AI assistants—manage projects, keys, and translations by chat.",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/AbdallahAHO/lokalise-mcp.git"
+	},
+	"bin": {
+		"lokalise-mcp": "./dist/index.js"
+	},
+	"type": "module",
+	"scripts": {
+		"build": "tsc",
+		"build:dxt": "npm run generate:manifest && npm run build && npx @anthropic-ai/dxt pack",
+		"certs:generate": "node scripts/generate-certs.js",
+		"certs:info": "node scripts/generate-certs.js production",
+		"clean": "rm -rf dist coverage",
+		"cli": "dotenv npm run build && dotenv node dist/index.js",
+		"dev:http": "dotenv npm run build && dotenv -e DEBUG=true -e TRANSPORT_MODE=http -- node dist/index.js",
+		"dev:stdio": "dotenv npm run build && dotenv -e TRANSPORT_MODE=stdio -e DEBUG=true -- npx @modelcontextprotocol/inspector node dist/index.js",
+		"format": "biome format . --write",
+		"generate:manifest": "node scripts/generate-manifest.js",
+		"lint": "biome lint .",
+		"mcp:http": "dotenv npm run build && dotenv -e TRANSPORT_MODE=http -- node dist/index.js",
+		"mcp:inspect": "dotenv npm run build && dotenv -- npx @modelcontextprotocol/inspector -e TRANSPORT_MODE=stdio -e DEBUG=true node dist/index.js",
+		"mcp:inspect:http": "dotenv npm run build && (dotenv -e TRANSPORT_MODE=http -- node dist/index.js &) && sleep 3 && dotenv -- npx @modelcontextprotocol/inspector http://localhost:3000/mcp",
+		"mcp:stdio": "dotenv npm run build && dotenv -e TRANSPORT_MODE=stdio -- node dist/index.js",
+		"postinstall": "node scripts/ensure-executable.js",
+		"prepare": "npm run build && node scripts/ensure-executable.js",
+		"release:checksums": "node scripts/generate-checksums.js",
+		"release:dry-run": "npm run build && npm run release:prepare && echo '✅ Dry run completed successfully'",
+		"release:prepare": "node scripts/prepare-release.js",
+		"release:sign": "node scripts/sign-dxt.js",
+		"scaffold:domain": "node scripts/scaffold-domain.js",
+		"scaffold:domain:cli": "node scripts/scaffold-domain-cli.js",
+		"test": "NODE_OPTIONS='--experimental-vm-modules' jest",
+		"test:coverage": "NODE_OPTIONS='--experimental-vm-modules' jest --coverage",
+		"update:deps": "npx npm-check-updates -u && npm install --legacy-peer-deps",
+		"validate:manifest": "node scripts/generate-manifest.js --validate"
+	},
+	"keywords": [
+		"lokalise",
+		"translation",
+		"localization",
+		"i18n",
+		"l10n",
+		"ai",
+		"claude",
+		"chat",
+		"project management",
+		"keys",
+		"strings",
+		"automation",
+		"workflow",
+		"api",
+		"team",
+		"language",
+		"content",
+		"devops",
+		"productivity"
+	],
+	"author": {
+		"name": "Abdallah Othman",
+		"email": "contact@abdallahaho.com",
+		"url": "https://abdallahaho.com"
+	},
+	"license": "MIT",
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.0.5",
+		"@eslint/js": "^9.29.0",
+		"@semantic-release/changelog": "^6.0.3",
+		"@semantic-release/exec": "^7.1.0",
+		"@semantic-release/git": "^10.0.1",
+		"@semantic-release/github": "^11.0.3",
+		"@semantic-release/npm": "^12.0.1",
+		"@types/cors": "^2.8.19",
+		"@types/express": "^5.0.3",
+		"@types/jest": "^30.0.0",
+		"@types/node": "^24.0.3",
+		"@typescript-eslint/eslint-plugin": "^8.34.1",
+		"@typescript-eslint/parser": "^8.34.1",
+		"chalk": "^5.3.0",
+		"dotenv-cli": "^8.0.0",
+		"eslint": "^9.29.0",
+		"inquirer": "^12.7.0",
+		"jest": "^30.0.2",
+		"semantic-release": "^24.2.5",
+		"ts-jest": "^29.4.0",
+		"typescript": "^5.8.3",
+		"typescript-eslint": "^8.34.1"
+	},
+	"dependencies": {
+		"@lokalise/node-api": "^14.8.0",
+		"@modelcontextprotocol/sdk": "^1.13.0",
+		"commander": "^14.0.0",
+		"cors": "^2.8.5",
+		"dotenv": "^16.5.0",
+		"express": "^5.1.0",
+		"zod": "^3.25.67"
+	},
+	"publishConfig": {
+		"registry": "https://registry.npmjs.org/",
+		"access": "public"
+	}
+}
