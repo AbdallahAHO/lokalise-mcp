@@ -3,14 +3,22 @@ import type { Command } from "commander";
 import { Logger } from "../shared/utils/logger.util.js";
 import { domainRegistry } from "./registry.js";
 
-const logger = Logger.forContext("domains/index.ts");
+// Lazy logger initialization to avoid module-level side effects
+let logger: ReturnType<typeof Logger.forContext> | null = null;
+
+function getLogger() {
+	if (!logger) {
+		logger = Logger.forContext("domains/index.ts");
+	}
+	return logger;
+}
 
 /**
  * Register all domain MCP tools with the server
  * This is the main entry point for tool registration
  */
 export async function registerAllTools(server: McpServer): Promise<void> {
-	const methodLogger = logger.forMethod("registerAllTools");
+	const methodLogger = getLogger().forMethod("registerAllTools");
 	methodLogger.info("Starting domain tools registration");
 
 	try {
@@ -27,7 +35,7 @@ export async function registerAllTools(server: McpServer): Promise<void> {
  * This is the main entry point for CLI registration
  */
 export async function registerAllCli(program: Command): Promise<void> {
-	const methodLogger = logger.forMethod("registerAllCli");
+	const methodLogger = getLogger().forMethod("registerAllCli");
 	methodLogger.info("Starting domain CLI registration");
 
 	try {
@@ -44,7 +52,7 @@ export async function registerAllCli(program: Command): Promise<void> {
  * This is the main entry point for resource registration
  */
 export async function registerAllResources(server: McpServer): Promise<void> {
-	const methodLogger = logger.forMethod("registerAllResources");
+	const methodLogger = getLogger().forMethod("registerAllResources");
 	methodLogger.info("Starting domain resources registration");
 
 	try {

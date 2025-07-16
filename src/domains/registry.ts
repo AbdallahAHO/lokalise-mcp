@@ -10,12 +10,18 @@ import type {
 } from "../shared/types/domain.types.js";
 import { Logger } from "../shared/utils/logger.util.js";
 
-const logger = Logger.forContext("domains/registry.ts");
-
 /**
  * Domain Registry class for managing domain discovery and registration
  */
 export class DomainRegistry {
+	private logger: ReturnType<typeof Logger.forContext> | null = null;
+
+	private getLogger() {
+		if (!this.logger) {
+			this.logger = Logger.forContext("domains/registry.ts");
+		}
+		return this.logger;
+	}
 	private readonly domainsPath: string;
 	private readonly registryMap = new Map<string, DomainRegistryEntry>();
 	private discoveredDomains: DomainDiscoveryResult[] = [];
@@ -30,7 +36,7 @@ export class DomainRegistry {
 	 * Discover all domains in the domains directory
 	 */
 	async discoverDomains(): Promise<DomainDiscoveryResult[]> {
-		const methodLogger = logger.forMethod("discoverDomains");
+		const methodLogger = this.getLogger().forMethod("discoverDomains");
 		methodLogger.debug("Starting domain discovery", {
 			domainsPath: this.domainsPath,
 		});
@@ -67,7 +73,7 @@ export class DomainRegistry {
 		name: string,
 		domainPath: string,
 	): Promise<DomainDiscoveryResult> {
-		const methodLogger = logger.forMethod("analyzeDomain");
+		const methodLogger = this.getLogger().forMethod("analyzeDomain");
 		methodLogger.debug(`Analyzing domain: ${name}`, { domainPath });
 
 		try {
@@ -112,7 +118,7 @@ export class DomainRegistry {
 	 * Load a specific domain module
 	 */
 	async loadDomain(name: string): Promise<DomainModule | null> {
-		const methodLogger = logger.forMethod("loadDomain");
+		const methodLogger = this.getLogger().forMethod("loadDomain");
 		methodLogger.debug(`Loading domain: ${name}`);
 
 		try {
@@ -181,7 +187,7 @@ export class DomainRegistry {
 	 * Load all valid domains
 	 */
 	async loadAllDomains(): Promise<DomainModule[]> {
-		const methodLogger = logger.forMethod("loadAllDomains");
+		const methodLogger = this.getLogger().forMethod("loadAllDomains");
 		methodLogger.debug("Loading all domains");
 
 		if (this.discoveredDomains.length === 0) {
@@ -206,7 +212,7 @@ export class DomainRegistry {
 	 * Register all domain tools with the MCP server
 	 */
 	async registerAllTools(server: McpServer): Promise<void> {
-		const methodLogger = logger.forMethod("registerAllTools");
+		const methodLogger = this.getLogger().forMethod("registerAllTools");
 		methodLogger.debug("Registering all domain tools");
 
 		const domains = await this.loadAllDomains();
@@ -236,7 +242,7 @@ export class DomainRegistry {
 	 * Register all domain CLI commands with the Commander program
 	 */
 	async registerAllCli(program: Command): Promise<void> {
-		const methodLogger = logger.forMethod("registerAllCli");
+		const methodLogger = this.getLogger().forMethod("registerAllCli");
 		methodLogger.debug("Registering all domain CLI commands");
 
 		const domains = await this.loadAllDomains();
@@ -266,7 +272,7 @@ export class DomainRegistry {
 	 * Register all domain resources with the MCP server
 	 */
 	async registerAllResources(server: McpServer): Promise<void> {
-		const methodLogger = logger.forMethod("registerAllResources");
+		const methodLogger = this.getLogger().forMethod("registerAllResources");
 		methodLogger.debug("Registering all domain resources");
 
 		const domains = await this.loadAllDomains();
