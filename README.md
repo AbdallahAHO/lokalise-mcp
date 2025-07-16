@@ -17,8 +17,6 @@
 
 The Lokalise MCP Server connects AI assistants like Claude to [Lokalise](https://lokalise.com), the leading translation management platform. Through natural conversation, you can manage translation projects, update content, and automate localization workflows—no coding required.
 
-> **Note**: While this project is currently independent, I'm open to collaborating with Lokalise to make this an official integration. If you're from Lokalise and interested in adopting this project, please reach out!
-
 ### 🎯 Perfect for:
 - **Product Managers** - Monitor translation progress and identify bottlenecks
 - **Developers** - Automate key management and bulk updates
@@ -237,13 +235,6 @@ Enable detailed logging:
 DEBUG=true npm run mcp:http
 ```
 
-## 👤 Author
-
-**Abdallah Othman**
-- Website: [abdallahaho.com](https://abdallahaho.com)
-- GitHub: [@AbdallahAHO](https://github.com/AbdallahAHO)
-- Email: abdallah.ali.hassan@othman.com
-
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) for details.
@@ -252,13 +243,10 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 - Built on the [Model Context Protocol](https://modelcontextprotocol.io) by Anthropic
 - Uses the open-source [Lokalise Node.js SDK](https://github.com/lokalise/node-api)
-- Created with ❤️ for the localization community
-- Special thanks to Lokalise for providing an excellent API and SDK
 
 ---
 
 <div align="center">
-  <b>Ready to supercharge your localization workflow?</b><br>
   <a href="https://github.com/AbdallahAHO/lokalise-mcp">⭐ Star us on GitHub</a> •
   <a href="https://github.com/AbdallahAHO/lokalise-mcp/issues">Report an Issue</a> •
   <a href="https://lokalise.com">Learn about Lokalise</a>

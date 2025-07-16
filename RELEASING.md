@@ -1,257 +1,262 @@
-# Release Process Documentation
+# 🚀 Releasing Lokalise MCP
 
-This document describes the release process for the Lokalise MCP Server, including automated and manual release procedures.
+This guide explains how to release new versions of the Lokalise MCP Server. The process is fully automated through GitHub Actions.
+
+## 📋 Table of Contents
+
+- [Overview](#overview)
+- [Prerequisites](#prerequisites)
+- [Release Process](#release-process)
+- [Troubleshooting](#troubleshooting)
+- [Manual Release](#manual-release)
+- [Release Checklist](#release-checklist)
 
 ## Overview
 
-The project uses a fully automated release process powered by:
-- **Semantic Release**: Automated version management and package publishing
-- **GitHub Actions**: CI/CD pipeline for builds and releases
-- **DXT Packaging**: Desktop extension creation for Claude Desktop
+The release process follows GitFlow and is automated through GitHub Actions:
 
-## Automated Release Process
+1. **Trigger** the release workflow from the `develop` branch
+2. **Review** the automatically created PR
+3. **Merge** the PR to trigger npm publish and GitHub release
+4. **Done** - changes are automatically back-merged to develop
 
-### 1. Commit to Main Branch
+## Prerequisites
 
-When you push commits to the `main` branch, the release process automatically:
+Before releasing, ensure:
 
-1. Analyzes commit messages using [Conventional Commits](https://www.conventionalcommits.org/)
-2. Determines the version bump type:
-   - `fix:` → Patch release (1.0.0 → 1.0.1)
-   - `feat:` → Minor release (1.0.0 → 1.1.0)
-   - `BREAKING CHANGE:` → Major release (1.0.0 → 2.0.0)
-3. Updates version numbers across the codebase
-4. Generates/updates CHANGELOG.md
-5. Creates a git tag
-6. Publishes to npm
-7. Creates a GitHub Release
-8. Triggers DXT package generation
+- [ ] You have write access to the repository
+- [ ] The `develop` branch is up to date with all changes
+- [ ] All tests are passing on `develop`
+- [ ] GitHub Secrets are configured (see below)
+- [ ] You have decided on the release type (patch/minor/major)
 
-### 2. DXT Package Generation
+### GitHub Secrets Configuration
 
-After semantic-release completes, a separate workflow:
+You must configure these secrets in your repository settings:
 
-1. Builds the project
-2. Generates an updated manifest.json
-3. Creates a .dxt package using `@anthropic-ai/dxt pack`
-4. Generates SHA256 checksums
-5. Uploads artifacts to the GitHub Release
+#### Required Secrets
 
-## Manual Release Process
+1. **`NPM_TOKEN`** (REQUIRED for npm publishing)
+   - Go to: https://www.npmjs.com/settings/~/tokens
+   - Click "Generate New Token" → "Classic Token"
+   - Select type: "Automation"
+   - Copy the token
+   - Add to GitHub: Settings → Secrets → Actions → New repository secret
+   - Name: `NPM_TOKEN`
+   - Value: Your npm token
 
-For special cases where manual release is needed:
+#### Optional Secrets (for production DXT signing)
 
-### Prerequisites
+2. **`SIGNING_CERT`** (Optional - for production certificate)
+   - Convert your certificate to base64:
+     ```bash
+     base64 -i cert.pem | pbcopy  # macOS
+     base64 -w 0 cert.pem         # Linux
+     ```
+   - Add to GitHub Secrets as `SIGNING_CERT`
 
-1. Ensure you have write access to the repository
-2. Install dependencies: `npm ci`
-3. Have npm authentication configured (for npm publishing)
+3. **`SIGNING_KEY`** (Optional - for production certificate)
+   - Convert your private key to base64:
+     ```bash
+     base64 -i key.pem | pbcopy   # macOS
+     base64 -w 0 key.pem          # Linux
+     ```
+   - Add to GitHub Secrets as `SIGNING_KEY`
 
-### Steps
+**Note**: If signing certificates are not provided, DXT packages will be self-signed, which is fine for development and testing.
 
-1. **Update Version Manually**
-   ```bash
-   # Update version in package.json and related files
-   node scripts/update-version.js 1.2.3
-   ```
+### Release Types
 
-2. **Generate Manifest**
-   ```bash
-   npm run generate:manifest
-   ```
+- **Patch** (1.0.x): Bug fixes, documentation updates
+- **Minor** (1.x.0): New features, backward-compatible changes
+- **Major** (x.0.0): Breaking changes, major rewrites
 
-3. **Build and Test**
-   ```bash
-   npm run build
-   npm test
-   ```
+## Release Process
 
-4. **Create DXT Package**
-   ```bash
-   npm run build:dxt
-   ```
+### Step 1: Start the Release
 
-5. **Prepare Release Assets**
-   ```bash
-   npm run release:prepare 1.2.3
-   ```
+1. Go to the [Actions tab](https://github.com/AbdallahAHO/lokalise-mcp/actions) on GitHub
+2. Click on "Release - Master Workflow" in the left sidebar
+3. Click "Run workflow" button
+4. Select:
+   - **Branch**: `develop` (required)
+   - **Release type**: patch/minor/major
+   - **Dry run**: false (leave unchecked for real release)
+5. Click "Run workflow"
 
-6. **Create Git Tag**
-   ```bash
-   git tag -a v1.2.3 -m "Release v1.2.3"
-   git push origin v1.2.3
-   ```
+### Step 2: Monitor the Workflow
 
-7. **Trigger DXT Release Workflow**
-   ```bash
-   # Via GitHub CLI
-   gh workflow run release-dxt.yml -f version=1.2.3
-   
-   # Or use the GitHub Actions UI
-   ```
+The workflow will:
+- ✅ Determine the next version number
+- ✅ Create a release branch (e.g., `release/v1.0.1`)
+- ✅ Update version in all files
+- ✅ Generate/update CHANGELOG.md
+- ✅ Build the project
+- ✅ Create DXT package
+- ✅ Open a PR to main branch
 
-## Release Scripts
+### Step 3: Review the Pull Request
 
-### Core Scripts
+1. The workflow will create a PR titled "Release vX.Y.Z"
+2. Review the PR checklist:
+   - Version updates in `package.json`, `manifest.json`, etc.
+   - CHANGELOG.md updates
+   - Build artifacts created
+3. Ensure all CI checks pass
 
-- `npm run build:dxt` - Build and package as DXT
-- `npm run release:prepare` - Prepare all release assets
-- `npm run release:checksums` - Generate checksums for artifacts
-- `npm run release:dry-run` - Test release process without publishing
+### Step 4: Merge the Release
 
-### Support Scripts
+1. Once satisfied, merge the PR using "Merge pull request" (not squash)
+2. This triggers the main branch workflow which will:
+   - ✅ Create and sign the DXT package
+   - ✅ Publish to npm
+   - ✅ Create GitHub release with artifacts
+   - ✅ Tag the release
+   - ✅ Back-merge to develop
 
-- `scripts/update-version.js` - Update version across all files
-- `scripts/generate-manifest.js` - Generate manifest.json with tool discovery
-- `scripts/prepare-release.js` - Orchestrate release asset preparation
-- `scripts/generate-checksums.js` - Create SHA256 checksums
-- `scripts/sign-dxt.js` - Sign DXT packages with certificates
-- `scripts/generate-certs.js` - Generate certificates for signing
+### Step 5: Verify the Release
 
-## DXT Signing
-
-The release process automatically signs DXT packages for security and authenticity.
-
-### Development Signing (Default)
-
-For development and testing, the workflow uses self-signed certificates:
-- Automatically generated during the release process
-- No manual setup required
-- Packages show warning about self-signed certificate
-
-### Production Signing
-
-For official releases, configure production certificates:
-
-1. **Obtain a Code Signing Certificate**
-   - Purchase from a trusted CA (DigiCert, Sectigo, GlobalSign)
-   - Ensure it has Code Signing extended key usage
-
-2. **Configure GitHub Secrets**
-   ```bash
-   # Encode certificates as base64
-   base64 -i cert.pem | pbcopy  # Copy to clipboard
-   # Add as SIGNING_CERT secret
-   
-   base64 -i key.pem | pbcopy   # Copy to clipboard
-   # Add as SIGNING_KEY secret
-   
-   # Optional: Add intermediate certificates
-   base64 -i intermediate.pem | pbcopy
-   # Add as SIGNING_INTERMEDIATE secret
-   ```
-
-3. **Local Signing**
-   ```bash
-   # Generate self-signed certificate for development
-   npm run certs:generate
-   
-   # Sign with self-signed certificate
-   npm run release:sign release/extension.dxt
-   
-   # Sign with production certificates
-   npm run release:sign release/extension.dxt --production
-   
-   # Verify signature
-   dxt verify release/extension.dxt
-   ```
-
-### Certificate Management Scripts
-
-- `npm run certs:generate` - Generate self-signed certificates
-- `npm run certs:info` - View certificate information
-- `npm run release:sign <file>` - Sign a DXT file
-
-### Security Notes
-
-- Production certificates are never stored in the repository
-- GitHub Secrets are encrypted and only accessible during workflow runs
-- Self-signed certificates are only for development/testing
-- Always verify signatures before distribution
-
-## GitHub Release Assets
-
-Each release includes:
-
-1. **lokalise-mcp-{version}.dxt** - Desktop extension for Claude
-2. **lokalise-mcp-{version}.tgz** - npm package tarball
-3. **checksums.sha256** - SHA256 checksums for verification
-4. **Source code** - Automatically attached by GitHub
-
-## Verifying Downloads
-
-Users can verify their downloads using the checksums file:
-
-```bash
-# Download both the DXT and checksums file
-curl -LO https://github.com/AbdallahAHO/lokalise-mcp/releases/download/v1.2.3/lokalise-mcp-1.2.3.dxt
-curl -LO https://github.com/AbdallahAHO/lokalise-mcp/releases/download/v1.2.3/checksums-1.2.3.sha256
-
-# Verify
-sha256sum -c checksums-1.2.3.sha256
-```
+Check that everything worked:
+- [ ] npm package: https://www.npmjs.com/package/lokalise-mcp
+- [ ] GitHub release: https://github.com/AbdallahAHO/lokalise-mcp/releases
+- [ ] Tag exists: `git tag -l`
+- [ ] Develop branch updated: `git log --oneline develop`
 
 ## Troubleshooting
 
-### Release Not Triggering
+### Common Issues
 
-1. Check commit message format follows Conventional Commits
-2. Ensure NPM_TOKEN secret is configured
-3. Review semantic-release logs in GitHub Actions
+#### Workflow fails to start
+- Ensure you're running from the `develop` branch
+- Check you have workflow dispatch permissions
 
-### DXT Generation Fails
+#### Version already exists
+- This happens if a release was partially completed
+- Manually bump the version in package.json and try again
 
-1. Ensure @anthropic-ai/dxt is accessible
-2. Check manifest.json is valid
-3. Verify all required files are present
+#### npm publish fails
+- Check `NPM_TOKEN` is valid and has publish permissions
+- Ensure you're not trying to publish an existing version
+- Check npm account has 2FA configured for automation
 
-### Version Mismatch
+#### DXT signing fails
+- This is okay - it will fall back to self-signed certificates
+- For production signing, add `SIGNING_CERT` and `SIGNING_KEY` secrets
 
-If versions are out of sync:
+#### Back-merge conflicts
+- Rare but can happen with concurrent development
+- Manually resolve: `git checkout develop && git merge main`
+
+### Debugging Workflows
+
+1. Check workflow run logs in GitHub Actions
+2. Look for error messages in red
+3. Each step shows detailed output when expanded
+4. Check the summary at the bottom of each workflow run
+
+## Manual Release
+
+If automation fails, you can release manually:
 
 ```bash
-# Fix version across all files
-node scripts/update-version.js $(node -p "require('./package.json').version")
+# 1. Checkout develop and pull latest
+git checkout develop
+git pull origin develop
+
+# 2. Create release branch
+git checkout -b release/v1.0.1
+
+# 3. Update version
+node scripts/update-version.js 1.0.1
 npm run generate:manifest
+
+# 4. Build and test
+npm run build
+npm test
+
+# 5. Create DXT package
+node scripts/prepare-release.js 1.0.1
+
+# 6. Commit changes
 git add -A
-git commit -m "chore: align versions"
+git commit -m "chore(release): prepare release v1.0.1"
+
+# 7. Push branch
+git push -u origin release/v1.0.1
+
+# 8. Create PR manually on GitHub
+
+# 9. After merge, tag and publish
+git checkout main
+git pull origin main
+git tag -a v1.0.1 -m "Release v1.0.1"
+git push origin v1.0.1
+
+# 10. Publish to npm
+npm publish
+
+# 11. Create GitHub release manually with DXT file
+
+# 12. Back-merge
+git checkout develop
+git merge main
+git push origin develop
 ```
-
-## Security Considerations
-
-1. **npm Token**: Store securely as `NPM_TOKEN` secret
-2. **Signing Keys**: When available, store as GitHub Secrets
-3. **Checksums**: Always provided for download verification
-4. **Permissions**: Workflows use minimal required permissions
-
-## Rollback Procedure
-
-If a release has issues:
-
-1. **npm**: Deprecate the package version
-   ```bash
-   npm deprecate lokalise-mcp@1.2.3 "Critical bug - use 1.2.4 instead"
-   ```
-
-2. **GitHub**: Mark release as pre-release or draft
-
-3. **Fix and Re-release**: Create fix commit and let automation handle new release
 
 ## Release Checklist
 
-Before major releases:
+Use this checklist for every release:
 
-- [ ] All tests passing
-- [ ] Documentation updated
-- [ ] CHANGELOG prepared
-- [ ] Breaking changes documented
-- [ ] Migration guide written (if needed)
-- [ ] Security audit completed
-- [ ] Performance benchmarks run
+### Pre-Release
+- [ ] All features for this release are merged to develop
+- [ ] All tests pass locally: `npm test`
+- [ ] Build succeeds: `npm run build`
+- [ ] No security vulnerabilities: `npm audit`
+- [ ] Documentation is up to date
+
+### During Release
+- [ ] Workflow started from develop branch
+- [ ] Correct release type selected
+- [ ] PR created successfully
+- [ ] All CI checks pass on PR
+- [ ] CHANGELOG looks correct
+- [ ] Version bumped correctly
+
+### Post-Release
+- [ ] npm package published
+- [ ] GitHub release created
+- [ ] DXT file attached to release
+- [ ] Tag created
+- [ ] Back-merged to develop
+- [ ] Announce release (optional)
+
+## Version History
+
+| Version | Date | Type | Notes |
+|---------|------|------|-------|
+| 1.0.0 | 2024-01-16 | Major | Initial release |
+| 1.0.1 | TBD | Patch | Automated release process |
+
+## Testing the Release Workflow
+
+Before doing a real release, test with a dry run:
+
+1. Go to [Actions](https://github.com/AbdallahAHO/lokalise-mcp/actions)
+2. Select "Release - Master Workflow"
+3. Run with:
+   - Branch: `develop`
+   - Release type: `patch`
+   - **Dry run: ✅ CHECK THIS**
+4. Verify the workflow completes without errors
+5. Check that no PR was created (dry run mode)
 
 ## Questions?
 
-For release-related questions:
-1. Check GitHub Actions logs
-2. Review semantic-release documentation
-3. Open an issue with the `release` label
+If you encounter issues:
+1. Check the [GitHub Actions logs](https://github.com/AbdallahAHO/lokalise-mcp/actions)
+2. Open an [issue](https://github.com/AbdallahAHO/lokalise-mcp/issues)
+3. Contact the maintainers
+
+---
+
+Remember: The automation handles everything! Just trigger the workflow and review the PR. 🎉
