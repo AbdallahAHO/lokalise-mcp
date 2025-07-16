@@ -30,6 +30,18 @@ Before releasing, ensure:
 - [ ] GitHub Secrets are configured (see below)
 - [ ] You have decided on the release type (patch/minor/major)
 
+### GitHub Repository Configuration
+
+#### Workflow Permissions (REQUIRED)
+
+1. Go to: Settings → Actions → General
+2. Scroll to "Workflow permissions"
+3. Select "Read and write permissions"
+4. **Important**: Check "Allow GitHub Actions to create and approve pull requests"
+5. Click "Save"
+
+Without this setting, the release workflow will fail with a 403 error.
+
 ### GitHub Secrets Configuration
 
 You must configure these secrets in your repository settings:
@@ -45,9 +57,15 @@ You must configure these secrets in your repository settings:
    - Name: `NPM_TOKEN`
    - Value: Your npm token
 
+2. **`GH_PAT`** (Optional - Alternative to repository permissions)
+   - Only needed if you can't enable "Allow GitHub Actions to create pull requests"
+   - Create at: https://github.com/settings/tokens/new
+   - Select scopes: `repo` (full control)
+   - Add to GitHub Secrets as `GH_PAT`
+
 #### Optional Secrets (for production DXT signing)
 
-2. **`SIGNING_CERT`** (Optional - for production certificate)
+3. **`SIGNING_CERT`** (Optional - for production certificate)
    - Convert your certificate to base64:
      ```bash
      base64 -i cert.pem | pbcopy  # macOS
@@ -55,7 +73,7 @@ You must configure these secrets in your repository settings:
      ```
    - Add to GitHub Secrets as `SIGNING_CERT`
 
-3. **`SIGNING_KEY`** (Optional - for production certificate)
+4. **`SIGNING_KEY`** (Optional - for production certificate)
    - Convert your private key to base64:
      ```bash
      base64 -i key.pem | pbcopy   # macOS

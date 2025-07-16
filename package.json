@@ -111,7 +111,7 @@
 		"access": "public"
 	},
 	"lint-staged": {
-		"*.{js,ts,json,md}": [
+		"*.{js,ts,json}": [
 			"biome format --write",
 			"biome lint --fix"
 		]
