@@ -1,0 +1,266 @@
+/**
+ * {{domainNamePascal}} Service
+ *
+ * Service layer for interacting with Lokalise {{domainNamePascal}} API.
+ * Handles all API communication and data transformation.
+ */
+
+import type {
+	PaginatedResult,
+	// TODO: Import domain-specific SDK types here
+	// Check /node_modules/@lokalise/node-api/dist/main.d.ts for:
+	// - {{domainNamePascal}} (the main entity type)
+	// - {{domainNamePascal}}CreateData (for create operations)
+	// - {{domainNamePascal}}UpdateData (for update operations)
+	// Example: import type { Project, ProjectCreateData } from "@lokalise/node-api";
+} from "@lokalise/node-api";
+import { getLokaliseApi } from "../../shared/utils/lokalise-api.util.js";
+import {
+	createApiError,
+	createUnexpectedError,
+} from "../../shared/utils/error.util.js";
+import { Logger } from "../../shared/utils/logger.util.js";
+import type {
+{{#if:list}}
+	List{{domainNamePascal}}ToolArgsType,
+{{/if:list}}
+{{#if:get}}
+	Get{{domainNamePascal}}ToolArgsType,
+{{/if:get}}
+{{#if:create}}
+	Add{{domainNamePascal}}ToolArgsType,
+{{/if:create}}
+{{#if:update}}
+	Update{{domainNamePascal}}ToolArgsType,
+{{/if:update}}
+{{#if:delete}}
+	Remove{{domainNamePascal}}ToolArgsType,
+{{/if:delete}}
+} from "./{{domainName}}.types.js";
+
+const logger = Logger.forContext("{{domainName}}.service.ts");
+
+// ============================================================================
+// Service Implementation
+// ============================================================================
+
+/**
+ * {{domainNamePascal}} service for Lokalise API operations
+ */
+export const {{domainName}}Service = {
+{{#if:list}}
+	/**
+	 * List {{domainName}} for a project
+	 */
+	async list(
+		args: List{{domainNamePascal}}ToolArgsType,
+	): Promise<PaginatedResult<{{domainNamePascal}}>> {
+		const methodLogger = logger.forMethod("list");
+		methodLogger.info("Listing {{domainName}}", {
+			projectId: args.projectId,
+			page: args.page,
+			limit: args.limit,
+		});
+
+		try {
+			const api = getLokaliseApi();
+			// TODO: Replace with actual SDK method
+			// Example: const result = await api.{{domainName}}().list({
+			const result = await api.{{domainName}}().list({
+				project_id: args.projectId,
+				page: args.page,
+				limit: args.limit,
+			});
+
+			methodLogger.info("Listed {{domainName}} successfully", {
+				projectId: args.projectId,
+				count: result.items.length,
+				totalResults: result.totalResults,
+			});
+
+			return result;
+		} catch (error) {
+			methodLogger.error("Failed to list {{domainName}}", { error, args });
+			throw createUnexpectedError(
+				`Failed to list {{domainName}} for project ${args.projectId}`,
+				error,
+			);
+		}
+	},
+{{/if:list}}
+
+{{#if:get}}
+	/**
+	 * Get a specific {{domainName}}
+	 */
+	async get(args: Get{{domainNamePascal}}ToolArgsType): Promise<{{domainNamePascal}}> {
+		const methodLogger = logger.forMethod("get");
+		methodLogger.info("Getting {{domainName}}", {
+			projectId: args.projectId,
+			{{domainName}}Id: args.{{domainName}}Id,
+		});
+
+		try {
+			const api = getLokaliseApi();
+			// TODO: Replace with actual SDK method
+			// Example: const result = await api.{{domainName}}().get(args.{{domainName}}Id, {
+			const result = await api.{{domainName}}().get(args.{{domainName}}Id, {
+				project_id: args.projectId,
+			});
+
+			methodLogger.info("Retrieved {{domainName}} successfully", {
+				projectId: args.projectId,
+				{{domainName}}Id: args.{{domainName}}Id,
+			});
+
+			return result;
+		} catch (error) {
+			methodLogger.error("Failed to get {{domainName}}", { error, args });
+			throw createUnexpectedError(
+				`Failed to get {{domainName}} ${args.{{domainName}}Id} from project ${args.projectId}`,
+				error,
+			);
+		}
+	},
+{{/if:get}}
+
+{{#if:create}}
+	/**
+	 * Add {{domainName}} to a project
+	 */
+	async create(args: Add{{domainNamePascal}}ToolArgsType): Promise<{{domainNamePascal}}[]> {
+		const methodLogger = logger.forMethod("create");
+		methodLogger.info("Adding {{domainName}}", {
+			projectId: args.projectId,
+			count: args.{{domainName}}.length,
+		});
+
+		try {
+			const api = getLokaliseApi();
+
+			// Map our schema to SDK types
+			// TODO: Map the data structure to match SDK requirements
+			const {{domainName}}Data = args.{{domainName}}.map(
+				(item) => ({
+					// Map fields here
+				}),
+			);
+
+			// TODO: Replace with actual SDK method
+			// Example: const result = await api.{{domainName}}().create({{domainName}}Data, {
+			const result = await api.{{domainName}}().create({{domainName}}Data, {
+				project_id: args.projectId,
+			});
+
+			methodLogger.info("Added {{domainName}} successfully", {
+				projectId: args.projectId,
+				added: result.length,
+			});
+
+			return result;
+		} catch (error) {
+			methodLogger.error("Failed to add {{domainName}}", { error, args });
+			throw createUnexpectedError(
+				`Failed to add {{domainName}} to project ${args.projectId}`,
+				error,
+			);
+		}
+	},
+{{/if:create}}
+
+{{#if:update}}
+	/**
+	 * Update a {{domainName}}
+	 */
+	async update(args: Update{{domainNamePascal}}ToolArgsType): Promise<{{domainNamePascal}}> {
+		const methodLogger = logger.forMethod("update");
+		methodLogger.info("Updating {{domainName}}", {
+			projectId: args.projectId,
+			{{domainName}}Id: args.{{domainName}}Id,
+		});
+
+		try {
+			const api = getLokaliseApi();
+
+			// Build update data
+			// TODO: Map update fields to SDK structure
+			const updateData = {
+				// Map fields here
+			};
+
+			// TODO: Replace with actual SDK method
+			// Example: const result = await api.{{domainName}}().update(args.{{domainName}}Id, updateData, {
+			const result = await api
+				.{{domainName}}()
+				.update(args.{{domainName}}Id, updateData, { project_id: args.projectId });
+
+			methodLogger.info("Updated {{domainName}} successfully", {
+				projectId: args.projectId,
+				{{domainName}}Id: args.{{domainName}}Id,
+			});
+
+			return result;
+		} catch (error) {
+			methodLogger.error("Failed to update {{domainName}}", { error, args });
+			throw createUnexpectedError(
+				`Failed to update {{domainName}} ${args.{{domainName}}Id} in project ${args.projectId}`,
+				error,
+			);
+		}
+	},
+{{/if:update}}
+
+{{#if:delete}}
+	/**
+	 * Remove a {{domainName}} from a project
+	 */
+	async delete(
+		args: Remove{{domainNamePascal}}ToolArgsType,
+	): Promise<{ {{domainName}}_deleted: boolean; project_id: string }> {
+		const methodLogger = logger.forMethod("delete");
+		methodLogger.info("Removing {{domainName}}", {
+			projectId: args.projectId,
+			{{domainName}}Id: args.{{domainName}}Id,
+		});
+
+		try {
+			const api = getLokaliseApi();
+			// TODO: Replace with actual SDK method
+			// Example: const result = await api.{{domainName}}().delete(args.{{domainName}}Id, {
+			const result = await api.{{domainName}}().delete(args.{{domainName}}Id, {
+				project_id: args.projectId,
+			});
+
+			methodLogger.info("Removed {{domainName}} successfully", {
+				projectId: args.projectId,
+				{{domainName}}Id: args.{{domainName}}Id,
+			});
+
+			return result;
+		} catch (error) {
+			methodLogger.error("Failed to remove {{domainName}}", { error, args });
+			throw createUnexpectedError(
+				`Failed to remove {{domainName}} ${args.{{domainName}}Id} from project ${args.projectId}`,
+				error,
+			);
+		}
+	},
+{{/if:delete}}
+};
+
+/**
+ * IMPLEMENTATION GUIDE:
+ * 
+ * 1. Check the Lokalise SDK types in /node_modules/@lokalise/node-api/dist/main.d.ts
+ * 2. Look for the {{domainName}} interface and related types
+ * 3. Import the correct types at the top of this file
+ * 4. Replace api.{{domainName}}() with the actual SDK method if different (e.g., api.contributors())
+ * 5. Map your Zod schema types to SDK types in create/update methods
+ * 6. Check /node_modules/@lokalise/node-api/docs/api/{{domainName}}.md for examples
+ * 
+ * Common SDK patterns:
+ * - List methods return PaginatedResult<T>
+ * - Create methods often accept arrays and return arrays
+ * - Update/delete methods return the modified object or confirmation
+ * - All methods require { project_id } in options
+ */

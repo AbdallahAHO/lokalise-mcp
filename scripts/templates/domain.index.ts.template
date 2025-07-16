@@ -1,0 +1,8 @@
+// {{domainNamePascal}} domain exports
+export { default as {{domainName}}Cli } from "./{{domainName}}.cli.js";
+export * as {{domainName}}Controller from "./{{domainName}}.controller.js";
+export * as {{domainName}}Formatter from "./{{domainName}}.formatter.js";
+export { default as {{domainName}}Resource } from "./{{domainName}}.resource.js";
+export * as {{domainName}}Service from "./{{domainName}}.service.js";
+export { default as {{domainName}}Tool } from "./{{domainName}}.tool.js";
+export * from "./{{domainName}}.types.js";

@@ -1,0 +1,187 @@
+import { z } from "zod";
+
+/**
+ * {{domainNamePascal}} domain type definitions and Zod schemas.
+ * Generated on {{date}} for {{domainDescription}}.
+ */
+
+{{#if:list}}
+/**
+ * Zod schema for the list {{domainName}} tool arguments.
+ */
+export const List{{domainNamePascal}}ToolArgs = z
+	.object({
+		projectId: z.string().describe("Project ID to list {{domainName}} for"),
+		limit: z
+			.number()
+			.optional()
+			.describe("Number of {{domainName}} to return (1-5000, default: 100)"),
+		page: z
+			.number()
+			.optional()
+			.describe("Page number for pagination (default: 1)"),
+		// TODO: Add domain-specific filters
+		filterQuery: z
+			.string()
+			.optional()
+			.describe("Filter {{domainName}} by search query"),
+	})
+	.strict();
+
+export type List{{domainNamePascal}}ToolArgsType = z.infer<typeof List{{domainNamePascal}}ToolArgs>;
+{{/if:list}}
+
+{{#if:get}}
+/**
+ * Zod schema for the get {{domainName}} details tool arguments.
+ */
+export const Get{{domainNamePascal}}ToolArgs = z
+	.object({
+		projectId: z.string().describe("Project ID containing the {{domainName}}"),
+		{{domainName}}Id: z.number().describe("{{domainNamePascal}} ID to get details for"),
+	})
+	.strict();
+
+export type Get{{domainNamePascal}}ToolArgsType = z.infer<typeof Get{{domainNamePascal}}ToolArgs>;
+{{/if:get}}
+
+{{#if:create}}
+/**
+ * Zod schema for the create {{domainName}} tool arguments.
+ */
+export const Create{{domainNamePascal}}ToolArgs = z
+	.object({
+		projectId: z.string().describe("Project ID to create {{domainName}} in"),
+		// TODO: Define {{domainName}} creation properties
+		name: z.string().describe("Name of the {{domainName}}"),
+		description: z
+			.string()
+			.optional()
+			.describe("Description of the {{domainName}}"),
+		// Add more domain-specific fields here
+	})
+	.strict();
+
+export type Create{{domainNamePascal}}ToolArgsType = z.infer<typeof Create{{domainNamePascal}}ToolArgs>;
+{{/if:create}}
+
+{{#if:update}}
+/**
+ * Zod schema for the update {{domainName}} tool arguments.
+ */
+export const Update{{domainNamePascal}}ToolArgs = z
+	.object({
+		projectId: z.string().describe("Project ID containing the {{domainName}}"),
+		{{domainName}}Id: z.number().describe("{{domainNamePascal}} ID to update"),
+		{{domainName}}Data: z
+			.object({
+				// TODO: Define updatable {{domainName}} properties
+				name: z.string().optional().describe("New name"),
+				description: z.string().optional().describe("New description"),
+				// Add more domain-specific update fields here
+			})
+			.describe("{{domainNamePascal}} data to update"),
+	})
+	.strict();
+
+export type Update{{domainNamePascal}}ToolArgsType = z.infer<typeof Update{{domainNamePascal}}ToolArgs>;
+{{/if:update}}
+
+{{#if:delete}}
+/**
+ * Zod schema for the delete {{domainName}} tool arguments.
+ */
+export const Delete{{domainNamePascal}}ToolArgs = z
+	.object({
+		projectId: z.string().describe("Project ID containing the {{domainName}}"),
+		{{domainName}}Id: z.number().describe("{{domainNamePascal}} ID to delete"),
+	})
+	.strict();
+
+export type Delete{{domainNamePascal}}ToolArgsType = z.infer<typeof Delete{{domainNamePascal}}ToolArgs>;
+{{/if:delete}}
+
+{{#if:bulkCreate}}
+/**
+ * Zod schema for the bulk create {{domainName}} tool arguments.
+ */
+export const BulkCreate{{domainNamePascal}}ToolArgs = z
+	.object({
+		projectId: z.string().describe("Project ID to create {{domainName}} in"),
+		{{domainName}}s: z
+			.array(
+				z.object({
+					// TODO: Define bulk {{domainName}} creation properties
+					name: z.string().describe("Name of the {{domainName}}"),
+					description: z
+						.string()
+						.optional()
+						.describe("Description of the {{domainName}}"),
+					// Add more domain-specific fields here
+				}),
+			)
+			.min(1)
+			.max(1000)
+			.describe("Array of {{domainName}} objects to create (1-1000 {{domainName}}s)"),
+	})
+	.strict();
+
+export type BulkCreate{{domainNamePascal}}ToolArgsType = z.infer<typeof BulkCreate{{domainNamePascal}}ToolArgs>;
+{{/if:bulkCreate}}
+
+{{#if:bulkUpdate}}
+/**
+ * Zod schema for the bulk update {{domainName}} tool arguments.
+ */
+export const BulkUpdate{{domainNamePascal}}ToolArgs = z
+	.object({
+		projectId: z.string().describe("Project ID containing the {{domainName}}s"),
+		{{domainName}}s: z
+			.array(
+				z.object({
+					{{domainName}}Id: z.number().describe("{{domainNamePascal}} ID to update"),
+					// TODO: Define bulk {{domainName}} update properties
+					name: z.string().optional().describe("New name"),
+					description: z.string().optional().describe("New description"),
+					// Add more domain-specific update fields here
+				}),
+			)
+			.min(1)
+			.max(1000)
+			.describe("Array of {{domainName}} updates (1-1000 {{domainName}}s)"),
+	})
+	.strict();
+
+export type BulkUpdate{{domainNamePascal}}ToolArgsType = z.infer<typeof BulkUpdate{{domainNamePascal}}ToolArgs>;
+{{/if:bulkUpdate}}
+
+{{#if:bulkDelete}}
+/**
+ * Zod schema for the bulk delete {{domainName}} tool arguments.
+ */
+export const BulkDelete{{domainNamePascal}}ToolArgs = z
+	.object({
+		projectId: z.string().describe("Project ID containing the {{domainName}}s"),
+		{{domainName}}Ids: z
+			.array(z.number())
+			.min(1)
+			.max(1000)
+			.describe("Array of {{domainName}} IDs to delete (1-1000 {{domainName}}s)"),
+	})
+	.strict();
+
+export type BulkDelete{{domainNamePascal}}ToolArgsType = z.infer<typeof BulkDelete{{domainNamePascal}}ToolArgs>;
+{{/if:bulkDelete}}
+
+/**
+ * TODO: Add domain-specific types here
+ * 
+ * Examples:
+ * - API response types
+ * - Service parameter interfaces  
+ * - Formatter input types
+ * - Domain entity interfaces
+ * 
+ * Reference the Lokalise SDK documentation for {{apiEndpoint}} endpoints:
+ * https://developers.lokalise.com/reference/
+ */

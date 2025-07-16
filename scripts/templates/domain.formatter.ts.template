@@ -1,0 +1,554 @@
+import {
+	formatBulletList,
+	formatDate,
+	formatEmptyState,
+	formatFooter,
+	formatHeading,
+	formatProjectContext,
+	formatTable,
+} from "../../shared/utils/formatter.util.js";
+
+/**
+ * {{domainNamePascal}} formatter functions for converting API responses to user-friendly Markdown.
+ * Generated on {{date}} for {{domainDescription}}.
+ */
+
+{{#if:list}}
+/**
+ * Format a list of {{domainName}} into Markdown.
+ * @param {{domainName}}Data - API response containing {{domainName}} list
+ * @param projectId - The project ID for context
+ * @returns Formatted Markdown string
+ */
+export function format{{domainNamePascal}}List(
+	{{domainName}}Data: any,
+	projectId: string,
+): string {
+	const lines: string[] = [];
+
+	// Add main heading
+	const totalCount = {{domainName}}Data.totalResults || {{domainName}}Data.items?.length || 0;
+	lines.push(formatHeading(`{{domainNamePascal}} List (${totalCount})`, 1));
+	lines.push("");
+
+	if (!{{domainName}}Data.items || {{domainName}}Data.items.length === 0) {
+		const suggestions = [
+			"Create your first {{domainName}} to get started",
+			"Check if you have the correct project ID",
+			"Verify your permissions for this project",
+		];
+		lines.push(formatEmptyState("{{domainName}}", "this project", suggestions));
+		lines.push(formatProjectContext(projectId));
+		lines.push(formatFooter("List retrieved"));
+		return lines.join("\n");
+	}
+
+	// Add summary section
+	lines.push(formatHeading("Summary", 2));
+	const summary: Record<string, unknown> = {
+		"Total {{domainNamePascal}}": totalCount,
+		"Current Page": {{domainName}}Data.currentPage || 1,
+		"Total Pages": {{domainName}}Data.totalPages || 1,
+		"Results Per Page": {{domainName}}Data.resultsPerPage || {{domainName}}Data.items.length,
+	};
+	lines.push(formatBulletList(summary));
+	lines.push("");
+
+	// Add {{domainName}} table
+	lines.push(formatHeading("{{domainNamePascal}}", 2));
+	
+	// TODO: Customize table columns based on actual {{domainName}} properties
+	const tableData = {{domainName}}Data.items.map((item: any) => ({
+		id: item.id || item.{{domainName}}_id || "N/A",
+		name: item.name || item.title || "Unnamed",
+		description: item.description || "-",
+		created: item.created_at ? formatDate(new Date(item.created_at)) : "-",
+	}));
+
+	const table = formatTable(tableData, [
+		{ key: "id", header: "ID" },
+		{ key: "name", header: "Name" },
+		{ key: "description", header: "Description" },
+		{ key: "created", header: "Created" },
+	]);
+
+	lines.push(table);
+	lines.push("");
+
+	// Add pagination info if applicable
+	if ({{domainName}}Data.totalPages > 1) {
+		lines.push(formatHeading("Pagination", 2));
+		lines.push(`Page ${{{domainName}}Data.currentPage} of ${{{domainName}}Data.totalPages}`);
+		if ({{domainName}}Data.currentPage < {{domainName}}Data.totalPages) {
+			lines.push(`- Next page: ${{{domainName}}Data.currentPage + 1}`);
+		}
+		if ({{domainName}}Data.currentPage > 1) {
+			lines.push(`- Previous page: ${{{domainName}}Data.currentPage - 1}`);
+		}
+		lines.push("");
+	}
+
+	// Add project context
+	lines.push(formatProjectContext(projectId));
+
+	// Add footer
+	lines.push(formatFooter("List retrieved"));
+
+	return lines.join("\n");
+}
+{{/if:list}}
+
+{{#if:get}}
+/**
+ * Format {{domainName}} details into Markdown.
+ * @param {{domainName}} - {{domainNamePascal}} data from API
+ * @param projectId - The project ID for context
+ * @returns Formatted Markdown string
+ */
+export function format{{domainNamePascal}}Details(
+	{{domainName}}: any,
+	projectId: string,
+): string {
+	const lines: string[] = [];
+
+	// Add main heading
+	const title = {{domainName}}.name || {{domainName}}.title || `{{domainNamePascal}} ${{{domainName}}.id}`;
+	lines.push(formatHeading(`{{domainNamePascal}}: ${title}`, 1));
+	lines.push("");
+
+	// Add basic information section
+	lines.push(formatHeading("Basic Information", 2));
+	
+	// TODO: Customize fields based on actual {{domainName}} properties
+	const basicInfo: Record<string, unknown> = {
+		"{{domainNamePascal}} ID": {{domainName}}.id || {{domainName}}.{{domainName}}_id,
+		"Name": {{domainName}}.name || {{domainName}}.title || "N/A",
+		"Description": {{domainName}}.description || "No description provided",
+		"Created": {{domainName}}.created_at ? formatDate(new Date({{domainName}}.created_at)) : "Unknown",
+		"Updated": {{domainName}}.updated_at ? formatDate(new Date({{domainName}}.updated_at)) : "Unknown",
+	};
+
+	lines.push(formatBulletList(basicInfo));
+	lines.push("");
+
+	// TODO: Add domain-specific sections here
+	// Example: Add metadata, settings, relationships, etc.
+
+	// Add project context with dashboard link
+	const sections = [
+		{
+			path: `/{{apiEndpoint}}/${{{domainName}}.id}`,
+			label: "View {{domainNamePascal}} in Lokalise Dashboard",
+		},
+	];
+	lines.push(formatProjectContext(projectId, sections));
+
+	// Add footer
+	lines.push(formatFooter("Details retrieved"));
+
+	return lines.join("\n");
+}
+{{/if:get}}
+
+{{#if:create}}
+/**
+ * Format {{domainName}} creation result into Markdown.
+ * @param {{domainName}} - The created {{domainName}} data
+ * @param projectId - The project ID for context
+ * @returns Formatted Markdown string
+ */
+export function formatCreate{{domainNamePascal}}Result(
+	{{domainName}}: any,
+	projectId: string,
+): string {
+	const lines: string[] = [];
+
+	// Add main heading
+	lines.push(formatHeading("{{domainNamePascal}} Created Successfully", 1));
+	lines.push("");
+
+	// Add creation summary
+	lines.push(formatHeading("Creation Summary", 2));
+	const summary: Record<string, unknown> = {
+		"{{domainNamePascal}} ID": {{domainName}}.id || {{domainName}}.{{domainName}}_id,
+		"Name": {{domainName}}.name || {{domainName}}.title,
+		"Created At": formatDate(new Date()),
+		"Project ID": projectId,
+	};
+	lines.push(formatBulletList(summary));
+	lines.push("");
+
+	// Add created {{domainName}} details
+	lines.push(formatHeading("{{domainNamePascal}} Details", 2));
+	
+	// TODO: Customize based on actual {{domainName}} properties
+	const details: Record<string, unknown> = {
+		"Description": {{domainName}}.description || "No description provided",
+		// Add more domain-specific fields here
+	};
+	
+	lines.push(formatBulletList(details));
+	lines.push("");
+
+	// Add next steps
+	lines.push(formatHeading("Next Steps", 2));
+	const nextSteps = [
+		"Configure additional settings for your {{domainName}}",
+		"Add related resources or associations",
+		"Review and update {{domainName}} properties as needed",
+	];
+	for (const step of nextSteps) {
+		lines.push(`- ${step}`);
+	}
+	lines.push("");
+
+	// Add project context
+	const sections = [
+		{
+			path: `/{{apiEndpoint}}/${{{domainName}}.id}`,
+			label: "View {{domainNamePascal}} in Lokalise Dashboard",
+		},
+	];
+	lines.push(formatProjectContext(projectId, sections));
+
+	// Add footer
+	lines.push(formatFooter("{{domainNamePascal}} created"));
+
+	return lines.join("\n");
+}
+{{/if:create}}
+
+{{#if:update}}
+/**
+ * Format {{domainName}} update result into Markdown.
+ * @param {{domainName}} - The updated {{domainName}} data
+ * @param projectId - The project ID for context
+ * @returns Formatted Markdown string
+ */
+export function formatUpdate{{domainNamePascal}}Result(
+	{{domainName}}: any,
+	projectId: string,
+): string {
+	const lines: string[] = [];
+
+	// Add main heading
+	lines.push(formatHeading("{{domainNamePascal}} Updated Successfully", 1));
+	lines.push("");
+
+	// Add update summary
+	lines.push(formatHeading("Update Summary", 2));
+	const summary: Record<string, unknown> = {
+		"{{domainNamePascal}} ID": {{domainName}}.id || {{domainName}}.{{domainName}}_id,
+		"Name": {{domainName}}.name || {{domainName}}.title,
+		"Updated At": formatDate(new Date()),
+		"Project ID": projectId,
+	};
+	lines.push(formatBulletList(summary));
+	lines.push("");
+
+	// Add updated fields
+	lines.push(formatHeading("Updated Information", 2));
+	
+	// TODO: Show which fields were actually updated
+	const updatedInfo: Record<string, unknown> = {
+		"Description": {{domainName}}.description || "No description",
+		"Last Modified": {{domainName}}.updated_at ? formatDate(new Date({{domainName}}.updated_at)) : "Just now",
+		// Add more domain-specific fields here
+	};
+	
+	lines.push(formatBulletList(updatedInfo));
+	lines.push("");
+
+	// Add project context
+	const sections = [
+		{
+			path: `/{{apiEndpoint}}/${{{domainName}}.id}`,
+			label: "View {{domainNamePascal}} in Lokalise Dashboard",
+		},
+	];
+	lines.push(formatProjectContext(projectId, sections));
+
+	// Add footer
+	lines.push(formatFooter("{{domainNamePascal}} updated"));
+
+	return lines.join("\n");
+}
+{{/if:update}}
+
+{{#if:delete}}
+/**
+ * Format {{domainName}} deletion result into Markdown.
+ * @param {{domainName}}Id - The ID of the deleted {{domainName}}
+ * @param projectId - The project ID for context
+ * @returns Formatted Markdown string
+ */
+export function formatDelete{{domainNamePascal}}Result(
+	{{domainName}}Id: number,
+	projectId: string,
+): string {
+	const lines: string[] = [];
+
+	// Add main heading
+	lines.push(formatHeading("{{domainNamePascal}} Deleted Successfully", 1));
+	lines.push("");
+
+	// Add deletion details
+	lines.push(formatHeading("Deletion Details", 2));
+	const details: Record<string, unknown> = {
+		"Deleted {{domainNamePascal}} ID": {{domainName}}Id,
+		"Project ID": projectId,
+		"Deletion Time": formatDate(new Date()),
+		"Status": "Successfully removed",
+	};
+	lines.push(formatBulletList(details));
+	lines.push("");
+
+	// Add warning
+	lines.push(formatHeading("⚠️ Important", 2));
+	lines.push("- This action cannot be undone");
+	lines.push("- All associated data has been permanently removed");
+	lines.push("- Consider creating a backup before deleting {{domainName}} in the future");
+	lines.push("");
+
+	// Add project context
+	lines.push(formatProjectContext(projectId));
+
+	// Add footer
+	lines.push(formatFooter("{{domainNamePascal}} deleted"));
+
+	return lines.join("\n");
+}
+{{/if:delete}}
+
+{{#if:bulkCreate}}
+/**
+ * Format bulk {{domainName}} creation result into Markdown.
+ * @param result - The bulk creation result from API
+ * @param projectId - The project ID for context
+ * @returns Formatted Markdown string
+ */
+export function formatBulkCreate{{domainNamePascal}}Result(
+	result: any,
+	projectId: string,
+): string {
+	const lines: string[] = [];
+
+	// Add main heading
+	lines.push(formatHeading("Bulk {{domainNamePascal}} Creation Result", 1));
+	lines.push("");
+
+	// Add summary
+	lines.push(formatHeading("Operation Summary", 2));
+	const successCount = result.items?.length || 0;
+	const errorCount = result.errors?.length || 0;
+	const totalRequested = successCount + errorCount;
+
+	const summary: Record<string, unknown> = {
+		"Total Requested": totalRequested,
+		"Successfully Created": successCount,
+		"Failed": errorCount,
+		"Success Rate": totalRequested > 0 ? `${Math.round((successCount / totalRequested) * 100)}%` : "N/A",
+		"Operation Time": formatDate(new Date()),
+	};
+	lines.push(formatBulletList(summary));
+	lines.push("");
+
+	// Show created {{domainName}}s if any
+	if (successCount > 0) {
+		lines.push(formatHeading(`Created {{domainNamePascal}} (${successCount})`, 2));
+		
+		const tableData = result.items.slice(0, 10).map((item: any) => ({
+			id: item.id || item.{{domainName}}_id,
+			name: item.name || item.title || "Unnamed",
+			status: "✅ Created",
+		}));
+
+		const table = formatTable(tableData, [
+			{ key: "id", header: "ID" },
+			{ key: "name", header: "Name" },
+			{ key: "status", header: "Status" },
+		]);
+
+		lines.push(table);
+		
+		if (successCount > 10) {
+			lines.push(`\n... and ${successCount - 10} more {{domainName}}s created successfully.`);
+		}
+		lines.push("");
+	}
+
+	// Show errors if any
+	if (errorCount > 0) {
+		lines.push(formatHeading(`Failed Operations (${errorCount})`, 2));
+		
+		result.errors.slice(0, 5).forEach((error: any) => {
+			lines.push(`- **Error**: ${error.message || "Unknown error"}`);
+			if (error.key || error.name) {
+				lines.push(`  - Item: ${error.key || error.name}`);
+			}
+			if (error.code) {
+				lines.push(`  - Code: ${error.code}`);
+			}
+		});
+		
+		if (errorCount > 5) {
+			lines.push(`\n... and ${errorCount - 5} more errors.`);
+		}
+		lines.push("");
+	}
+
+	// Add project context
+	lines.push(formatProjectContext(projectId));
+
+	// Add footer
+	lines.push(formatFooter("Bulk creation completed"));
+
+	return lines.join("\n");
+}
+{{/if:bulkCreate}}
+
+{{#if:bulkUpdate}}
+/**
+ * Format bulk {{domainName}} update result into Markdown.
+ * @param result - The bulk update result from API
+ * @param projectId - The project ID for context
+ * @returns Formatted Markdown string
+ */
+export function formatBulkUpdate{{domainNamePascal}}Result(
+	result: any,
+	projectId: string,
+): string {
+	const lines: string[] = [];
+
+	// Add main heading
+	lines.push(formatHeading("Bulk {{domainNamePascal}} Update Result", 1));
+	lines.push("");
+
+	// Add summary
+	lines.push(formatHeading("Operation Summary", 2));
+	const successCount = result.items?.length || 0;
+	const errorCount = result.errors?.length || 0;
+	const totalRequested = successCount + errorCount;
+
+	const summary: Record<string, unknown> = {
+		"Total Requested": totalRequested,
+		"Successfully Updated": successCount,
+		"Failed": errorCount,
+		"Success Rate": totalRequested > 0 ? `${Math.round((successCount / totalRequested) * 100)}%` : "N/A",
+		"Operation Time": formatDate(new Date()),
+	};
+	lines.push(formatBulletList(summary));
+	lines.push("");
+
+	// Show updated {{domainName}}s if any
+	if (successCount > 0) {
+		lines.push(formatHeading(`Updated {{domainNamePascal}} (${successCount})`, 2));
+		
+		const tableData = result.items.slice(0, 10).map((item: any) => ({
+			id: item.id || item.{{domainName}}_id,
+			name: item.name || item.title || "Unnamed",
+			status: "✅ Updated",
+		}));
+
+		const table = formatTable(tableData, [
+			{ key: "id", header: "ID" },
+			{ key: "name", header: "Name" },
+			{ key: "status", header: "Status" },
+		]);
+
+		lines.push(table);
+		
+		if (successCount > 10) {
+			lines.push(`\n... and ${successCount - 10} more {{domainName}}s updated successfully.`);
+		}
+		lines.push("");
+	}
+
+	// Show errors if any
+	if (errorCount > 0) {
+		lines.push(formatHeading(`Failed Operations (${errorCount})`, 2));
+		
+		result.errors.slice(0, 5).forEach((error: any) => {
+			lines.push(`- **Error**: ${error.message || "Unknown error"}`);
+			if (error.{{domainName}}_id) {
+				lines.push(`  - {{domainNamePascal}} ID: ${error.{{domainName}}_id}`);
+			}
+			if (error.code) {
+				lines.push(`  - Code: ${error.code}`);
+			}
+		});
+		
+		if (errorCount > 5) {
+			lines.push(`\n... and ${errorCount - 5} more errors.`);
+		}
+		lines.push("");
+	}
+
+	// Add project context
+	lines.push(formatProjectContext(projectId));
+
+	// Add footer
+	lines.push(formatFooter("Bulk update completed"));
+
+	return lines.join("\n");
+}
+{{/if:bulkUpdate}}
+
+{{#if:bulkDelete}}
+/**
+ * Format bulk {{domainName}} deletion result into Markdown.
+ * @param result - The bulk deletion result from API
+ * @param projectId - The project ID for context
+ * @returns Formatted Markdown string
+ */
+export function formatBulkDelete{{domainNamePascal}}Result(
+	result: any,
+	projectId: string,
+): string {
+	const lines: string[] = [];
+
+	// Add main heading
+	lines.push(formatHeading("Bulk {{domainNamePascal}} Deletion Result", 1));
+	lines.push("");
+
+	// Add summary
+	lines.push(formatHeading("Operation Summary", 2));
+	const deletedCount = result.deleted || result.{{domainName}}s_deleted || 0;
+	const requestedCount = result.requested || deletedCount;
+
+	const summary: Record<string, unknown> = {
+		"Total Requested": requestedCount,
+		"Successfully Deleted": deletedCount,
+		"Operation Time": formatDate(new Date()),
+		"Status": deletedCount === requestedCount ? "✅ All deleted successfully" : "⚠️ Partial success",
+	};
+	lines.push(formatBulletList(summary));
+	lines.push("");
+
+	// Add warning
+	lines.push(formatHeading("⚠️ Important", 2));
+	lines.push(`- ${deletedCount} {{domainName}}(s) have been permanently deleted`);
+	lines.push("- This action cannot be undone");
+	lines.push("- All associated data has been removed");
+	lines.push("");
+
+	// Add project context
+	lines.push(formatProjectContext(projectId));
+
+	// Add footer
+	lines.push(formatFooter("Bulk deletion completed"));
+
+	return lines.join("\n");
+}
+{{/if:bulkDelete}}
+
+/**
+ * TODO: Add more formatting functions as needed
+ * 
+ * Consider adding:
+ * - Error formatting helpers
+ * - Status badge formatters
+ * - Progress indicators
+ * - Relationship formatters
+ * - Custom domain-specific formatters
+ */

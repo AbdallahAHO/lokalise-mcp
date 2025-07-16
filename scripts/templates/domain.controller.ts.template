@@ -1,0 +1,363 @@
+import type { ControllerResponse } from "../../shared/types/common.types.js";
+import { ErrorType, McpError } from "../../shared/utils/error.util.js";
+import { handleControllerError } from "../../shared/utils/error-handler.util.js";
+import { Logger } from "../../shared/utils/logger.util.js";
+import {
+{{#if:list}}
+	format{{domainNamePascal}}List,
+{{/if:list}}
+{{#if:get}}
+	format{{domainNamePascal}}Details,
+{{/if:get}}
+{{#if:create}}
+	formatAdd{{domainNamePascal}}Result,
+{{/if:create}}
+{{#if:update}}
+	formatUpdate{{domainNamePascal}}Result,
+{{/if:update}}
+{{#if:delete}}
+	formatRemove{{domainNamePascal}}Result,
+{{/if:delete}}
+} from "./{{domainName}}.formatter.js";
+import { {{domainName}}Service } from "./{{domainName}}.service.js";
+import type {
+{{#if:list}}
+	List{{domainNamePascal}}ToolArgsType,
+{{/if:list}}
+{{#if:get}}
+	Get{{domainNamePascal}}ToolArgsType,
+{{/if:get}}
+{{#if:create}}
+	Add{{domainNamePascal}}ToolArgsType,
+{{/if:create}}
+{{#if:update}}
+	Update{{domainNamePascal}}ToolArgsType,
+{{/if:update}}
+{{#if:delete}}
+	Remove{{domainNamePascal}}ToolArgsType,
+{{/if:delete}}
+} from "./{{domainName}}.types.js";
+
+/**
+ * @namespace {{domainNamePascal}}Controller
+ * @description Controller responsible for handling Lokalise {{domainNamePascal}} API operations.
+ *              It orchestrates calls to the {{domainName}} service, applies defaults,
+ *              maps options, and formats the response using the formatter.
+ */
+
+{{#if:list}}
+/**
+ * @function list{{domainNamePascal}}
+ * @description Fetches a list of {{domainName}} from a Lokalise project.
+ * @memberof {{domainNamePascal}}Controller
+ * @param {List{{domainNamePascal}}ToolArgsType} args - Arguments containing project ID and pagination options
+ * @returns {Promise<ControllerResponse>} A promise that resolves to the standard controller response containing the formatted {{domainName}} list in Markdown.
+ * @throws {McpError} Throws an McpError (handled by `handleControllerError`) if the service call fails or returns an error.
+ */
+async function list{{domainNamePascal}}(
+	args: List{{domainNamePascal}}ToolArgsType,
+): Promise<ControllerResponse> {
+	const methodLogger = Logger.forContext(
+		"{{domainName}}.controller.ts",
+		"list{{domainNamePascal}}",
+	);
+	methodLogger.debug("Getting Lokalise {{domainName}} list...", args);
+
+	try {
+		// Validate project ID
+		if (!args.projectId || typeof args.projectId !== "string") {
+			throw new McpError(
+				"Project ID is required and must be a string.",
+				ErrorType.API_ERROR,
+			);
+		}
+
+		// Validate pagination parameters
+		if (args.limit !== undefined && (args.limit < 1 || args.limit > 100)) {
+			throw new McpError(
+				"Invalid limit parameter. Must be between 1 and 100.",
+				ErrorType.API_ERROR,
+			);
+		}
+
+		if (args.page !== undefined && args.page < 1) {
+			throw new McpError(
+				"Invalid page parameter. Must be 1 or greater.",
+				ErrorType.API_ERROR,
+			);
+		}
+
+		// Call service layer
+		const result = await {{domainName}}Service.list(args);
+
+		// Format response using the formatter
+		const formattedContent = format{{domainNamePascal}}List(result, args.projectId);
+
+		methodLogger.debug("{{domainNamePascal}}s list fetched successfully", {
+			projectId: args.projectId,
+			{{domainName}}Count: result.items?.length || 0,
+		});
+
+		return {
+			content: formattedContent,
+		};
+	} catch (error: unknown) {
+		throw handleControllerError(error, {
+			source: "{{domainNamePascal}}Controller.list{{domainNamePascal}}s",
+			entityType: "{{domainNamePascal}}s",
+			entityId: args.projectId,
+			operation: "listing",
+		});
+	}
+}
+{{/if:list}}
+
+{{#if:get}}
+/**
+ * @function get{{domainNamePascal}}
+ * @description Fetches details of a specific {{domainName}}.
+ * @memberof {{domainNamePascal}}Controller
+ * @param {Get{{domainNamePascal}}ToolArgsType} args - Arguments containing project ID and {{domainName}} ID
+ * @returns {Promise<ControllerResponse>} A promise that resolves to the formatted {{domainName}} details.
+ * @throws {McpError} Throws an McpError if the service call fails.
+ */
+async function get{{domainNamePascal}}(
+	args: Get{{domainNamePascal}}ToolArgsType,
+): Promise<ControllerResponse> {
+	const methodLogger = Logger.forContext(
+		"{{domainName}}.controller.ts",
+		"get{{domainNamePascal}}",
+	);
+	methodLogger.debug("Getting {{domainName}} details...", args);
+
+	try {
+		// Validate inputs
+		if (!args.projectId || typeof args.projectId !== "string") {
+			throw new McpError(
+				"Project ID is required and must be a string.",
+				ErrorType.API_ERROR,
+			);
+		}
+
+		if (!args.{{domainName}}Id) {
+			throw new McpError("{{domainNamePascal}} ID is required.", ErrorType.API_ERROR);
+		}
+
+		// Call service layer
+		const result = await {{domainName}}Service.get(args);
+
+		// Format response
+		const formattedContent = format{{domainNamePascal}}Details(result);
+
+		methodLogger.debug("{{domainNamePascal}} details fetched successfully", {
+			projectId: args.projectId,
+			{{domainName}}Id: args.{{domainName}}Id,
+		});
+
+		return {
+			content: formattedContent,
+		};
+	} catch (error: unknown) {
+		throw handleControllerError(error, {
+			source: "{{domainNamePascal}}Controller.get{{domainNamePascal}}",
+			entityType: "{{domainNamePascal}}",
+			entityId: { project: args.projectId, {{domainName}}: String(args.{{domainName}}Id) },
+			operation: "retrieving",
+		});
+	}
+}
+{{/if:get}}
+
+{{#if:create}}
+/**
+ * @function add{{domainNamePascal}}
+ * @description Adds one or more {{domainName}} to a project.
+ * @memberof {{domainNamePascal}}Controller
+ * @param {Add{{domainNamePascal}}ToolArgsType} args - Arguments containing project ID and {{domainName}} data
+ * @returns {Promise<ControllerResponse>} A promise that resolves to the formatted result.
+ * @throws {McpError} Throws an McpError if the service call fails.
+ */
+async function add{{domainNamePascal}}(
+	args: Add{{domainNamePascal}}ToolArgsType,
+): Promise<ControllerResponse> {
+	const methodLogger = Logger.forContext(
+		"{{domainName}}.controller.ts",
+		"add{{domainNamePascal}}",
+	);
+	methodLogger.debug("Adding {{domainName}}...", args);
+
+	try {
+		// Validate inputs
+		if (!args.projectId || typeof args.projectId !== "string") {
+			throw new McpError(
+				"Project ID is required and must be a string.",
+				ErrorType.API_ERROR,
+			);
+		}
+
+		if (!args.{{domainName}} || args.{{domainName}}.length === 0) {
+			throw new McpError(
+				"At least one {{domainName}} is required.",
+				ErrorType.API_ERROR,
+			);
+		}
+
+		// Call service layer
+		const result = await {{domainName}}Service.create(args);
+
+		// Format response
+		const formattedContent = formatAdd{{domainNamePascal}}sResult(result);
+
+		methodLogger.debug("{{domainNamePascal}}s added successfully", {
+			projectId: args.projectId,
+			addedCount: result.length,
+		});
+
+		return {
+			content: formattedContent,
+		};
+	} catch (error: unknown) {
+		throw handleControllerError(error, {
+			source: "{{domainNamePascal}}Controller.add{{domainNamePascal}}s",
+			entityType: "{{domainNamePascal}}s",
+			entityId: args.projectId,
+			operation: "adding",
+		});
+	}
+}
+{{/if:create}}
+
+{{#if:update}}
+/**
+ * @function update{{domainNamePascal}}
+ * @description Updates a {{domainName}} in a project.
+ * @memberof {{domainNamePascal}}Controller
+ * @param {Update{{domainNamePascal}}ToolArgsType} args - Arguments containing project ID, {{domainName}} ID and update data
+ * @returns {Promise<ControllerResponse>} A promise that resolves to the formatted update result.
+ * @throws {McpError} Throws an McpError if the service call fails.
+ */
+async function update{{domainNamePascal}}(
+	args: Update{{domainNamePascal}}ToolArgsType,
+): Promise<ControllerResponse> {
+	const methodLogger = Logger.forContext(
+		"{{domainName}}.controller.ts",
+		"update{{domainNamePascal}}",
+	);
+	methodLogger.debug("Updating {{domainName}}...", args);
+
+	try {
+		// Validate inputs
+		if (!args.projectId || typeof args.projectId !== "string") {
+			throw new McpError(
+				"Project ID is required and must be a string.",
+				ErrorType.API_ERROR,
+			);
+		}
+
+		if (!args.{{domainName}}Id) {
+			throw new McpError("{{domainNamePascal}} ID is required.", ErrorType.API_ERROR);
+		}
+
+		// Call service layer
+		const result = await {{domainName}}Service.update(args);
+
+		// Format response
+		const formattedContent = formatUpdate{{domainNamePascal}}Result(result);
+
+		methodLogger.debug("{{domainNamePascal}} updated successfully", {
+			projectId: args.projectId,
+			{{domainName}}Id: args.{{domainName}}Id,
+		});
+
+		return {
+			content: formattedContent,
+		};
+	} catch (error: unknown) {
+		throw handleControllerError(error, {
+			source: "{{domainNamePascal}}Controller.update{{domainNamePascal}}",
+			entityType: "{{domainNamePascal}}",
+			entityId: { project: args.projectId, {{domainName}}: String(args.{{domainName}}Id) },
+			operation: "updating",
+		});
+	}
+}
+{{/if:update}}
+
+{{#if:delete}}
+/**
+ * @function remove{{domainNamePascal}}
+ * @description Removes a {{domainName}} from a project.
+ * @memberof {{domainNamePascal}}Controller
+ * @param {Remove{{domainNamePascal}}ToolArgsType} args - Arguments containing project ID and {{domainName}} ID
+ * @returns {Promise<ControllerResponse>} A promise that resolves to the formatted deletion result.
+ * @throws {McpError} Throws an McpError if the service call fails.
+ */
+async function remove{{domainNamePascal}}(
+	args: Remove{{domainNamePascal}}ToolArgsType,
+): Promise<ControllerResponse> {
+	const methodLogger = Logger.forContext(
+		"{{domainName}}.controller.ts",
+		"remove{{domainNamePascal}}",
+	);
+	methodLogger.debug("Removing {{domainName}}...", args);
+
+	try {
+		// Validate inputs
+		if (!args.projectId || typeof args.projectId !== "string") {
+			throw new McpError(
+				"Project ID is required and must be a string.",
+				ErrorType.API_ERROR,
+			);
+		}
+
+		if (!args.{{domainName}}Id) {
+			throw new McpError("{{domainNamePascal}} ID is required.", ErrorType.API_ERROR);
+		}
+
+		// Call service layer
+		const result = await {{domainName}}Service.delete(args);
+
+		// Format response
+		const formattedContent = formatRemove{{domainNamePascal}}Result(result);
+
+		methodLogger.debug("{{domainNamePascal}} removed successfully", {
+			projectId: args.projectId,
+			{{domainName}}Id: args.{{domainName}}Id,
+		});
+
+		return {
+			content: formattedContent,
+		};
+	} catch (error: unknown) {
+		throw handleControllerError(error, {
+			source: "{{domainNamePascal}}Controller.remove{{domainNamePascal}}",
+			entityType: "{{domainNamePascal}}",
+			entityId: { project: args.projectId, {{domainName}}: String(args.{{domainName}}Id) },
+			operation: "removing",
+		});
+	}
+}
+{{/if:delete}}
+
+/**
+ * Export the controller functions
+ */
+const {{domainName}}Controller = {
+{{#if:list}}
+	list{{domainNamePascal}},
+{{/if:list}}
+{{#if:get}}
+	get{{domainNamePascal}},
+{{/if:get}}
+{{#if:create}}
+	add{{domainNamePascal}},
+{{/if:create}}
+{{#if:update}}
+	update{{domainNamePascal}},
+{{/if:update}}
+{{#if:delete}}
+	remove{{domainNamePascal}},
+{{/if:delete}}
+};
+
+export default {{domainName}}Controller;

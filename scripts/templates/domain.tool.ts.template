@@ -1,0 +1,310 @@
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { DomainMeta, DomainTool } from "../../shared/types/domain.types.js";
+import { formatErrorForMcpTool } from "../../shared/utils/error.util.js";
+import { Logger } from "../../shared/utils/logger.util.js";
+import {{domainName}}Controller from "./{{domainName}}.controller.js";
+import type {
+{{#if:list}}
+	List{{domainNamePascal}}ToolArgsType,
+{{/if:list}}
+{{#if:get}}
+	Get{{domainNamePascal}}ToolArgsType,
+{{/if:get}}
+{{#if:create}}
+	Add{{domainNamePascal}}ToolArgsType,
+{{/if:create}}
+{{#if:update}}
+	Update{{domainNamePascal}}ToolArgsType,
+{{/if:update}}
+{{#if:delete}}
+	Remove{{domainNamePascal}}ToolArgsType,
+{{/if:delete}}
+} from "./{{domainName}}.types.js";
+import {
+{{#if:list}}
+	List{{domainNamePascal}}ToolArgs,
+{{/if:list}}
+{{#if:get}}
+	Get{{domainNamePascal}}ToolArgs,
+{{/if:get}}
+{{#if:create}}
+	Add{{domainNamePascal}}ToolArgs,
+{{/if:create}}
+{{#if:update}}
+	Update{{domainNamePascal}}ToolArgs,
+{{/if:update}}
+{{#if:delete}}
+	Remove{{domainNamePascal}}ToolArgs,
+{{/if:delete}}
+} from "./{{domainName}}.types.js";
+
+{{#if:list}}
+/**
+ * @function handleList{{domainNamePascal}}
+ * @description MCP Tool handler to retrieve a list of {{domainName}} from a Lokalise project.
+ *              It calls the {{domainName}}Controller to fetch the data and formats the response for the MCP.
+ *
+ * @param {List{{domainNamePascal}}sToolArgsType} args - Arguments provided to the tool.
+ * @returns {Promise<{ content: Array<{ type: 'text', text: string }> }>} Formatted response for the MCP.
+ * @throws {McpError} Formatted error if the controller or service layer encounters an issue.
+ */
+async function handleList{{domainNamePascal}}(args: List{{domainNamePascal}}ToolArgsType) {
+	const methodLogger = Logger.forContext(
+		"{{domainName}}.tool.ts",
+		"handleList{{domainNamePascal}}",
+	);
+	methodLogger.debug(
+		`Getting Lokalise {{domainName}} list (limit: ${args.limit || "default"}, page: ${args.page || "1"})...`,
+		args,
+	);
+
+	try {
+		const result = await {{domainName}}Controller.list{{domainNamePascal}}(args);
+		methodLogger.debug("Got the response from the controller", result);
+
+		return {
+			content: [
+				{
+					type: "text" as const,
+					text: result.content,
+				},
+			],
+		};
+	} catch (error) {
+		methodLogger.error("Tool failed", {
+			error: (error as Error).message,
+			args,
+		});
+		return formatErrorForMcpTool(error);
+	}
+}
+{{/if:list}}
+
+{{#if:get}}
+/**
+ * @function handleGet{{domainNamePascal}}
+ * @description MCP Tool handler to retrieve details of a specific {{domainName}}.
+ *
+ * @param {Get{{domainNamePascal}}ToolArgsType} args - Arguments provided to the tool.
+ * @returns {Promise<{ content: Array<{ type: 'text', text: string }> }>} Formatted response for the MCP.
+ * @throws {McpError} Formatted error if the controller or service layer encounters an issue.
+ */
+async function handleGet{{domainNamePascal}}(args: Get{{domainNamePascal}}ToolArgsType) {
+	const methodLogger = Logger.forContext(
+		"{{domainName}}.tool.ts",
+		"handleGet{{domainNamePascal}}",
+	);
+	methodLogger.debug("Getting {{domainName}} details...", args);
+
+	try {
+		const result = await {{domainName}}Controller.get{{domainNamePascal}}(args);
+		methodLogger.debug("Got the response from the controller", result);
+
+		return {
+			content: [
+				{
+					type: "text" as const,
+					text: result.content,
+				},
+			],
+		};
+	} catch (error) {
+		methodLogger.error("Tool failed", {
+			error: (error as Error).message,
+			args,
+		});
+		return formatErrorForMcpTool(error);
+	}
+}
+{{/if:get}}
+
+{{#if:create}}
+/**
+ * @function handleAdd{{domainNamePascal}}
+ * @description MCP Tool handler to add new {{domainName}} to a project.
+ *
+ * @param {Add{{domainNamePascal}}sToolArgsType} args - Arguments provided to the tool.
+ * @returns {Promise<{ content: Array<{ type: 'text', text: string }> }>} Formatted response for the MCP.
+ * @throws {McpError} Formatted error if the controller or service layer encounters an issue.
+ */
+async function handleAdd{{domainNamePascal}}(args: Add{{domainNamePascal}}ToolArgsType) {
+	const methodLogger = Logger.forContext(
+		"{{domainName}}.tool.ts",
+		"handleAdd{{domainNamePascal}}",
+	);
+	methodLogger.debug("Adding {{domainName}}...", args);
+
+	try {
+		const result = await {{domainName}}Controller.add{{domainNamePascal}}(args);
+		methodLogger.debug("Got the response from the controller", result);
+
+		return {
+			content: [
+				{
+					type: "text" as const,
+					text: result.content,
+				},
+			],
+		};
+	} catch (error) {
+		methodLogger.error("Tool failed", {
+			error: (error as Error).message,
+			args,
+		});
+		return formatErrorForMcpTool(error);
+	}
+}
+{{/if:create}}
+
+{{#if:update}}
+/**
+ * @function handleUpdate{{domainNamePascal}}
+ * @description MCP Tool handler to update a {{domainName}}'s properties.
+ *
+ * @param {Update{{domainNamePascal}}ToolArgsType} args - Arguments provided to the tool.
+ * @returns {Promise<{ content: Array<{ type: 'text', text: string }> }>} Formatted response for the MCP.
+ * @throws {McpError} Formatted error if the controller or service layer encounters an issue.
+ */
+async function handleUpdate{{domainNamePascal}}(args: Update{{domainNamePascal}}ToolArgsType) {
+	const methodLogger = Logger.forContext(
+		"{{domainName}}.tool.ts",
+		"handleUpdate{{domainNamePascal}}",
+	);
+	methodLogger.debug("Updating {{domainName}}...", args);
+
+	try {
+		const result = await {{domainName}}Controller.update{{domainNamePascal}}(args);
+		methodLogger.debug("Got the response from the controller", result);
+
+		return {
+			content: [
+				{
+					type: "text" as const,
+					text: result.content,
+				},
+			],
+		};
+	} catch (error) {
+		methodLogger.error("Tool failed", {
+			error: (error as Error).message,
+			args,
+		});
+		return formatErrorForMcpTool(error);
+	}
+}
+{{/if:update}}
+
+{{#if:delete}}
+/**
+ * @function handleRemove{{domainNamePascal}}
+ * @description MCP Tool handler to remove a {{domainName}} from a project.
+ *
+ * @param {Remove{{domainNamePascal}}ToolArgsType} args - Arguments provided to the tool.
+ * @returns {Promise<{ content: Array<{ type: 'text', text: string }> }>} Formatted response for the MCP.
+ * @throws {McpError} Formatted error if the controller or service layer encounters an issue.
+ */
+async function handleRemove{{domainNamePascal}}(args: Remove{{domainNamePascal}}ToolArgsType) {
+	const methodLogger = Logger.forContext(
+		"{{domainName}}.tool.ts",
+		"handleRemove{{domainNamePascal}}",
+	);
+	methodLogger.debug("Removing {{domainName}}...", args);
+
+	try {
+		const result = await {{domainName}}Controller.remove{{domainNamePascal}}(args);
+		methodLogger.debug("Got the response from the controller", result);
+
+		return {
+			content: [
+				{
+					type: "text" as const,
+					text: result.content,
+				},
+			],
+		};
+	} catch (error) {
+		methodLogger.error("Tool failed", {
+			error: (error as Error).message,
+			args,
+		});
+		return formatErrorForMcpTool(error);
+	}
+}
+{{/if:delete}}
+
+/**
+ * @function registerTools
+ * @description Registers all {{domainName}}-related tools with the MCP server.
+ *              This function binds the tool names to their handler functions and schemas.
+ *
+ * @param {McpServer} server - The MCP server instance where tools will be registered.
+ */
+function registerTools(server: McpServer) {
+	const methodLogger = Logger.forContext(
+		"{{domainName}}.tool.ts",
+		"registerTools",
+	);
+	methodLogger.info("Registering {{domainName}} MCP tools");
+
+{{#if:list}}
+	server.tool(
+		"lokalise_list_{{domainNameKebab}}",
+		"Lists all {{domainName}} in a Lokalise project with filtering and pagination support",
+		List{{domainNamePascal}}ToolArgs.shape,
+		handleList{{domainNamePascal}},
+	);
+{{/if:list}}
+
+{{#if:get}}
+	server.tool(
+		"lokalise_get_{{domainNameKebab}}",
+		"Gets detailed information about a specific {{domainName}} in a project",
+		Get{{domainNamePascal}}ToolArgs.shape,
+		handleGet{{domainNamePascal}},
+	);
+{{/if:get}}
+
+{{#if:create}}
+	server.tool(
+		"lokalise_add_{{domainNameKebab}}",
+		"Adds one or more {{domainName}} to a Lokalise project",
+		Add{{domainNamePascal}}ToolArgs.shape,
+		handleAdd{{domainNamePascal}},
+	);
+{{/if:create}}
+
+{{#if:update}}
+	server.tool(
+		"lokalise_update_{{domainNameKebab}}",
+		"Updates a {{domainName}}'s properties in a project",
+		Update{{domainNamePascal}}ToolArgs.shape,
+		handleUpdate{{domainNamePascal}},
+	);
+{{/if:update}}
+
+{{#if:delete}}
+	server.tool(
+		"lokalise_delete_{{domainNameKebab}}",
+		"Removes a {{domainName}} from a Lokalise project",
+		Remove{{domainNamePascal}}ToolArgs.shape,
+		handleRemove{{domainNamePascal}},
+	);
+{{/if:delete}}
+
+	methodLogger.info("{{domainNamePascal}} MCP tools registered successfully");
+}
+
+// Export the domain tool implementation
+const {{domainName}}Tool: DomainTool = {
+	registerTools,
+	getMeta(): DomainMeta {
+		return {
+			name: "{{domainName}}",
+			description: "{{domainDescription}}",
+			version: "1.0.0",
+			toolsCount: {{toolsCount}},
+		};
+	},
+};
+
+export default {{domainName}}Tool;

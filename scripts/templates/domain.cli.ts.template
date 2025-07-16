@@ -1,0 +1,222 @@
+import type { Command } from "commander";
+import type { DomainCli, DomainMeta } from "../../shared/types/domain.types.js";
+import { handleCliError } from "../../shared/utils/error.util.js";
+import { Logger } from "../../shared/utils/logger.util.js";
+import {{domainName}}Controller from "./{{domainName}}.controller.js";
+
+/**
+ * {{domainNamePascal}} CLI commands implementation.
+ * Generated on {{date}} for {{domainDescription}}.
+ */
+
+const logger = Logger.forContext("{{domainName}}.cli.ts");
+
+/**
+ * Register {{domainNamePascal}} CLI commands
+ * @param program The Commander program instance
+ */
+function register(program: Command) {
+	const methodLogger = logger.forMethod("register");
+	methodLogger.debug("Registering {{domainNamePascal}} CLI commands...");
+
+{{#if:list}}
+	// List {{domainNamePascal}}s Command
+	program
+		.command("list-{{domainNameKebab}}s")
+		.description("Lists all {{domainName}} in a Lokalise project")
+		.argument("<projectId>", "Project ID to list {{domainName}} for")
+		.option(
+			"-l, --limit <number>",
+			"Number of {{domainName}} to return (1-100, default: 100)",
+			(value) => {
+				const parsed = Number.parseInt(value, 10);
+				if (Number.isNaN(parsed) || parsed < 1 || parsed > 100) {
+					throw new Error("Limit must be a number between 1 and 100");
+				}
+				return parsed;
+			},
+		)
+		.option(
+			"-p, --page <number>",
+			"Page number for pagination (default: 1)",
+			(value) => {
+				const parsed = Number.parseInt(value, 10);
+				if (Number.isNaN(parsed) || parsed < 1) {
+					throw new Error("Page must be a number greater than 0");
+				}
+				return parsed;
+			},
+		)
+		.action(async (projectId, options) => {
+			const actionLogger = logger.forMethod("action:list-{{domainNameKebab}}s");
+			try {
+				actionLogger.debug("CLI list-{{domainNameKebab}}s called", {
+					projectId,
+					limit: options.limit,
+					page: options.page,
+				});
+
+				// Build arguments
+				const args = {
+					projectId: projectId.trim(),
+					limit: options.limit,
+					page: options.page,
+				};
+
+				// Call controller
+				const result = await {{domainName}}Controller.list{{domainNamePascal}}s(args);
+				console.log(result.content);
+			} catch (error) {
+				handleCliError(error);
+			}
+		});
+{{/if:list}}
+
+{{#if:get}}
+	// Get {{domainNamePascal}} Command
+	program
+		.command("get-{{domainNameKebab}}")
+		.description("Gets details of a specific {{domainName}}")
+		.argument("<projectId>", "Project ID containing the {{domainName}}")
+		.argument("<{{domainName}}Id>", "{{domainNamePascal}} ID to get details for")
+		.action(async (projectId, {{domainName}}Id) => {
+			const actionLogger = logger.forMethod("action:get-{{domainNameKebab}}");
+			try {
+				actionLogger.debug("CLI get-{{domainNameKebab}} called", {
+					projectId,
+					{{domainName}}Id,
+				});
+
+				// Build arguments
+				const args = {
+					projectId: projectId.trim(),
+					{{domainName}}Id: {{domainName}}Id.trim(),
+				};
+
+				// Call controller
+				const result = await {{domainName}}Controller.get{{domainNamePascal}}(args);
+				console.log(result.content);
+			} catch (error) {
+				handleCliError(error);
+			}
+		});
+{{/if:get}}
+
+{{#if:create}}
+	// Add {{domainNamePascal}} Command
+	program
+		.command("add-{{domainNameKebab}}")
+		.description("Adds one or more {{domainName}} to a project")
+		.argument("<projectId>", "Project ID to add {{domainName}} to")
+		// Add domain-specific arguments here
+		.action(async (projectId, options) => {
+			const actionLogger = logger.forMethod("action:add-{{domainNameKebab}}");
+			try {
+				actionLogger.debug("CLI add-{{domainNameKebab}} called", {
+					projectId,
+					options,
+				});
+
+				// Build arguments - customize based on domain needs
+				const args = {
+					projectId: projectId.trim(),
+					{{domainName}}: [
+						{
+							// Add domain-specific data structure
+						},
+					],
+				};
+
+				// Call controller
+				const result = await {{domainName}}Controller.add{{domainNamePascal}}(args);
+				console.log(result.content);
+			} catch (error) {
+				handleCliError(error);
+			}
+		});
+{{/if:create}}
+
+{{#if:update}}
+	// Update {{domainNamePascal}} Command
+	program
+		.command("update-{{domainNameKebab}}")
+		.description("Updates an existing {{domainName}}")
+		.argument("<projectId>", "Project ID containing the {{domainName}}")
+		.argument("<{{domainName}}Id>", "{{domainNamePascal}} ID to update")
+		// Add domain-specific options here
+		.action(async (projectId, {{domainName}}Id, options) => {
+			const actionLogger = logger.forMethod("action:update-{{domainNameKebab}}");
+			try {
+				actionLogger.debug("CLI update-{{domainNameKebab}} called", {
+					projectId,
+					{{domainName}}Id,
+					options,
+				});
+
+				// Build arguments
+				const args = {
+					projectId: projectId.trim(),
+					{{domainName}}Id: {{domainName}}Id.trim(),
+					{{domainName}}Data: {
+						// TODO: Add domain-specific update fields based on options
+						// Example: name: options.name,
+						// Example: description: options.description,
+					},
+				};
+
+				// Call controller
+				const result = await {{domainName}}Controller.update{{domainNamePascal}}(args);
+				console.log(result.content);
+			} catch (error) {
+				handleCliError(error);
+			}
+		});
+{{/if:update}}
+
+{{#if:delete}}
+	// Remove {{domainNamePascal}} Command
+	program
+		.command("remove-{{domainNameKebab}}")
+		.description("Removes a {{domainName}} from a project")
+		.argument("<projectId>", "Project ID containing the {{domainName}}")
+		.argument("<{{domainName}}Id>", "{{domainNamePascal}} ID to remove")
+		.action(async (projectId, {{domainName}}Id) => {
+			const actionLogger = logger.forMethod("action:remove-{{domainNameKebab}}");
+			try {
+				actionLogger.debug("CLI remove-{{domainNameKebab}} called", {
+					projectId,
+					{{domainName}}Id,
+				});
+
+				// Build arguments
+				const args = {
+					projectId: projectId.trim(),
+					{{domainName}}Id: {{domainName}}Id.trim(),
+				};
+
+				// Call controller
+				const result = await {{domainName}}Controller.remove{{domainNamePascal}}(args);
+				console.log(result.content);
+			} catch (error) {
+				handleCliError(error);
+			}
+		});
+{{/if:delete}}
+
+	methodLogger.debug("{{domainNamePascal}} CLI commands registered successfully");
+}
+
+// Export the domain CLI implementation
+const {{domainName}}Cli: DomainCli = {
+	register,
+	getMeta(): DomainMeta {
+		return {
+			name: "{{domainName}}",
+			description: "{{domainNamePascal}} CLI commands",
+			version: "1.0.0",
+			cliCommandsCount: {{cliCommandsCount}},
+		};
+	},
+};
+
+export default {{domainName}}Cli;

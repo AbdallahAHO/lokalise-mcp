@@ -1,0 +1,199 @@
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type {
+	DomainMeta,
+	DomainResource,
+} from "../../shared/types/domain.types.js";
+import { formatErrorForMcpTool } from "../../shared/utils/error.util.js";
+import { Logger } from "../../shared/utils/logger.util.js";
+import {{domainName}}Controller from "./{{domainName}}.controller.js";
+
+/**
+ * {{domainNamePascal}} MCP resources implementation.
+ * Generated on {{date}} for {{domainDescription}}.
+ */
+
+const logger = Logger.forContext("domains/{{domainName}}/{{domainName}}.resource.ts");
+
+{{#if:collection}}
+/**
+ * Handle {{domainName}} collection resource requests
+ */
+async function handle{{domainNamePascal}}CollectionResource(uri: URL): Promise<any> {
+	const methodLogger = logger.forMethod("handle{{domainNamePascal}}CollectionResource");
+	methodLogger.debug("Handling {{domainName}} collection resource request", { uri: uri.toString() });
+
+	try {
+		// Extract project ID from path
+		const pathParts = uri.pathname.split("/").filter(Boolean);
+		if (pathParts.length < 2 || pathParts[0] !== "{{domainName}}") {
+			throw new Error("Invalid resource URI format. Expected: lokalise://{{domainName}}/<project-id>");
+		}
+		const projectId = pathParts[1];
+
+		// Extract query parameters
+		const limit = uri.searchParams.get("limit");
+		const page = uri.searchParams.get("page");
+		const filterQuery = uri.searchParams.get("filter");
+		// TODO: Add more domain-specific filters
+
+		// Build arguments
+		const args = {
+			projectId,
+			limit: limit ? Number.parseInt(limit, 10) : undefined,
+			page: page ? Number.parseInt(page, 10) : undefined,
+			filterQuery: filterQuery || undefined,
+		};
+
+		// Call controller
+		const result = await {{domainName}}Controller.list{{domainNamePascal}}(args);
+		
+		return {
+			contents: [
+				{
+					uri: uri.toString(),
+					mimeType: "text/markdown",
+					text: result.content,
+				},
+			],
+		};
+	} catch (error) {
+		methodLogger.error("Resource handler failed", { error: (error as Error).message });
+		throw error;
+	}
+}
+{{/if:collection}}
+
+{{#if:detail}}
+/**
+ * Handle {{domainName}} detail resource requests
+ */
+async function handle{{domainNamePascal}}DetailResource(uri: URL): Promise<any> {
+	const methodLogger = logger.forMethod("handle{{domainNamePascal}}DetailResource");
+	methodLogger.debug("Handling {{domainName}} detail resource request", { uri: uri.toString() });
+
+	try {
+		// Extract project ID and {{domainName}} ID from path
+		const pathParts = uri.pathname.split("/").filter(Boolean);
+		if (pathParts.length < 3 || pathParts[0] !== "{{domainName}}") {
+			throw new Error("Invalid resource URI format. Expected: lokalise://{{domainName}}/<project-id>/<{{domainName}}-id>");
+		}
+		const projectId = pathParts[1];
+		const {{domainName}}Id = pathParts[2];
+
+		// Build arguments
+		const args = {
+			projectId,
+			{{domainName}}Id: Number.parseInt({{domainName}}Id, 10),
+		};
+
+		// Call controller
+		const result = await {{domainName}}Controller.get{{domainNamePascal}}(args);
+		
+		return {
+			contents: [
+				{
+					uri: uri.toString(),
+					mimeType: "text/markdown",
+					text: result.content,
+				},
+			],
+		};
+	} catch (error) {
+		methodLogger.error("Resource handler failed", { error: (error as Error).message });
+		throw error;
+	}
+}
+{{/if:detail}}
+
+/**
+ * Main resource request handler
+ */
+async function handleResourceRequest(uri: string): Promise<any> {
+	const methodLogger = logger.forMethod("handleResourceRequest");
+	methodLogger.debug("Processing {{domainName}} resource request", { uri });
+
+	try {
+		const parsedUri = new URL(uri);
+		
+		// Route to appropriate handler based on URI structure
+		const pathParts = parsedUri.pathname.split("/").filter(Boolean);
+		
+		if (pathParts.length === 0) {
+			throw new Error("Invalid resource URI. Expected lokalise://{{domainName}}/<project-id> or lokalise://{{domainName}}/<project-id>/<{{domainName}}-id>");
+		}
+
+{{#if:detail}}
+		// Check if this is a detail request (has {{domainName}} ID)
+		if (pathParts.length >= 3) {
+			return await handle{{domainNamePascal}}DetailResource(parsedUri);
+		}
+{{/if:detail}}
+
+{{#if:collection}}
+		// Otherwise, it's a collection request
+		return await handle{{domainNamePascal}}CollectionResource(parsedUri);
+{{/if:collection}}
+
+		// If no handlers matched
+		throw new Error("No handler available for this resource URI pattern");
+	} catch (error) {
+		methodLogger.error("Failed to handle resource request", { error: (error as Error).message, uri });
+		return formatErrorForMcpTool(error);
+	}
+}
+
+/**
+ * Register all MCP resources for the {{domainName}} domain
+ * @param server The MCP server instance to register resources with
+ */
+function registerResources(server: McpServer): void {
+	const registerLogger = Logger.forContext("{{domainName}}.resource.ts", "registerResources");
+	registerLogger.debug("Registering {{domainName}} domain resources...");
+
+{{#if:collection}}
+	// Register collection resource
+	server.resource(
+		"lokalise-{{domainNameKebab}}",
+		new ResourceTemplate("lokalise://{{domainName}}/{projectId}", {
+			list: undefined, // No listing of resources needed
+		}),
+		async (uri: URL) => handle{{domainNamePascal}}CollectionResource(uri),
+	);
+{{/if:collection}}
+
+{{#if:detail}}
+	// Register detail resource
+	server.resource(
+		"lokalise-{{domainNameKebab}}-details",
+		new ResourceTemplate(
+			"lokalise://{{domainName}}/{projectId}/{{{domainName}}Id}",
+			{
+				list: undefined, // No listing of resources needed
+			},
+		),
+		async (uri: URL) => handle{{domainNamePascal}}DetailResource(uri),
+	);
+{{/if:detail}}
+
+	registerLogger.debug("{{domainNamePascal}} domain resources registered successfully");
+}
+
+/**
+ * Get metadata about the {{domainName}} domain resources
+ */
+function getMeta(): DomainMeta {
+	return {
+		name: "{{domainName}}",
+		description: "{{domainDescription}} MCP resources",
+		version: "1.0.0",
+		resourcesCount: {{resourcesCount}},
+	};
+}
+
+const {{domainName}}Resource: DomainResource = {
+	registerResources,
+	getMeta,
+};
+
+export default {{domainName}}Resource;
