@@ -6,13 +6,7 @@
  */
 
 import { execSync } from "node:child_process";
-import {
-	existsSync,
-	mkdirSync,
-	copyFileSync,
-	writeFileSync,
-	readFileSync,
-} from "node:fs";
+import { existsSync, mkdirSync, writeFileSync, readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";

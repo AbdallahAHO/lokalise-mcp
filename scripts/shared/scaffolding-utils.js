@@ -4,8 +4,8 @@
  * Shared utilities for domain scaffolding scripts
  */
 
-import path from "path";
-import { fileURLToPath } from "url";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 // Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -69,7 +69,7 @@ export const templateUtils = {
 		const unlessBlockRegex = /{{#unless:(\w+)}}([\s\S]*?){{\/unless:\1}}/g;
 
 		// Process if blocks
-		processed = processed.replace(ifBlockRegex, (match, condition, block) => {
+		processed = processed.replace(ifBlockRegex, (_match, condition, block) => {
 			// If condition exists and is true, keep the block content
 			// Otherwise, remove the entire block
 			return conditions[condition] ? block : "";
@@ -78,7 +78,7 @@ export const templateUtils = {
 		// Process unless blocks
 		processed = processed.replace(
 			unlessBlockRegex,
-			(match, condition, block) => {
+			(_match, condition, block) => {
 				// If condition exists and is false (or doesn't exist), keep the block content
 				// Otherwise, remove the entire block
 				return !conditions[condition] ? block : "";
@@ -168,7 +168,7 @@ export const validationUtils = {
 	 * Check if domain already exists
 	 */
 	async domainExists(domainName) {
-		const fs = await import("fs/promises");
+		const fs = await import("node:fs/promises");
 		const domainPath = path.join(DOMAINS_DIR, domainName);
 
 		try {

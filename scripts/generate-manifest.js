@@ -38,11 +38,13 @@ async function extractToolsFromFile(filePath) {
 			/server\.tool\(\s*["'`]([^"'`]+)["'`]\s*,\s*["'`]((?:[^"'`\\]|\\.)*)["'`]/gs;
 		let match;
 
+		// biome-ignore lint/suspicious/noAssignInExpressions: YOLO
 		while ((match = toolRegex.exec(content)) !== null) {
-			const [, name, description] = match;
+			const name = match[1] ? match[1].trim() : "";
+			const description = match[2] ? match[2].trim() : "";
 			tools.push({
-				name: name.trim(),
-				description: description.trim(),
+				name,
+				description,
 			});
 		}
 
@@ -214,7 +216,7 @@ Instead of clicking through multiple screens, just chat with your AI assistant:
 					"comment",
 				].includes(singular)
 			) {
-			// Keep plural for display
+				// Keep plural for display
 			}
 		}
 

@@ -11,9 +11,7 @@
 		"url": "https://abdallahaho.com"
 	},
 	"icon": "assets/icon.svg",
-	"screenshots": [
-		"assets/cover.png"
-	],
+	"screenshots": ["assets/cover.png"],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/AbdallahAHO/lokalise-mcp.git"
@@ -23,9 +21,7 @@
 		"entry_point": "${__dirname}/dist/index.js",
 		"mcp_config": {
 			"command": "node",
-			"args": [
-				"${__dirname}/dist/index.js"
-			],
+			"args": ["${__dirname}/dist/index.js"],
 			"env": {
 				"LOKALISE_API_KEY": "${user_config.LOKALISE_API_KEY}",
 				"LOKALISE_API_HOSTNAME": "${user_config.LOKALISE_API_HOSTNAME}",
@@ -247,194 +243,121 @@
 		{
 			"name": "project_deep_dive",
 			"description": "Analyze a specific project in detail with languages and key statistics",
-			"arguments": [
-				"projectId"
-			],
+			"arguments": ["projectId"],
 			"text": "Give me a comprehensive analysis of project '${arguments.projectId}'. Include: project details, all configured languages with progress percentages, key statistics, and recent activity. Identify any potential issues or optimization opportunities."
 		},
 		{
 			"name": "new_project_setup",
 			"description": "Create and configure a new localization project",
-			"arguments": [
-				"projectName",
-				"description",
-				"targetLanguages"
-			],
+			"arguments": ["projectName", "description", "targetLanguages"],
 			"text": "Create a new Lokalise project named '${arguments.projectName}' with description '${arguments.description}'. Then add support for these languages: ${arguments.targetLanguages}. Show me the created project details and confirm all languages are properly configured."
 		},
 		{
 			"name": "project_cleanup",
 			"description": "Clean up unused or deprecated content from a project",
-			"arguments": [
-				"projectId",
-				"cleanupScope"
-			],
+			"arguments": ["projectId", "cleanupScope"],
 			"text": "Help me clean up project '${arguments.projectId}' by ${arguments.cleanupScope}. Show me what will be removed, get my confirmation, then execute the cleanup. Provide a detailed summary of what was cleaned up and the current project state."
 		},
 		{
 			"name": "language_expansion",
 			"description": "Add new languages to an existing project",
-			"arguments": [
-				"projectId",
-				"newLanguages"
-			],
+			"arguments": ["projectId", "newLanguages"],
 			"text": "Add these languages to project '${arguments.projectId}': ${arguments.newLanguages}. After adding them, show me the updated language list with current statistics and confirm everything is set up correctly for translation work to begin."
 		},
 		{
 			"name": "translation_progress_check",
 			"description": "Monitor translation status across languages",
-			"arguments": [
-				"projectId",
-				"threshold"
-			],
+			"arguments": ["projectId", "threshold"],
 			"text": "Show me the translation progress for all languages in project '${arguments.projectId}'. ${arguments.threshold ? 'Highlight any languages below ' + arguments.threshold + '% completion.' : ''} Include word counts, completion percentages, and reviewer approval status. Suggest priorities for completing translations."
 		},
 		{
 			"name": "multi_language_setup",
 			"description": "Set up multiple language groups at once",
-			"arguments": [
-				"projectId",
-				"languageGroups"
-			],
+			"arguments": ["projectId", "languageGroups"],
 			"text": "Set up language groups for project '${arguments.projectId}' as follows: ${arguments.languageGroups}. Add all languages in their respective groups, show me the complete language configuration, and suggest any additional languages commonly used in these regions."
 		},
 		{
 			"name": "key_inventory_analysis",
 			"description": "Analyze translation keys in a project with filtering and insights",
-			"arguments": [
-				"projectId",
-				"platformFilter"
-			],
+			"arguments": ["projectId", "platformFilter"],
 			"text": "Analyze all translation keys in project '${arguments.projectId}' ${arguments.platformFilter ? 'filtered for platform: ' + arguments.platformFilter : ''}. Show me: total key count, platform distribution, keys with missing descriptions, and any organizational patterns. Suggest improvements for key management."
 		},
 		{
 			"name": "bulk_key_creation",
 			"description": "Create multiple translation keys for a new feature or screen",
-			"arguments": [
-				"projectId",
-				"featureName",
-				"keyList"
-			],
+			"arguments": ["projectId", "featureName", "keyList"],
 			"text": "Create a set of translation keys for the '${arguments.featureName}' feature in project '${arguments.projectId}'. Use this key list: ${arguments.keyList}. Set appropriate descriptions and platform assignments for each key, then confirm all keys were created successfully."
 		},
 		{
 			"name": "key_maintenance_workflow",
 			"description": "Update or clean up existing translation keys",
-			"arguments": [
-				"projectId",
-				"maintenanceType",
-				"criteria"
-			],
+			"arguments": ["projectId", "maintenanceType", "criteria"],
 			"text": "Perform ${arguments.maintenanceType} maintenance on keys in project '${arguments.projectId}' that match: ${arguments.criteria}. First, show me which keys will be affected, then ask for confirmation before making any changes. Provide a summary of all changes made."
 		},
 		{
 			"name": "platform_key_management",
 			"description": "Manage keys for specific platforms",
-			"arguments": [
-				"projectId",
-				"platform",
-				"action"
-			],
+			"arguments": ["projectId", "platform", "action"],
 			"text": "${arguments.action} platform '${arguments.platform}' for keys in project '${arguments.projectId}'. Show me the affected keys and confirm the platform assignments have been updated correctly. Provide statistics on platform coverage."
 		},
 		{
 			"name": "create_translation_task",
 			"description": "Create tasks with language assignments",
-			"arguments": [
-				"projectId",
-				"taskTitle",
-				"languages",
-				"dueDate"
-			],
+			"arguments": ["projectId", "taskTitle", "languages", "dueDate"],
 			"text": "Create a translation task titled '${arguments.taskTitle}' in project '${arguments.projectId}' for languages: ${arguments.languages}. ${arguments.dueDate ? 'Set the due date to ' + arguments.dueDate + '.' : ''} Assign to appropriate team members based on language expertise. Show me the created task details."
 		},
 		{
 			"name": "overdue_task_management",
 			"description": "Handle overdue tasks across projects",
-			"arguments": [
-				"projectId",
-				"action"
-			],
+			"arguments": ["projectId", "action"],
 			"text": "${arguments.action} overdue tasks ${arguments.projectId ? 'in project \"' + arguments.projectId + '\"' : 'across all projects'}. Show me task details including assignees, languages, and days overdue. ${arguments.action === 'reassign' ? 'Suggest new assignees based on workload.' : ''} ${arguments.action === 'extend' ? 'Recommend realistic new deadlines.' : ''}"
 		},
 		{
 			"name": "review_task_automation",
 			"description": "Set up review workflows",
-			"arguments": [
-				"projectId",
-				"reviewType",
-				"assignees"
-			],
+			"arguments": ["projectId", "reviewType", "assignees"],
 			"text": "Create a ${arguments.reviewType} review task in project '${arguments.projectId}'. Assign to: ${arguments.assignees}. Set up the workflow with appropriate permissions and notifications. Show me the task configuration and estimated completion time."
 		},
 		{
 			"name": "task_status_report",
 			"description": "Get comprehensive task status",
-			"arguments": [
-				"projectId",
-				"groupBy"
-			],
+			"arguments": ["projectId", "groupBy"],
 			"text": "Generate a task status report ${arguments.projectId ? 'for project \"' + arguments.projectId + '\"' : 'for all projects'} ${arguments.groupBy ? 'grouped by ' + arguments.groupBy : ''}. Include task counts, completion rates, average time to completion, and highlight any bottlenecks or delays."
 		},
 		{
 			"name": "product_catalog_update",
 			"description": "Process seasonal catalog updates",
-			"arguments": [
-				"projectId",
-				"catalogSource",
-				"targetMarkets"
-			],
+			"arguments": ["projectId", "catalogSource", "targetMarkets"],
 			"text": "Process this seasonal product catalog update: extract all product descriptions, titles, and marketing copy from ${arguments.catalogSource}, create translation keys organized by product category in project '${arguments.projectId}', set up automated workflows for markets: ${arguments.targetMarkets}, and generate a timeline showing when each market will be ready."
 		},
 		{
 			"name": "campaign_launch_setup",
 			"description": "Set up marketing campaign localization",
-			"arguments": [
-				"campaignName",
-				"contentSources",
-				"targetRegions"
-			],
+			"arguments": ["campaignName", "contentSources", "targetRegions"],
 			"text": "Launch '${arguments.campaignName}' campaign: extract content from ${arguments.contentSources}, create a new project with appropriate structure, translate for ${arguments.targetRegions} regions, ensure brand voice consistency, coordinate with regional teams, and set up publishing workflows."
 		},
 		{
 			"name": "content_extraction_workflow",
 			"description": "Extract and localize content from documents",
-			"arguments": [
-				"projectId",
-				"contentSource",
-				"contentType"
-			],
+			"arguments": ["projectId", "contentSource", "contentType"],
 			"text": "Extract ${arguments.contentType} content from ${arguments.contentSource} and import into project '${arguments.projectId}'. Organize by sections, apply appropriate metadata and tags, detect any existing translations, and create tasks for missing translations."
 		},
 		{
 			"name": "feature_branch_sync",
 			"description": "Sync feature branch with Lokalise",
-			"arguments": [
-				"projectId",
-				"branchName",
-				"syncDirection"
-			],
+			"arguments": ["projectId", "branchName", "syncDirection"],
 			"text": "Sync the '${arguments.branchName}' feature branch with project '${arguments.projectId}' ${arguments.syncDirection ? '(direction: ' + arguments.syncDirection + ')' : ''}. Detect new or modified keys, create appropriate translation tasks, and provide a summary of what was synced."
 		},
 		{
 			"name": "ci_cd_integration",
 			"description": "Automate CI/CD localization workflow",
-			"arguments": [
-				"projectId",
-				"pipelineType",
-				"triggerEvent"
-			],
+			"arguments": ["projectId", "pipelineType", "triggerEvent"],
 			"text": "Set up ${arguments.pipelineType} CI/CD integration for project '${arguments.projectId}' triggered on ${arguments.triggerEvent}. Configure automatic key sync, translation status checks, and build generation. Show me the workflow configuration."
 		},
 		{
 			"name": "build_generation",
 			"description": "Generate translation bundles on demand",
-			"arguments": [
-				"projectId",
-				"platform",
-				"format",
-				"environment"
-			],
+			"arguments": ["projectId", "platform", "format", "environment"],
 			"text": "Generate a ${arguments.format} translation bundle for ${arguments.platform} platform from project '${arguments.projectId}' ${arguments.environment ? 'for ' + arguments.environment + ' environment' : ''}. Include only reviewed translations, apply platform-specific formatting, and provide download link."
 		},
 		{
@@ -451,52 +374,31 @@
 		{
 			"name": "audit_trail_generation",
 			"description": "Generate compliance audit trails",
-			"arguments": [
-				"projectId",
-				"auditPeriod",
-				"auditScope"
-			],
+			"arguments": ["projectId", "auditPeriod", "auditScope"],
 			"text": "Generate a comprehensive audit trail for project '${arguments.projectId}' covering ${arguments.auditPeriod}. Include ${arguments.auditScope} with timestamps, user details, and change history. Format for regulatory submission and highlight any compliance concerns."
 		},
 		{
 			"name": "quality_assurance_check",
 			"description": "Run comprehensive QA checks",
-			"arguments": [
-				"projectId",
-				"qaType",
-				"languages"
-			],
+			"arguments": ["projectId", "qaType", "languages"],
 			"text": "Run ${arguments.qaType} QA checks on project '${arguments.projectId}' ${arguments.languages ? 'for languages: ' + arguments.languages : 'for all languages'}. Identify issues, generate detailed report with severity levels, create tasks for critical issues, and suggest corrective actions."
 		},
 		{
 			"name": "contributor_assignment",
 			"description": "Manage team assignments",
-			"arguments": [
-				"projectId",
-				"contributorEmail",
-				"role",
-				"languages"
-			],
+			"arguments": ["projectId", "contributorEmail", "role", "languages"],
 			"text": "Add '${arguments.contributorEmail}' to project '${arguments.projectId}' as ${arguments.role} ${arguments.languages ? 'for languages: ' + arguments.languages : ''}. Set appropriate permissions, notify about assigned tasks, and show current team structure."
 		},
 		{
 			"name": "glossary_management",
 			"description": "Check and update glossary terms",
-			"arguments": [
-				"projectId",
-				"action",
-				"terms"
-			],
+			"arguments": ["projectId", "action", "terms"],
 			"text": "${arguments.action} glossary ${arguments.terms ? 'for terms: ' + arguments.terms : ''} in project '${arguments.projectId}'. ${arguments.action === 'check' ? 'Identify missing or conflicting terms.' : ''} ${arguments.action === 'add' ? 'Ensure consistency across languages.' : ''} ${arguments.action === 'export' ? 'Format for external use.' : ''} Show results and any recommendations."
 		},
 		{
 			"name": "comment_collaboration",
 			"description": "Facilitate team discussions on keys",
-			"arguments": [
-				"projectId",
-				"keyPattern",
-				"action"
-			],
+			"arguments": ["projectId", "keyPattern", "action"],
 			"text": "${arguments.action} comments in project '${arguments.projectId}' ${arguments.keyPattern ? 'for keys matching \"' + arguments.keyPattern + '\"' : ''}. ${arguments.action === 'list' ? 'Show recent discussions.' : ''} ${arguments.action === 'summarize' ? 'Group by topic and urgency.' : ''} ${arguments.action === 'resolve' ? 'Mark as addressed and notify participants.' : ''}"
 		},
 		{
@@ -559,11 +461,7 @@
 	"license": "MIT",
 	"compatibility": {
 		"claude_desktop": ">=0.10.0",
-		"platforms": [
-			"darwin",
-			"win32",
-			"linux"
-		],
+		"platforms": ["darwin", "win32", "linux"],
 		"runtimes": {
 			"node": ">=20.0.0"
 		}

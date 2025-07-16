@@ -4,14 +4,12 @@
  * Base scaffolder class for domain generation
  */
 
-import fs from "fs/promises";
-import path from "path";
-import { spawn } from "child_process";
-import { promisify } from "util";
+import fs from "node:fs/promises";
+import path from "node:path";
+import { spawn } from "node:child_process";
 import {
 	DOMAINS_DIR,
 	TEMPLATES_DIR,
-	stringUtils,
 	templateUtils,
 	fileUtils,
 	validationUtils,
@@ -135,7 +133,7 @@ export class BaseScaffolder {
 	async formatGeneratedFiles() {
 		const domainPath = path.join(DOMAINS_DIR, this.config.name);
 
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve, _reject) => {
 			console.log("\n📐 Running formatter on generated files...");
 
 			const biome = spawn("npx", ["biome", "format", domainPath, "--write"], {
@@ -143,11 +141,11 @@ export class BaseScaffolder {
 				stdio: "pipe",
 			});
 
-			let output = "";
+			let _output = "";
 			let errorOutput = "";
 
 			biome.stdout.on("data", (data) => {
-				output += data.toString();
+				_output += data.toString();
 			});
 
 			biome.stderr.on("data", (data) => {

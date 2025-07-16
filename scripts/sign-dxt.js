@@ -7,7 +7,7 @@
 
 import { execSync } from "node:child_process";
 import { existsSync, mkdirSync } from "node:fs";
-import { basename, dirname, join } from "node:path";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -17,7 +17,7 @@ const rootDir = join(__dirname, "..");
 // Parse command line arguments
 const args = process.argv.slice(2);
 const dxtFile = args[0];
-const selfSigned = args.includes("--self-signed");
+const _selfSigned = args.includes("--self-signed");
 const production = args.includes("--production");
 const verify = args.includes("--verify");
 
@@ -144,7 +144,7 @@ try {
 		try {
 			execSync(`dxt verify "${dxtFile}"`, { stdio: "inherit" });
 			console.log("\n✅ Signature verification passed!");
-		} catch (error) {
+		} catch (_error) {
 			console.error("\n❌ Signature verification failed!");
 			process.exit(1);
 		}
