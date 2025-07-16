@@ -25,6 +25,9 @@ jobs:
     name: Prepare Release
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
+    permissions:
+      contents: write
+      pull-requests: write
     outputs:
       version: ${{ steps.determine-version.outputs.version }}
       release-branch: ${{ steps.create-branch.outputs.branch }}
