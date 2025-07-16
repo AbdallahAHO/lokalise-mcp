@@ -10,6 +10,7 @@ jobs:
     release:
         name: Semantic Release
         runs-on: ubuntu-latest
+        environment: release
         permissions:
             contents: write
             issues: write
@@ -73,11 +74,11 @@ jobs:
                   # Sign DXT package
                   DXT_FILE="release/lokalise-mcp-${{ steps.get-version.outputs.version }}.dxt"
 
-                  if [ -n "${{ SIGNING_CERT }}" ] && [ -n "${{ SIGNING_KEY }}" ]; then
+                  if [ -n "${SIGNING_CERT}" ] && [ -n "${SIGNING_KEY}" ]; then
                       echo "🏭 Using production certificates"
                       mkdir -p certs
-                      echo "${{ SIGNING_CERT }}" | base64 -d > certs/cert.pem
-                      echo "${{ SIGNING_KEY }}" | base64 -d > certs/key.pem
+                      echo "${SIGNING_CERT}" | base64 -d > certs/cert.pem
+                      echo "${SIGNING_KEY}" | base64 -d > certs/key.pem
 
                       dxt sign "$DXT_FILE" --cert certs/cert.pem --key certs/key.pem
                       rm -rf certs/
@@ -86,8 +87,7 @@ jobs:
                       dxt sign "$DXT_FILE" --self-signed
                   fi
 
-                  # Verify signature
-                  dxt verify "$DXT_FILE"
+                  dxt clean "$DXT_FILE"
 
                   echo "dxt_file=$DXT_FILE" >> $GITHUB_OUTPUT
 

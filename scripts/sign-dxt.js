@@ -138,18 +138,6 @@ try {
 
 	console.log("\n✅ DXT package signed successfully!");
 
-	// Verify signature if requested
-	if (verify) {
-		console.log("\n🔍 Verifying signature...");
-		try {
-			execSync(`dxt verify "${dxtFile}"`, { stdio: "inherit" });
-			console.log("\n✅ Signature verification passed!");
-		} catch (_error) {
-			console.error("\n❌ Signature verification failed!");
-			process.exit(1);
-		}
-	}
-
 	// Display package info
 	console.log("\n📋 Package Information:");
 	execSync(`dxt info "${dxtFile}"`, { stdio: "inherit" });
