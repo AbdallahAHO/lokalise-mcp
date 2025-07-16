@@ -39,7 +39,6 @@ scripts/
 .settings/
 
 # Documentation (except README, LICENSE, CONTRIBUTING)
-docs/
 *.md
 !README.md
 !LICENSE
@@ -101,7 +100,3 @@ Makefile
 Dockerfile
 docker-compose.*
 .dockerignore
-
-# Keep only the compiled output
-!dist/
-!dist/**/*

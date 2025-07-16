@@ -9,10 +9,6 @@
 .env
 .env.*
 
-# Source files (only publish compiled)
-src/
-scripts/
-
 # Test files
 coverage/
 *.test.ts
