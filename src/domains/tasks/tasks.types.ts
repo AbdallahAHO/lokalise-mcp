@@ -37,9 +37,11 @@ export const ListTasksToolArgs = z
 			.describe("Page number for pagination (default: 1)"),
 		filterTitle: z.string().optional().describe("Filter tasks by title"),
 		filterStatuses: z
-			.array(z.enum(["new", "in_progress", "completed", "closed"]))
+			.array(z.enum(["new", "in_progress", "completed", "closed", "cancelled"]))
 			.optional()
-			.describe("Filter by task statuses"),
+			.describe(
+				"Filter by task statuses (new, in_progress, completed, closed, cancelled)",
+			),
 	})
 	.strict();
 
@@ -104,10 +106,12 @@ export const CreateTaskToolArgs = z
 			.optional()
 			.describe("Auto-close items when completed"),
 		task_type: z
-			.enum(["translation", "review"])
+			.enum(["translation", "review", "automatic_translation", "lqa_by_ai"])
 			.optional()
 			.default("translation")
-			.describe("Type of task"),
+			.describe(
+				"Type of task: 'translation' (human translation work), 'review' (quality review by editors), 'automatic_translation' (AI-powered machine translation with human review), 'lqa_by_ai' (AI-powered linguistic quality assurance). Choose based on workflow needs - translation for new content, review for quality control, automatic_translation for speed with oversight, lqa_by_ai for AI translation with quality checks",
+			),
 		parent_task_id: z
 			.number()
 			.optional()

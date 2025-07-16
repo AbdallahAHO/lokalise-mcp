@@ -57,7 +57,7 @@ export interface CreateTaskServiceParams {
 	auto_close_languages?: boolean;
 	auto_close_task?: boolean;
 	auto_close_items?: boolean;
-	task_type?: string;
+	task_type?: CreateTaskParams["task_type"];
 	parent_task_id?: number;
 	closing_tags?: string[];
 	do_lock_translations?: boolean;
@@ -138,7 +138,8 @@ export async function getTasks(
 			apiParams.filter_title = options.filter_title;
 		}
 		if (options.filter_statuses) {
-			apiParams.filter_statuses = options.filter_statuses;
+			apiParams.filter_statuses =
+				options.filter_statuses as ListTaskParams["filter_statuses"];
 		}
 
 		const result = await api.tasks().list(apiParams);
