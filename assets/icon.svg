@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <!-- Background Circle -->
+  <circle cx="64" cy="64" r="60" fill="#2563eb" />
+  
+  <!-- MCP Server Symbol -->
+  <!-- Server Stack -->
+  <rect x="32" y="28" width="64" height="12" rx="2" fill="white" opacity="0.9"/>
+  <rect x="32" y="44" width="64" height="12" rx="2" fill="white" opacity="0.8"/>
+  <rect x="32" y="60" width="64" height="12" rx="2" fill="white" opacity="0.7"/>
+  
+  <!-- Connection Lines -->
+  <path d="M 24 40 L 32 40 M 96 40 L 104 40" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 24 56 L 32 56 M 96 56 L 104 56" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 24 72 L 32 72 M 96 72 L 104 72" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Globe Symbol (representing localization) -->
+  <circle cx="64" cy="88" r="16" fill="none" stroke="white" stroke-width="2"/>
+  <ellipse cx="64" cy="88" rx="16" ry="6" fill="none" stroke="white" stroke-width="2"/>
+  <line x1="48" y1="88" x2="80" y2="88" stroke="white" stroke-width="2"/>
+  <line x1="64" y1="72" x2="64" y2="104" stroke="white" stroke-width="2"/>
+</svg>
