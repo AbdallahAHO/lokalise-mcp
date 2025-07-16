@@ -1,0 +1,250 @@
+name: Release - DXT Package
+
+# This workflow creates and publishes DXT packages for releases
+# It can be triggered manually or by other workflows
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.2.3)'
+        required: true
+        type: string
+      dry-run:
+        description: 'Perform a dry run without creating release'
+        required: false
+        type: boolean
+        default: false
+  
+  workflow_call:
+    inputs:
+      version:
+        description: 'Version to release'
+        required: true
+        type: string
+    secrets:
+      NPM_TOKEN:
+        required: false
+
+jobs:
+  build-and-release:
+    name: Build DXT and Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Step 2: Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      # Step 3: Install dependencies
+      - name: Install Dependencies
+        run: |
+          npm ci
+          # Install DXT CLI globally for better reliability
+          npm install -g @anthropic-ai/dxt
+
+      # Step 4: Verify version consistency
+      - name: Verify Version
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          if [ "$PACKAGE_VERSION" != "${{ inputs.version }}" ]; then
+            echo "❌ Version mismatch: package.json has $PACKAGE_VERSION but workflow expects ${{ inputs.version }}"
+            exit 1
+          fi
+          echo "✅ Version verified: ${{ inputs.version }}"
+
+      # Step 5: Generate manifest with correct version
+      - name: Generate Manifest
+        run: |
+          npm run generate:manifest
+          echo "✅ Generated manifest.json"
+
+      # Step 6: Build the project
+      - name: Build Project
+        run: |
+          npm run build
+          chmod +x dist/index.js
+          echo "✅ Built project successfully"
+
+      # Step 7: Create DXT package
+      - name: Create DXT Package
+        id: create-dxt
+        run: |
+          # Create release directory
+          mkdir -p release
+          
+          # Pack the DXT file
+          echo "📦 Creating DXT package..."
+          dxt pack
+          
+          # Find and move the DXT file
+          DXT_FILE=$(find . -maxdepth 1 -name "*.dxt" -type f | head -n 1)
+          if [ -z "$DXT_FILE" ]; then
+            echo "❌ No DXT file found!"
+            exit 1
+          fi
+          
+          # Rename with version
+          DXT_NAME="lokalise-mcp-${{ inputs.version }}.dxt"
+          mv "$DXT_FILE" "release/$DXT_NAME"
+          
+          echo "✅ Created DXT package: $DXT_NAME"
+          echo "dxt_file=release/$DXT_NAME" >> $GITHUB_OUTPUT
+          echo "dxt_name=$DXT_NAME" >> $GITHUB_OUTPUT
+
+      # Step 8: Create npm tarball (for completeness)
+      - name: Create npm Package
+        id: create-npm
+        run: |
+          npm pack
+          TARBALL=$(find . -maxdepth 1 -name "*.tgz" -type f | head -n 1)
+          if [ -n "$TARBALL" ]; then
+            mv "$TARBALL" "release/"
+            echo "tarball=release/$(basename $TARBALL)" >> $GITHUB_OUTPUT
+            echo "✅ Created npm tarball"
+          fi
+
+      # Step 9: Generate checksums
+      - name: Generate Checksums
+        run: |
+          cd release
+          sha256sum * > checksums.sha256
+          echo "📋 Checksums:"
+          cat checksums.sha256
+          cd ..
+
+      # Step 10: Sign DXT package
+      - name: Sign DXT Package
+        id: sign-dxt
+        run: |
+          echo "🔏 Signing DXT package..."
+          
+          # Check if production certificates are available
+          if [ -n "${{ secrets.SIGNING_CERT }}" ] && [ -n "${{ secrets.SIGNING_KEY }}" ]; then
+            echo "🏭 Using production certificates from GitHub Secrets"
+            
+            # Create temporary certificate files from secrets
+            mkdir -p certs
+            echo "${{ secrets.SIGNING_CERT }}" | base64 -d > certs/cert.pem
+            echo "${{ secrets.SIGNING_KEY }}" | base64 -d > certs/key.pem
+            
+            # Add intermediate certificates if available
+            if [ -n "${{ secrets.SIGNING_INTERMEDIATE }}" ]; then
+              echo "${{ secrets.SIGNING_INTERMEDIATE }}" | base64 -d > certs/intermediate.pem
+              INTERMEDIATE_ARG="--intermediate certs/intermediate.pem"
+            fi
+            
+            # Sign with production certificates
+            dxt sign "${{ steps.create-dxt.outputs.dxt_file }}" \
+              --cert certs/cert.pem \
+              --key certs/key.pem \
+              $INTERMEDIATE_ARG
+            
+            echo "signed_type=production" >> $GITHUB_OUTPUT
+            
+            # Clean up certificate files
+            rm -rf certs/
+          else
+            echo "🔧 No production certificates found, using self-signed certificate"
+            
+            # Sign with self-signed certificate
+            dxt sign "${{ steps.create-dxt.outputs.dxt_file }}" --self-signed
+            
+            echo "signed_type=self-signed" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "✅ DXT package signed successfully!"
+
+      # Step 11: Verify DXT signature
+      - name: Verify DXT Signature
+        run: |
+          echo "🔍 Verifying DXT signature..."
+          dxt verify "${{ steps.create-dxt.outputs.dxt_file }}"
+          
+          echo "📋 Package information:"
+          dxt info "${{ steps.create-dxt.outputs.dxt_file }}"
+
+      # Step 12: Create GitHub Release (unless dry run)
+      - name: Create GitHub Release
+        if: ${{ !inputs.dry-run }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.version }}
+          name: Release v${{ inputs.version }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            release/lokalise-mcp-${{ inputs.version }}.dxt
+            release/lokalise-mcp-${{ inputs.version }}.tgz
+            release/checksums.sha256
+          body: |
+            ## 🎉 Lokalise MCP Server v${{ inputs.version }}
+
+            ### 📦 Installation
+
+            #### Desktop Extension (Recommended)
+            1. Download `lokalise-mcp-${{ inputs.version }}.dxt`
+            2. Double-click to install in Claude Desktop
+            3. Add your Lokalise API key when prompted
+
+            #### npm Package
+            ```bash
+            npm install -g lokalise-mcp@${{ inputs.version }}
+            ```
+
+            ### 🔐 Verify Downloads
+            Use the checksums file to verify your download:
+            ```bash
+            sha256sum -c checksums.sha256
+            ```
+
+            ### 📋 What's Changed
+            See the full changelog below for all changes in this release.
+
+            ### 🙏 Contributors
+            Thank you to all contributors who made this release possible!
+
+      # Step 13: Upload artifacts (for workflow inspection)
+      - name: Upload Release Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts-${{ inputs.version }}
+          path: release/
+          retention-days: 30
+
+      # Step 14: Summary
+      - name: Release Summary
+        run: |
+          echo "## 📦 Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ inputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **DXT Package**: ${{ steps.create-dxt.outputs.dxt_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Signature**: ${{ steps.sign-dxt.outputs.signed_type }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Dry Run**: ${{ inputs.dry-run }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📋 Release Assets" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          ls -la release/ >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ inputs.dry-run }}" = "true" ]; then
+            echo "⚠️ This was a dry run - no release was created" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ Release created successfully!" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "[View Release](https://github.com/${{ github.repository }}/releases/tag/v${{ inputs.version }})" >> $GITHUB_STEP_SUMMARY
+          fi

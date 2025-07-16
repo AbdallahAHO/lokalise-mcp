@@ -1,0 +1,53 @@
+{
+	"branches": ["main"],
+	"plugins": [
+		"@semantic-release/commit-analyzer",
+		"@semantic-release/release-notes-generator",
+		"@semantic-release/changelog",
+		[
+			"@semantic-release/exec",
+			{
+				"prepareCmd": "node scripts/update-version.js ${nextRelease.version} && npm run generate:manifest && npm run build && chmod +x dist/index.js && node scripts/prepare-release.js ${nextRelease.version}",
+				"publishCmd": "echo 'VERSION=${nextRelease.version}' >> $GITHUB_OUTPUT"
+			}
+		],
+		[
+			"@semantic-release/npm",
+			{
+				"npmPublish": true,
+				"pkgRoot": "."
+			}
+		],
+		[
+			"@semantic-release/git",
+			{
+				"assets": [
+					"package.json",
+					"package-lock.json",
+					"CHANGELOG.md",
+					"manifest.json",
+					"src/shared/utils/constants.util.ts"
+				],
+				"message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+			}
+		],
+		[
+			"@semantic-release/github",
+			{
+				"assets": [
+					{
+						"path": "release/lokalise-mcp-*.dxt",
+						"name": "lokalise-mcp-${nextRelease.version}.dxt",
+						"label": "Lokalise MCP Desktop Extension (v${nextRelease.version})"
+					},
+					{
+						"path": "release/checksums.sha256",
+						"name": "checksums-${nextRelease.version}.sha256",
+						"label": "SHA256 Checksums (v${nextRelease.version})"
+					}
+				],
+				"successComment": "🎉 This ${issue.pull_request ? 'PR is included' : 'issue has been resolved'} in version ${nextRelease.version} 🎉\n\nThe release is available on:\n- [GitHub release](https://github.com/AbdallahAHO/lokalise-mcp/releases/tag/v${nextRelease.version})\n- [npm package](https://www.npmjs.com/package/lokalise-mcp/v/${nextRelease.version})\n\nYour **semantic-release** bot 📦🚀"
+			}
+		]
+	]
+}
