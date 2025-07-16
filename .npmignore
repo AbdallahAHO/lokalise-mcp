@@ -1,5 +1,6 @@
 # Development files
 .cursor/
+.claude/
 .vscode/
 .idea/
 *.log
