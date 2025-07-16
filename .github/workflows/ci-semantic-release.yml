@@ -14,7 +14,7 @@ jobs:
             contents: write
             issues: write
             pull-requests: write
-        
+
         steps:
             # Step 1: Check out the full Git history
             - name: Checkout
@@ -63,29 +63,32 @@ jobs:
             # Step 8: Create and sign DXT package
             - name: Create DXT Package
               id: create-dxt
+              env:
+                  SIGNING_CERT: ${{ secrets.SIGNING_CERT }}
+                  SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
               run: |
                   # Prepare release directory
                   node scripts/prepare-release.js ${{ steps.get-version.outputs.version }}
-                  
+
                   # Sign DXT package
                   DXT_FILE="release/lokalise-mcp-${{ steps.get-version.outputs.version }}.dxt"
-                  
-                  if [ -n "${{ secrets.SIGNING_CERT }}" ] && [ -n "${{ secrets.SIGNING_KEY }}" ]; then
+
+                  if [ -n "${{ SIGNING_CERT }}" ] && [ -n "${{ SIGNING_KEY }}" ]; then
                       echo "🏭 Using production certificates"
                       mkdir -p certs
-                      echo "${{ secrets.SIGNING_CERT }}" | base64 -d > certs/cert.pem
-                      echo "${{ secrets.SIGNING_KEY }}" | base64 -d > certs/key.pem
-                      
+                      echo "${{ SIGNING_CERT }}" | base64 -d > certs/cert.pem
+                      echo "${{ SIGNING_KEY }}" | base64 -d > certs/key.pem
+
                       dxt sign "$DXT_FILE" --cert certs/cert.pem --key certs/key.pem
                       rm -rf certs/
                   else
                       echo "🔧 Using self-signed certificate"
                       dxt sign "$DXT_FILE" --self-signed
                   fi
-                  
+
                   # Verify signature
                   dxt verify "$DXT_FILE"
-                  
+
                   echo "dxt_file=$DXT_FILE" >> $GITHUB_OUTPUT
 
             # Step 9: Publish to npm
@@ -97,7 +100,7 @@ jobs:
                   # Check if this version is already published
                   NPM_VERSION=$(npm view lokalise-mcp version 2>/dev/null || echo "0.0.0")
                   CURRENT_VERSION=${{ steps.get-version.outputs.version }}
-                  
+
                   if [ "$NPM_VERSION" = "$CURRENT_VERSION" ]; then
                       echo "Version $CURRENT_VERSION is already published to npm"
                       echo "published=false" >> $GITHUB_OUTPUT
@@ -147,13 +150,13 @@ jobs:
               run: |
                   # Fetch latest develop
                   git fetch origin develop:develop
-                  
+
                   # Checkout develop
                   git checkout develop
-                  
+
                   # Merge main
                   git merge main -m "chore: back-merge main to develop after v${{ steps.get-version.outputs.version }} release"
-                  
+
                   # Push to develop
                   git push origin develop
 
