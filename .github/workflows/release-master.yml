@@ -147,44 +147,48 @@ jobs:
         if: ${{ !inputs.dry-run }}
         run: |
           git push -u origin "${{ steps.create-branch.outputs.branch }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
       
       - name: Create Pull Request
         if: ${{ !inputs.dry-run }}
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
-          script: |
-            const { data: pr } = await github.rest.pulls.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: `Release v${{ steps.determine-version.outputs.version }}`,
-              body: `## 🚀 Release v${{ steps.determine-version.outputs.version }}
+        id: create-pr
+        run: |
+          PR_BODY=$(cat <<'EOF'
+          ## 🚀 Release v${{ steps.determine-version.outputs.version }}
 
-            ### Release Type: ${{ inputs.release-type }}
+          ### Release Type: ${{ inputs.release-type }}
 
-            ### Pre-release Checklist
-            - [ ] Version updated in all files
-            - [ ] CHANGELOG.md updated
-            - [ ] Tests passing
-            - [ ] DXT package created
-            - [ ] Documentation updated
+          ### Pre-release Checklist
+          - [ ] Version updated in all files
+          - [ ] CHANGELOG.md updated
+          - [ ] Tests passing
+          - [ ] DXT package created
+          - [ ] Documentation updated
 
-            ### Post-merge Actions
-            After merging this PR, the following will happen automatically:
-            1. Tag will be created: \`v${{ steps.determine-version.outputs.version }}\`
-            2. npm package will be published
-            3. GitHub release will be created with DXT artifacts
-            4. Changes will be back-merged to develop
+          ### Post-merge Actions
+          After merging this PR, the following will happen automatically:
+          1. Tag will be created: `v${{ steps.determine-version.outputs.version }}`
+          2. npm package will be published
+          3. GitHub release will be created with DXT artifacts
+          4. Changes will be back-merged to develop
 
-            ---
-            *This PR was automatically created by the release workflow.*`,
-              head: `${{ steps.create-branch.outputs.branch }}`,
-              base: 'main',
-              draft: false
-            });
-            
-            core.notice(`Pull request created: ${pr.html_url}`);
-            console.log(`::set-output name=pr-url::${pr.html_url}`);
+          ---
+          *This PR was automatically created by the release workflow.*
+          EOF
+          )
+          
+          PR_URL=$(gh pr create \
+            --title "Release v${{ steps.determine-version.outputs.version }}" \
+            --body "$PR_BODY" \
+            --base main \
+            --head "${{ steps.create-branch.outputs.branch }}" \
+            --repo ${{ github.repository }})
+          
+          echo "Pull request created: $PR_URL"
+          echo "pr-url=$PR_URL" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
       
       - name: Summary
         run: |
@@ -201,6 +205,6 @@ jobs:
             echo "✅ Release branch created and PR opened" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
-            echo "1. Review and merge the PR" >> $GITHUB_STEP_SUMMARY
+            echo "1. Review and merge the PR: ${{ steps.create-pr.outputs.pr-url }}" >> $GITHUB_STEP_SUMMARY
             echo "2. The release will be automatically published after merge" >> $GITHUB_STEP_SUMMARY
           fi

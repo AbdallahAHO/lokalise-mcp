@@ -57,10 +57,13 @@ You must configure these secrets in your repository settings:
    - Name: `NPM_TOKEN`
    - Value: Your npm token
 
-2. **`GH_PAT`** (Optional - Alternative to repository permissions)
-   - Only needed if you can't enable "Allow GitHub Actions to create pull requests"
-   - Create at: https://github.com/settings/tokens/new
-   - Select scopes: `repo` (full control)
+2. **`GH_PAT`** (Required if Actions can't create PRs)
+   - Create at: https://github.com/settings/tokens?type=beta (Fine-grained token)
+   - Repository access: Select `lokalise-mcp`
+   - Repository permissions needed:
+     - **Contents**: Read and Write
+     - **Pull requests**: Read and Write
+     - **Metadata**: Read (automatically selected)
    - Add to GitHub Secrets as `GH_PAT`
 
 #### Optional Secrets (for production DXT signing)
