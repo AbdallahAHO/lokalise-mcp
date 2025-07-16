@@ -136,6 +136,14 @@ npm run lint
 npm run format && npm run lint
 ```
 
+**Automated CI Checks**: All pull requests automatically run:
+- 🎨 **Code formatting** - Must pass Biome formatting
+- 🔍 **Linting** - Must pass Biome linting rules
+- 🔨 **Build** - Must compile without TypeScript errors
+- 🧪 **Tests** - Must pass on Node.js 18, 20, and 22
+
+The CI provides helpful feedback if any checks fail. Fix issues locally before pushing.
+
 Configuration:
 - Tab indentation
 - Double quotes for strings
