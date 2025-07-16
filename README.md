@@ -203,6 +203,8 @@ LOKALISE_API_HOSTNAME=https://api.enterprise.lokalise.com/api2/
 We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for details on:
 - Setting up the development environment
 - Architecture and code organization
+- Automated CI/CD checks on all PRs
+- Release process and workflow
 - Creating new tools and domains
 - Submitting pull requests
 
