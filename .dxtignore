@@ -1,0 +1,107 @@
+# .dxtignore - Exclude unnecessary files from DXT package
+# Only include: dist/, manifest.json, package.json, README.md, LICENSE, CONTRIBUTING.md
+
+# Source code (we only want compiled dist/)
+src/
+*.ts
+tsconfig.json
+tsconfig.*.json
+
+# Test files and coverage
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+__tests__/
+coverage/
+.nyc_output/
+jest.config.*
+
+# Development and build files
+scripts/
+*.bak
+*.map
+*.tsbuildinfo
+
+# CI/CD and GitHub files
+.github/
+.gitignore
+.gitattributes
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# Documentation (except README, LICENSE, CONTRIBUTING)
+docs/
+*.md
+!README.md
+!LICENSE
+!CONTRIBUTING.md
+CHANGELOG.md
+RELEASING.md
+CODE_OF_CONDUCT.md
+
+# Configuration files
+.env
+.env.*
+.npmrc
+.npmignore
+.yarnrc
+.eslintrc*
+.prettierrc*
+.editorconfig
+biome.json
+.releaserc*
+
+# Package manager files (keep only package.json)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.yarn/
+.pnp.*
+
+# Temporary and log files
+*.log
+logs/
+tmp/
+temp/
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Project specific
+release/
+*.dxt
+*.tgz
+dxt-build/
+.claude/
+assets/
+!assets/icon.svg
+
+# Security and certificates
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+certs/
+
+# Misc development files
+Makefile
+Dockerfile
+docker-compose.*
+.dockerignore
+
+# Keep only the compiled output
+!dist/
+!dist/**/*
