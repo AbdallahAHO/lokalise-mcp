@@ -1,0 +1,283 @@
+name: CI - Code Quality
+
+# This workflow runs on every pull request and push to main branches
+# It performs formatting checks, linting, building, and testing
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+    types: [opened, synchronize, reopened]
+
+# Cancel in-progress runs when a new commit is pushed
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Job 1: Code Quality Checks
+  quality:
+    name: 🎨 Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history for better analysis
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: 📚 Install dependencies
+        run: |
+          echo "📦 Installing dependencies..."
+          npm ci
+          echo "✅ Dependencies installed"
+
+      - name: 🎨 Check formatting
+        id: format
+        run: |
+          echo "🎨 Checking code formatting with Biome..."
+          npm run format
+          
+          # Check if there are any changes
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "❌ Code formatting issues found!"
+            echo "formatting_issues=true" >> $GITHUB_OUTPUT
+            
+            # Show what files would be formatted
+            echo "📝 Files with formatting issues:"
+            git status --porcelain
+            
+            # Create a comment body
+            echo "## 🎨 Formatting Issues Found" >> format-comment.md
+            echo "" >> format-comment.md
+            echo "Please run \`npm run format\` locally to fix formatting issues." >> format-comment.md
+            echo "" >> format-comment.md
+            echo "Files that need formatting:" >> format-comment.md
+            echo "\`\`\`" >> format-comment.md
+            git status --porcelain | sed 's/^ M //' >> format-comment.md
+            echo "\`\`\`" >> format-comment.md
+            
+            exit 1
+          else
+            echo "✅ Code formatting is perfect!"
+            echo "formatting_issues=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🔍 Run linter
+        id: lint
+        run: |
+          echo "🔍 Running linter..."
+          npm run lint || {
+            echo "❌ Linting issues found!"
+            echo "lint_issues=true" >> $GITHUB_OUTPUT
+            exit 1
+          }
+          echo "✅ No linting issues found!"
+          echo "lint_issues=false" >> $GITHUB_OUTPUT
+
+  # Job 2: Build
+  build:
+    name: 🔨 Build
+    runs-on: ubuntu-latest
+    needs: quality # Only run if quality checks pass
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: 📚 Install dependencies
+        run: |
+          echo "📦 Installing dependencies..."
+          npm ci
+          echo "✅ Dependencies installed"
+
+      - name: 🔨 Build project
+        run: |
+          echo "🔨 Building project..."
+          npm run build
+          echo "✅ Build successful!"
+
+      - name: 📊 Check build output
+        run: |
+          echo "📊 Build output summary:"
+          echo "Total files in dist: $(find dist -type f | wc -l)"
+          echo "Build size: $(du -sh dist | cut -f1)"
+          
+          # Ensure executable permissions
+          chmod +x dist/index.js
+          echo "✅ Executable permissions set"
+
+      - name: 💾 Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: dist/
+          retention-days: 7
+
+  # Job 3: Test
+  test:
+    name: 🧪 Test
+    runs-on: ubuntu-latest
+    needs: quality # Only run if quality checks pass
+    strategy:
+      matrix:
+        node-version: [18, 20, 22] # Test on multiple Node versions
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: 📚 Install dependencies
+        run: |
+          echo "📦 Installing dependencies..."
+          npm ci
+          echo "✅ Dependencies installed"
+
+      - name: 🧪 Run tests
+        run: |
+          echo "🧪 Running tests on Node.js ${{ matrix.node-version }}..."
+          npm test
+          echo "✅ All tests passed!"
+
+      - name: 📊 Generate coverage report
+        if: matrix.node-version == 22 # Only on latest Node
+        run: |
+          echo "📊 Generating coverage report..."
+          npm run test:coverage || true
+          
+          # Display coverage summary
+          if [ -f coverage/coverage-summary.json ]; then
+            echo "📈 Coverage Summary:"
+            node -e "
+              const coverage = require('./coverage/coverage-summary.json');
+              const total = coverage.total;
+              console.log('Lines:', total.lines.pct + '%');
+              console.log('Statements:', total.statements.pct + '%');
+              console.log('Functions:', total.functions.pct + '%');
+              console.log('Branches:', total.branches.pct + '%');
+            "
+          fi
+
+      - name: 📤 Upload coverage reports
+        if: matrix.node-version == 22
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 30
+
+  # Job 4: Summary
+  summary:
+    name: 📋 PR Summary
+    runs-on: ubuntu-latest
+    needs: [quality, build, test]
+    if: always() # Run even if other jobs fail
+    steps:
+      - name: 📋 Create summary
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "# 📋 Pull Request Check Summary" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "# 📋 Branch Check Summary (${{ github.ref_name }})" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Quality checks
+          if [[ "${{ needs.quality.result }}" == "success" ]]; then
+            echo "✅ **Code Quality**: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Code Quality**: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Build
+          if [[ "${{ needs.build.result }}" == "success" ]]; then
+            echo "✅ **Build**: Successful" >> $GITHUB_STEP_SUMMARY
+          elif [[ "${{ needs.build.result }}" == "skipped" ]]; then
+            echo "⏭️ **Build**: Skipped (quality checks failed)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Build**: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Tests
+          if [[ "${{ needs.test.result }}" == "success" ]]; then
+            echo "✅ **Tests**: All passed" >> $GITHUB_STEP_SUMMARY
+          elif [[ "${{ needs.test.result }}" == "skipped" ]]; then
+            echo "⏭️ **Tests**: Skipped (quality checks failed)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Tests**: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📝 Next Steps" >> $GITHUB_STEP_SUMMARY
+          
+          if [[ "${{ needs.quality.result }}" != "success" ]]; then
+            echo "1. Fix code quality issues (run \`npm run format\` and \`npm run lint\`)" >> $GITHUB_STEP_SUMMARY
+          elif [[ "${{ needs.build.result }}" != "success" ]] && [[ "${{ needs.build.result }}" != "skipped" ]]; then
+            echo "1. Fix build errors" >> $GITHUB_STEP_SUMMARY
+          elif [[ "${{ needs.test.result }}" != "success" ]] && [[ "${{ needs.test.result }}" != "skipped" ]]; then
+            echo "1. Fix failing tests" >> $GITHUB_STEP_SUMMARY
+          else
+            if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+              echo "🎉 All checks passed! Your PR is ready for review." >> $GITHUB_STEP_SUMMARY
+            else
+              echo "🎉 All checks passed! The ${{ github.ref_name }} branch is healthy." >> $GITHUB_STEP_SUMMARY
+            fi
+          fi
+
+      - name: 💬 Comment on PR
+        if: (failure() || cancelled()) && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const summary = [];
+            
+            // Add header
+            summary.push('## 🔍 PR Check Results\n');
+            
+            // Quality checks
+            if ('${{ needs.quality.result }}' === 'failure') {
+              summary.push('### ❌ Code Quality Issues\n');
+              summary.push('Please fix the following:');
+              summary.push('- Run `npm run format` to fix formatting issues');
+              summary.push('- Run `npm run lint` to see linting errors\n');
+            }
+            
+            // Build
+            if ('${{ needs.build.result }}' === 'failure') {
+              summary.push('### ❌ Build Failed\n');
+              summary.push('The TypeScript build failed. Please check the build logs.\n');
+            }
+            
+            // Tests
+            if ('${{ needs.test.result }}' === 'failure') {
+              summary.push('### ❌ Tests Failed\n');
+              summary.push('Some tests are failing. Please check the test logs.\n');
+            }
+            
+            if (summary.length > 1) {
+              summary.push('---');
+              summary.push('💡 **Tip**: Click on the job names above to see detailed logs.');
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: summary.join('\n')
+              });
+            }

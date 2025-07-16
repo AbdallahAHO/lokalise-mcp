@@ -1,7 +1,7 @@
 name: CI - Semantic Release
 
 # This workflow is triggered on every push to the main branch
-# It analyzes commits and automatically releases a new version when needed
+# It publishes to npm and creates GitHub releases with DXT artifacts
 on:
     push:
         branches: [main]
@@ -10,91 +10,169 @@ jobs:
     release:
         name: Semantic Release
         runs-on: ubuntu-latest
-        # Permissions needed for creating releases, updating issues, and publishing packages
+        environment: release
         permissions:
-            contents: write # Needed to create releases and tags
-            issues: write # Needed to comment on issues
-            pull-requests: write # Needed to comment on pull requests
-            # packages permission removed as we're not using GitHub Packages
+            contents: write
+            issues: write
+            pull-requests: write
+
         steps:
-            # Step 1: Check out the full Git history for proper versioning
+            # Step 1: Check out the full Git history
             - name: Checkout
               uses: actions/checkout@v4
               with:
-                  fetch-depth: 0 # Fetches all history for all branches and tags
+                  fetch-depth: 0
+                  token: ${{ secrets.GITHUB_TOKEN }}
 
             # Step 2: Setup Node.js environment
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: 22 # Using Node.js 22
-                  cache: 'npm' # Enable npm caching
+                  node-version: 22
+                  cache: 'npm'
 
-            # Step 3: Install dependencies with clean install
+            # Step 3: Install dependencies
             - name: Install dependencies
-              run: npm ci # Clean install preserving package-lock.json
+              run: |
+                  npm ci
+                  npm install -g @anthropic-ai/dxt
 
             # Step 4: Build the package
             - name: Build
-              run: npm run build # Compiles TypeScript to JavaScript
+              run: |
+                  npm run build
+                  chmod +x dist/index.js
 
-            # Step 5: Ensure executable permissions
-            - name: Set executable permissions
-              run: chmod +x dist/index.js
+            # Step 5: Run tests
+            - name: Run tests
+              run: npm test
 
-            # Step 6: Run tests to ensure quality
-            - name: Verify tests
-              run: npm test # Runs Jest tests
-
-            # Step 7: Configure Git identity for releases
+            # Step 6: Configure Git identity
             - name: Configure Git User
               run: |
                   git config --global user.email "github-actions[bot]@users.noreply.github.com"
                   git config --global user.name "github-actions[bot]"
 
-            # Step 8: Run semantic-release to analyze commits and publish to npm
-            - name: Semantic Release
-              id: semantic
-              env:
-                  # Tokens needed for GitHub and npm authentication
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # For creating releases and commenting
-                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # For publishing to npm
+            # Step 7: Get version from package.json
+            - name: Get version
+              id: get-version
               run: |
-                  echo "Running semantic-release for version bump and npm publishing"
-                  npx semantic-release
-                  
-                  # Capture the released version from package.json after semantic-release
-                  if [ -f package.json ]; then
-                    VERSION=$(node -p "require('./package.json').version")
-                    echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-                    echo "Released version: $VERSION"
+                  VERSION=$(node -p "require('./package.json').version")
+                  echo "version=$VERSION" >> $GITHUB_OUTPUT
+                  echo "Current version: $VERSION"
+
+            # Step 8: Create and sign DXT package
+            - name: Create DXT Package
+              id: create-dxt
+              env:
+                  SIGNING_CERT: ${{ secrets.SIGNING_CERT }}
+                  SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+              run: |
+                  # Prepare release directory
+                  node scripts/prepare-release.js ${{ steps.get-version.outputs.version }}
+
+                  # Sign DXT package
+                  DXT_FILE="release/lokalise-mcp-${{ steps.get-version.outputs.version }}.dxt"
+
+                  if [ -n "${SIGNING_CERT}" ] && [ -n "${SIGNING_KEY}" ]; then
+                      echo "🏭 Using production certificates"
+                      mkdir -p certs
+                      echo "${SIGNING_CERT}" | base64 -d > certs/cert.pem
+                      echo "${SIGNING_KEY}" | base64 -d > certs/key.pem
+
+                      dxt sign "$DXT_FILE" --cert certs/cert.pem --key certs/key.pem
+                      rm -rf certs/
+                  else
+                      echo "🔧 Using self-signed certificate"
+                      dxt sign "$DXT_FILE" --self-signed
                   fi
 
-                  # Note: GitHub Packages publishing has been removed
+                  dxt clean "$DXT_FILE"
 
-            # Step 9: Trigger DXT Release Workflow
-            - name: Trigger DXT Release
-              if: steps.semantic.outputs.VERSION
-              uses: actions/github-script@v7
+                  echo "dxt_file=$DXT_FILE" >> $GITHUB_OUTPUT
+
+            # Step 9: Publish to npm
+            - name: Publish to npm
+              id: npm-publish
+              env:
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+              run: |
+                  # Check if this version is already published
+                  NPM_VERSION=$(npm view lokalise-mcp version 2>/dev/null || echo "0.0.0")
+                  CURRENT_VERSION=${{ steps.get-version.outputs.version }}
+
+                  if [ "$NPM_VERSION" = "$CURRENT_VERSION" ]; then
+                      echo "Version $CURRENT_VERSION is already published to npm"
+                      echo "published=false" >> $GITHUB_OUTPUT
+                  else
+                      echo "Publishing version $CURRENT_VERSION to npm"
+                      echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+                      npm publish
+                      echo "published=true" >> $GITHUB_OUTPUT
+                  fi
+
+            # Step 10: Create GitHub Release
+            - name: Create GitHub Release
+              uses: softprops/action-gh-release@v2
               with:
-                  github-token: ${{ secrets.GITHUB_TOKEN }}
-                  script: |
-                      const version = '${{ steps.semantic.outputs.VERSION }}';
-                      console.log(`Triggering DXT release for version ${version}`);
-                      
-                      try {
-                          await github.rest.actions.createWorkflowDispatch({
-                              owner: context.repo.owner,
-                              repo: context.repo.repo,
-                              workflow_id: 'release-dxt.yml',
-                              ref: 'main',
-                              inputs: {
-                                  version: version,
-                                  'dry-run': 'false'
-                              }
-                          });
-                          console.log('✅ DXT release workflow triggered successfully');
-                      } catch (error) {
-                          console.error('❌ Failed to trigger DXT release:', error);
-                          // Don't fail the workflow if DXT trigger fails
-                      }
+                  tag_name: v${{ steps.get-version.outputs.version }}
+                  name: v${{ steps.get-version.outputs.version }}
+                  draft: false
+                  prerelease: false
+                  generate_release_notes: true
+                  files: |
+                      release/lokalise-mcp-${{ steps.get-version.outputs.version }}.dxt
+                      release/checksums.sha256
+                      release/lokalise-mcp-${{ steps.get-version.outputs.version }}.tgz
+                  body: |
+                      ## 🎉 Lokalise MCP Server v${{ steps.get-version.outputs.version }}
+
+                      ### 📦 Installation
+
+                      #### Desktop Extension (Recommended)
+                      Download and double-click `lokalise-mcp-${{ steps.get-version.outputs.version }}.dxt` to install in Claude Desktop.
+
+                      #### npm Package
+                      ```bash
+                      npm install -g lokalise-mcp@${{ steps.get-version.outputs.version }}
+                      ```
+
+                      ### 🔐 Verify Downloads
+                      ```bash
+                      sha256sum -c checksums.sha256
+                      ```
+
+                      ### 📋 What's Changed
+                      See the full changelog below for all changes in this release.
+
+            # Step 11: Back-merge to develop
+            - name: Back-merge to develop
+              run: |
+                  # Fetch latest develop
+                  git fetch origin develop:develop
+
+                  # Checkout develop
+                  git checkout develop
+
+                  # Merge main
+                  git merge main -m "chore: back-merge main to develop after v${{ steps.get-version.outputs.version }} release"
+
+                  # Push to develop
+                  git push origin develop
+
+            # Step 12: Summary
+            - name: Release Summary
+              run: |
+                  echo "## 🚀 Release Summary" >> $GITHUB_STEP_SUMMARY
+                  echo "" >> $GITHUB_STEP_SUMMARY
+                  echo "- **Version**: ${{ steps.get-version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+                  echo "- **npm Published**: ${{ steps.npm-publish.outputs.published }}" >> $GITHUB_STEP_SUMMARY
+                  echo "- **GitHub Release**: ✅" >> $GITHUB_STEP_SUMMARY
+                  echo "- **Back-merged to develop**: ✅" >> $GITHUB_STEP_SUMMARY
+                  echo "" >> $GITHUB_STEP_SUMMARY
+                  echo "### 📋 Release Assets" >> $GITHUB_STEP_SUMMARY
+                  echo '```' >> $GITHUB_STEP_SUMMARY
+                  ls -la release/ >> $GITHUB_STEP_SUMMARY
+                  echo '```' >> $GITHUB_STEP_SUMMARY
+                  echo "" >> $GITHUB_STEP_SUMMARY
+                  echo "[View Release](https://github.com/${{ github.repository }}/releases/tag/v${{ steps.get-version.outputs.version }})" >> $GITHUB_STEP_SUMMARY

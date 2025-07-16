@@ -1,0 +1,210 @@
+name: Release - Master Workflow
+
+# This is the main release workflow that coordinates the entire release process
+# It should be triggered manually from the develop branch
+on:
+  workflow_dispatch:
+    inputs:
+      release-type:
+        description: 'Release type'
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+        default: 'patch'
+      dry-run:
+        description: 'Perform a dry run (no actual release)'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  prepare-release:
+    name: Prepare Release
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      version: ${{ steps.determine-version.outputs.version }}
+      release-branch: ${{ steps.create-branch.outputs.branch }}
+    
+    steps:
+      - name: Checkout develop
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Configure Git
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+      
+      - name: Determine next version
+        id: determine-version
+        run: |
+          # Get current version
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "Current version: $CURRENT_VERSION"
+          
+          # Parse version components
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+          
+          # Calculate next version based on release type
+          case "${{ inputs.release-type }}" in
+            major)
+              NEXT_VERSION="$((MAJOR + 1)).0.0"
+              ;;
+            minor)
+              NEXT_VERSION="$MAJOR.$((MINOR + 1)).0"
+              ;;
+            patch)
+              NEXT_VERSION="$MAJOR.$MINOR.$((PATCH + 1))"
+              ;;
+          esac
+          
+          echo "Next version: $NEXT_VERSION"
+          echo "version=$NEXT_VERSION" >> $GITHUB_OUTPUT
+      
+      - name: Create release branch
+        id: create-branch
+        run: |
+          BRANCH_NAME="release/v${{ steps.determine-version.outputs.version }}"
+          git checkout -b "$BRANCH_NAME"
+          echo "branch=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "Created branch: $BRANCH_NAME"
+      
+      - name: Update version in files
+        run: |
+          # Update version using the existing script
+          node scripts/update-version.js ${{ steps.determine-version.outputs.version }}
+          
+          # Generate updated manifest
+          npm run generate:manifest
+          
+          # Build to ensure everything compiles
+          npm run build
+          chmod +x dist/index.js
+      
+      - name: Generate or update CHANGELOG
+        run: |
+          # Create CHANGELOG.md if it doesn't exist
+          if [ ! -f CHANGELOG.md ]; then
+            echo "# Changelog" > CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            echo "All notable changes to this project will be documented in this file." >> CHANGELOG.md
+            echo "" >> CHANGELOG.md
+          fi
+          
+          # Add new version section
+          VERSION="${{ steps.determine-version.outputs.version }}"
+          DATE=$(date +%Y-%m-%d)
+          
+          # Create temporary file with new entry
+          echo "## [${VERSION}] - ${DATE}" > CHANGELOG.tmp
+          echo "" >> CHANGELOG.tmp
+          echo "### Added" >> CHANGELOG.tmp
+          echo "- New features go here" >> CHANGELOG.tmp
+          echo "" >> CHANGELOG.tmp
+          echo "### Changed" >> CHANGELOG.tmp
+          echo "- Changes go here" >> CHANGELOG.tmp
+          echo "" >> CHANGELOG.tmp
+          echo "### Fixed" >> CHANGELOG.tmp
+          echo "- Bug fixes go here" >> CHANGELOG.tmp
+          echo "" >> CHANGELOG.tmp
+          
+          # Append existing changelog
+          tail -n +2 CHANGELOG.md >> CHANGELOG.tmp
+          mv CHANGELOG.tmp CHANGELOG.md
+      
+      - name: Create DXT package
+        run: |
+          # Install DXT CLI if needed
+          npm install -g @anthropic-ai/dxt
+          
+          # Prepare release
+          node scripts/prepare-release.js ${{ steps.determine-version.outputs.version }}
+      
+      - name: Commit changes
+        run: |
+          git add -A
+          git commit -m "chore(release): prepare release v${{ steps.determine-version.outputs.version }}"
+      
+      - name: Push release branch
+        if: ${{ !inputs.dry-run }}
+        run: |
+          git push -u origin "${{ steps.create-branch.outputs.branch }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+      
+      - name: Create Pull Request
+        if: ${{ !inputs.dry-run }}
+        id: create-pr
+        run: |
+          PR_BODY=$(cat <<'EOF'
+          ## 🚀 Release v${{ steps.determine-version.outputs.version }}
+
+          ### Release Type: ${{ inputs.release-type }}
+
+          ### Pre-release Checklist
+          - [ ] Version updated in all files
+          - [ ] CHANGELOG.md updated
+          - [ ] Tests passing
+          - [ ] DXT package created
+          - [ ] Documentation updated
+
+          ### Post-merge Actions
+          After merging this PR, the following will happen automatically:
+          1. Tag will be created: `v${{ steps.determine-version.outputs.version }}`
+          2. npm package will be published
+          3. GitHub release will be created with DXT artifacts
+          4. Changes will be back-merged to develop
+
+          ---
+          *This PR was automatically created by the release workflow.*
+          EOF
+          )
+          
+          PR_URL=$(gh pr create \
+            --title "Release v${{ steps.determine-version.outputs.version }}" \
+            --body "$PR_BODY" \
+            --base main \
+            --head "${{ steps.create-branch.outputs.branch }}" \
+            --repo ${{ github.repository }})
+          
+          echo "Pull request created: $PR_URL"
+          echo "pr-url=$PR_URL" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+      
+      - name: Summary
+        run: |
+          echo "## 📦 Release Preparation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ steps.determine-version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Release Type**: ${{ inputs.release-type }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: ${{ steps.create-branch.outputs.branch }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Dry Run**: ${{ inputs.dry-run }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ inputs.dry-run }}" = "true" ]; then
+            echo "⚠️ This was a dry run - no branch or PR was created" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ Release branch created and PR opened" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
+            echo "1. Review and merge the PR: ${{ steps.create-pr.outputs.pr-url }}" >> $GITHUB_STEP_SUMMARY
+            echo "2. The release will be automatically published after merge" >> $GITHUB_STEP_SUMMARY
+          fi

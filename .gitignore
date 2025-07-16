@@ -41,14 +41,9 @@ yarn-error.log*
 
 # Misc
 .npm
-.yarn-integrity 
-
-# DXT build artifacts
-*.dxt
-dxt-build/
+.yarn-integrity
 
 # Release artifacts
-release/
 *.tgz
 
 # Certificates (NEVER commit these)
