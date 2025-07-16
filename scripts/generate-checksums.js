@@ -6,8 +6,8 @@
  */
 
 import { createHash } from "node:crypto";
-import { readFileSync, writeFileSync, readdirSync, statSync } from "node:fs";
-import { join, dirname } from "node:path";
+import { readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);

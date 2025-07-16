@@ -4,16 +4,16 @@
  * Base scaffolder class for domain generation
  */
 
+import { spawn } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { spawn } from "node:child_process";
 import {
 	DOMAINS_DIR,
+	fileUtils,
+	summaryUtils,
 	TEMPLATES_DIR,
 	templateUtils,
-	fileUtils,
 	validationUtils,
-	summaryUtils,
 } from "./scaffolding-utils.js";
 
 export class BaseScaffolder {
