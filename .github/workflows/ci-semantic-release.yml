@@ -86,8 +86,7 @@ jobs:
                       dxt sign "$DXT_FILE" --self-signed
                   fi
 
-                  # Verify signature
-                  dxt verify "$DXT_FILE"
+                  dxt clean "$DXT_FILE"
 
                   echo "dxt_file=$DXT_FILE" >> $GITHUB_OUTPUT
 
