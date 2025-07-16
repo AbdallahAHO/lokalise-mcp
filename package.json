@@ -29,7 +29,7 @@
 		"mcp:inspect:http": "dotenv npm run build && (dotenv -e TRANSPORT_MODE=http -- node dist/index.js &) && sleep 3 && dotenv -- npx @modelcontextprotocol/inspector http://localhost:3000/mcp",
 		"mcp:stdio": "dotenv npm run build && dotenv -e TRANSPORT_MODE=stdio -- node dist/index.js",
 		"postinstall": "node scripts/ensure-executable.js",
-		"prepare": "npm run build && node scripts/ensure-executable.js",
+		"prepare": "husky",
 		"release:checksums": "node scripts/generate-checksums.js",
 		"release:dry-run": "npm run build && npm run release:prepare && echo '✅ Dry run completed successfully'",
 		"release:prepare": "node scripts/prepare-release.js",
@@ -88,8 +88,10 @@
 		"chalk": "^5.4.1",
 		"dotenv-cli": "^8.0.0",
 		"eslint": "^9.31.0",
+		"husky": "^9.1.7",
 		"inquirer": "^12.7.0",
 		"jest": "^30.0.4",
+		"lint-staged": "^16.1.2",
 		"semantic-release": "^24.2.7",
 		"ts-jest": "^29.4.0",
 		"typescript": "^5.8.3",
@@ -107,5 +109,11 @@
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org/",
 		"access": "public"
+	},
+	"lint-staged": {
+		"*.{js,ts,json,md}": [
+			"biome format --write",
+			"biome lint --fix"
+		]
 	}
 }
