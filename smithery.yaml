@@ -1,0 +1,25 @@
+# Smithery configuration file: https://smithery.ai/docs/build/project-config
+
+startCommand:
+  type: http
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - lokaliseApiKey
+    properties:
+      lokaliseApiKey:
+        type: string
+        description: Your Lokalise API token
+      lokaliseApiHostName:
+        type: string
+        default: https://api.lokalise.com/api2/
+        description: Custom Lokalise API endpoint
+      debug:
+        type: boolean
+        default: false
+        description: Enable debug mode
+  exampleConfig:
+    lokaliseApiKey: your_api_token_here
+    lokaliseApiHostName: https://api.lokalise.com/api2/
+    debug: false
