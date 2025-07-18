@@ -6,20 +6,20 @@ startCommand:
     # JSON Schema defining the configuration options for the MCP.
     type: object
     required:
-      - lokaliseApiKey
+      - LOKALISE_API_KEY
     properties:
-      lokaliseApiKey:
+      LOKALISE_API_KEY:
         type: string
         description: Your Lokalise API token
-      lokaliseApiHostName:
+      LOKALISE_API_HOSTNAME:
         type: string
         default: https://api.lokalise.com/api2/
         description: Custom Lokalise API endpoint
-      debug:
+      debug_mode:
         type: boolean
         default: false
-        description: Enable debug mode
+        description: Enable debug_mode mode
   exampleConfig:
-    lokaliseApiKey: your_api_token_here
-    lokaliseApiHostName: https://api.lokalise.com/api2/
-    debug: false
+    LOKALISE_API_KEY: your_api_token_here
+    LOKALISE_API_HOSTNAME: https://api.lokalise.com/api2/
+    debug_mode: false
