@@ -19,7 +19,7 @@ const args = process.argv.slice(2);
 const dxtFile = args[0];
 const _selfSigned = args.includes("--self-signed");
 const production = args.includes("--production");
-const verify = args.includes("--verify");
+const _verify = args.includes("--verify");
 
 // Help text
 if (!dxtFile || dxtFile === "--help" || dxtFile === "-h") {

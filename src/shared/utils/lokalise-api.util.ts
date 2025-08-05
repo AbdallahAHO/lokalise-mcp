@@ -10,13 +10,12 @@ let lokaliseApi: LokaliseApi | null = null;
 /**
  * Gets or creates the Lokalise API instance.
  * This is a singleton instance.
- * It will load configuration and check for the API key on first call.
+ * Configuration must be loaded before calling this function.
  * @returns The initialized LokaliseApi instance.
  * @throws {McpError} if LOKALISE_API_KEY is not configured.
  */
 export function getLokaliseApi(): LokaliseApi {
 	if (!lokaliseApi) {
-		config.load();
 		const apiKey = config.get("LOKALISE_API_KEY");
 		if (!apiKey) {
 			logger.error(
@@ -28,12 +27,23 @@ export function getLokaliseApi(): LokaliseApi {
 			);
 		}
 		const apiHost =
-			config.get("LOKALISE_API_HOSTNAME") ||
-			"https://api.stage.lokalise.cloud/api2/";
+			config.get("LOKALISE_API_HOSTNAME") || "https://api.lokalise.com/api2/";
 
 		lokaliseApi = new LokaliseApi({ apiKey, host: apiHost });
 		logger.info("Lokalise API client initialized", { host: apiHost });
 	}
 
 	return lokaliseApi;
+}
+
+/**
+ * Resets the Lokalise API singleton instance.
+ * This forces the API client to be recreated with new configuration
+ * on the next call to getLokaliseApi().
+ */
+export function resetLokaliseApi(): void {
+	if (lokaliseApi) {
+		logger.info("Resetting Lokalise API client singleton");
+		lokaliseApi = null;
+	}
 }

@@ -12,6 +12,7 @@
 		"lokalise-mcp": "dist/index.js"
 	},
 	"type": "module",
+	"module": "dist/index.js",
 	"scripts": {
 		"build": "tsc",
 		"build:dxt": "npm run generate:manifest && npm run build && npx @anthropic-ai/dxt pack",

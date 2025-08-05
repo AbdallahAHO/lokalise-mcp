@@ -83,6 +83,7 @@ function formatSourcePath(filePath: string, functionName?: string): string {
  * @returns true if debug is enabled for this module, false otherwise
  */
 function isDebugEnabledForModule(modulePath: string): boolean {
+	// Avoid circular dependency by directly checking process.env
 	const debugEnv = process.env.DEBUG;
 
 	if (!debugEnv) {
@@ -320,7 +321,10 @@ class Logger {
 			}
 		}
 
-		if (process.env.NODE_ENV === "test") {
+		if (
+			process.env.NODE_ENV === "test" ||
+			process.env.JEST_WORKER_ID !== undefined
+		) {
 			console[level](logMessage);
 		} else {
 			console.error(logMessage);

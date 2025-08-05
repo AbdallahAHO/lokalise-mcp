@@ -1,44 +1,18 @@
-import {
-	type CreateProjectParams,
-	LokaliseApi,
-	type Project,
-	type UpdateProjectParams,
+import type {
+	CreateProjectParams,
+	Project,
+	UpdateProjectParams,
 } from "@lokalise/node-api";
 import type { ApiRequestOptions } from "../../shared/types/common.types.js";
-import { config } from "../../shared/utils/config.util.js";
 import {
-	createApiError,
 	createUnexpectedError,
 	McpError,
 } from "../../shared/utils/error.util.js";
 import { Logger } from "../../shared/utils/logger.util.js";
+import { getLokaliseApi } from "../../shared/utils/lokalise-api.util.js";
 
 // Create a contextualized logger for this file
 const serviceLogger = Logger.forContext("domains/projects/projects.service.ts");
-
-// Initialize Lokalise SDK
-let lokaliseApi: LokaliseApi | null = null;
-
-function getLokaliseApi(): LokaliseApi {
-	if (!lokaliseApi) {
-		config.load();
-		const apiKey = config.get("LOKALISE_API_KEY");
-		if (!apiKey) {
-			throw createApiError(
-				"LOKALISE_API_KEY is required but not found in configuration",
-				401,
-			);
-		}
-
-		const hostname = config.get(
-			"LOKALISE_API_HOSTNAME",
-			"https://api.stage.lokalise.cloud/api2/",
-		);
-		lokaliseApi = new LokaliseApi({ apiKey, host: hostname });
-		serviceLogger.debug("Lokalise API client initialized", { hostname });
-	}
-	return lokaliseApi;
-}
 
 // Log service initialization
 serviceLogger.debug("Lokalise Projects API service initialized");

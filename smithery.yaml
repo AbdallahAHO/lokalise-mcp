@@ -19,6 +19,19 @@ startCommand:
         type: boolean
         default: false
         description: Enable debug_mode mode
+  commandFunction: |
+    (config) => ({
+      "command": "node",
+      "args": [
+        "dist/index.js"
+      ],
+      "env": {
+        "NODE_ENV": "production",
+        "LOKALISE_API_KEY": config.LOKALISE_API_KEY,
+        "LOKALISE_API_HOSTNAME": config.LOKALISE_API_HOSTNAME,
+        "DEBUG": config.debug_mode
+      }
+    })
   exampleConfig:
     LOKALISE_API_KEY: your_api_token_here
     LOKALISE_API_HOSTNAME: https://api.lokalise.com/api2/

@@ -1,5 +1,4 @@
 import type { ControllerResponse } from "../../shared/types/common.types.js";
-import { config } from "../../shared/utils/config.util.js";
 import {
 	buildErrorContext,
 	handleControllerError,
@@ -327,8 +326,6 @@ async function bulkUpdateKeys(
 			keysCount: args.keys.length,
 		});
 
-		config.load();
-
 		// Map arguments to service parameters
 		const serviceParams: keysService.BulkUpdateKeysParams = {
 			project_id: args.projectId,
@@ -385,8 +382,6 @@ async function bulkDeleteKeys(
 			projectId: args.projectId,
 			keysCount: args.keyIds.length,
 		});
-
-		config.load();
 
 		// Map arguments to service parameters
 		const serviceParams: keysService.BulkDeleteKeysParams = {
