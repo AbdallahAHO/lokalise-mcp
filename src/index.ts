@@ -53,6 +53,9 @@ export async function startServer(
 			title: "Lokalise MCP Server",
 		});
 
+		// Set up MCP initialization handler to extract configuration
+		setupMcpInitializationHandler(serverInstance);
+
 		serverLogger.info("Registering MCP tools, resources, and prompts...");
 		await registerAllTools(serverInstance);
 		await registerAllResources(serverInstance);
@@ -218,4 +221,57 @@ function setupGracefulShutdown() {
 			shutdown();
 		});
 	});
+}
+
+/**
+ * Set up MCP initialization handler to extract configuration from clientInfo
+ */
+function setupMcpInitializationHandler(server: McpServer): void {
+	const initLogger = Logger.forContext(
+		"index.ts",
+		"setupMcpInitializationHandler",
+	);
+
+	// Store the original oninitialized callback
+	const originalOnInitialized = server.server.oninitialized;
+
+	// Set up a custom oninitialized callback to extract configuration
+	server.server.oninitialized = () => {
+		initLogger.debug("MCP initialization completed");
+
+		// Try to extract configuration from the client info
+		const clientVersion = server.server.getClientVersion();
+		if (clientVersion && typeof clientVersion === "object") {
+			// Look for configuration in clientInfo - Smithery typically passes config here
+			const configData: Record<string, unknown> = {};
+
+			// Extract all non-standard fields from clientInfo as potential config
+			for (const [key, value] of Object.entries(clientVersion)) {
+				if (!["name", "version", "title"].includes(key)) {
+					configData[key] = value;
+				}
+			}
+
+			// Also check for explicit config object
+			if (
+				"config" in clientVersion &&
+				typeof clientVersion.config === "object" &&
+				clientVersion.config
+			) {
+				Object.assign(configData, clientVersion.config);
+			}
+
+			if (Object.keys(configData).length > 0) {
+				initLogger.info("Extracted configuration from MCP initialization", {
+					configKeys: Object.keys(configData),
+				});
+				config.setMcpInitConfig(configData);
+			}
+		}
+
+		// Call the original callback if it existed
+		if (originalOnInitialized) {
+			originalOnInitialized();
+		}
+	};
 }

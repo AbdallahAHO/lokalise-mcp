@@ -6,13 +6,15 @@ import { Logger } from "./logger.util.js";
 
 /**
  * Configuration loader that handles multiple sources with priority:
- * 1. Direct ENV pass (process.env)
- * 2. .env file in project root
- * 3. Global config file at $HOME/.mcp/configs.json
+ * 1. MCP initialization config (from clientInfo)
+ * 2. Direct ENV pass (process.env)
+ * 3. .env file in project root
+ * 4. Global config file at $HOME/.mcp/configs.json
  */
 class ConfigLoader {
 	private packageName: string;
 	private configLoaded = false;
+	private mcpInitConfig: Record<string, unknown> = {};
 
 	/**
 	 * Create a new ConfigLoader instance
@@ -20,6 +22,22 @@ class ConfigLoader {
 	 */
 	constructor(packageName: string) {
 		this.packageName = packageName;
+	}
+
+	/**
+	 * Set configuration from MCP initialization (highest priority)
+	 * @param config Configuration object from MCP clientInfo
+	 */
+	setMcpInitConfig(config: Record<string, unknown>): void {
+		const methodLogger = Logger.forContext(
+			"utils/config.util.ts",
+			"setMcpInitConfig",
+		);
+
+		this.mcpInitConfig = { ...config };
+		methodLogger.debug("MCP initialization configuration set", {
+			keysCount: Object.keys(config).length,
+		});
 	}
 
 	/**
@@ -35,14 +53,17 @@ class ConfigLoader {
 
 		methodLogger.debug("Loading configuration...");
 
-		// Priority 3: Load from global config file
+		// Priority 4: Load from global config file
 		this.loadFromGlobalConfig();
 
-		// Priority 2: Load from .env file
+		// Priority 3: Load from .env file
 		this.loadFromEnvFile();
 
-		// Priority 1: Direct ENV pass is already in process.env
+		// Priority 2: Direct ENV pass is already in process.env
 		// No need to do anything as it already has highest priority
+
+		// Priority 1: MCP init config is handled in get() method
+		// No need to set process.env as it might conflict with existing values
 
 		this.configLoaded = true;
 		methodLogger.debug("Configuration loaded successfully");
@@ -92,7 +113,7 @@ class ConfigLoader {
 
 			// Determine the potential keys for the current package
 			const shortKey = "boilerplate"; // Project-specific short key
-			const fullPackageName = this.packageName; // e.g., '@aashari/boilerplate-mcp-server'
+			const fullPackageName = this.packageName; // e.g., 'lokalise-mcp'
 			const unscopedPackageName =
 				fullPackageName.split("/")[1] || fullPackageName; // e.g., 'boilerplate-mcp-server'
 
@@ -145,6 +166,12 @@ class ConfigLoader {
 	 * @returns The configuration value or the default value
 	 */
 	get(key: string, defaultValue?: string): string | undefined {
+		// Priority 1: MCP initialization config
+		if (this.mcpInitConfig[key] !== undefined) {
+			return String(this.mcpInitConfig[key]);
+		}
+
+		// Priority 2: Environment variables
 		return process.env[key] || defaultValue;
 	}
 
@@ -196,4 +223,4 @@ class ConfigLoader {
 }
 
 // Create and export a singleton instance with the package name from package.json
-export const config = new ConfigLoader("@aashari/boilerplate-mcp-server");
+export const config = new ConfigLoader("lokalise-mcp");
