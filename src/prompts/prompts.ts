@@ -615,98 +615,153 @@ STEP 5: Confirm and notify
 	// ============================================================================
 
 	server.registerPrompt(
-		"file_upload_review_workflow",
+		"post_upload_review_workflow",
 		{
-			title: "File Upload and Review Workflow",
+			title: "Post-Upload Review Workflow",
 			description:
-				"Monitor file upload and create review tasks with user group assignments",
-			argsSchema: schemas.FileUploadReviewWorkflowArgs.shape,
+				"Create review tasks for files already uploaded to Lokalise with flexible assignee mapping",
+			argsSchema: schemas.PostUploadReviewWorkflowArgs.shape,
 		},
 		({
 			projectName,
-			fileName,
-			targetLanguages,
-			reviewerGroupName,
-			automationSettings,
+			uploadedFileName,
+			languageAssignmentMapping,
+			assignmentType,
+			confirmBeforeTaskCreation,
 			reviewDeadline,
-		}: schemas.FileUploadReviewWorkflowArgsType) => ({
+		}: schemas.PostUploadReviewWorkflowArgsType) => ({
 			messages: [
 				{
 					role: "user" as const,
 					content: {
 						type: "text" as const,
 						text: `<task_description>
-Monitor the upload of "${fileName}" to project "${projectName}" and create review tasks for "${targetLanguages}" assigned to the "${reviewerGroupName}" group.
+Create review tasks for the file "${uploadedFileName}" already uploaded to project "${projectName}" with language-specific assignee mapping: "${languageAssignmentMapping}".
 </task_description>
 
 <context>
-When files are uploaded with automation rules (${automationSettings}), they need review to ensure quality. This workflow automates task creation and assigns them to the right language teams, preventing low-quality translations from reaching production.
+This workflow assumes the file has already been uploaded to Lokalise (via UI or API) with TM+MT automation applied. Now we need to create review tasks for quality assurance, assigning them to appropriate user groups or individual reviewers based on language expertise.
 </context>
 
 <instructions>
 STEP 1: Resolve project and validate setup
 - Use lokalise_list_projects to find "${projectName}"
-- Use lokalise_list_usergroups to find "${reviewerGroupName}" group
-- Use lokalise_list_project_languages to verify "${targetLanguages}" are configured
+- Store the project_id for all subsequent operations
+- If multiple projects match, show list and ask user to confirm
 
-STEP 2: Monitor upload process
-- Use lokalise_list_queued_processes with project_id to find upload processes
-- Look for type="file-upload" processes
-- Poll lokalise_get_queued_process every 5 seconds until status="finished"
-- Extract actual filename from process.details.files[0].name_original
-- Note key_count_inserted and word_count_total for estimation
+STEP 2: Get keys from uploaded file
+- Use lokalise_list_keys with:
+  * project_id from Step 1
+  * filterFilenames=["${uploadedFileName}"]
+  * includeTranslations=false (we only need key IDs)
+- Extract all key IDs for task creation
+- Count total keys and estimate review effort
+- If no keys found, check if filename is correct
 
-STEP 3: Get uploaded content (parallel execution)
-- lokalise_list_keys with filter_filenames=[extracted filename] to get all new keys
-- Count total words and keys for accurate task scope
+STEP 3: Resolve assignments flexibly
+- Parse "${languageAssignmentMapping}" (e.g., "Spanish: EMEA Team, French: marie@company.com")
+- For each assignee, determine type:
+  * If contains "@" → Individual user (use lokalise_list_contributors to get ID)
+  * If contains "Team", "Group", "Squad" → User group (use lokalise_list_usergroups to get ID)
+  * ${assignmentType === "user-groups" ? "Treat all as user groups" : assignmentType === "individual-users" ? "Treat all as individual users" : "Auto-detect based on naming"}
+- Build assignment map with proper IDs
+- Show resolution results:
+  * ✅ Resolved assignments with IDs
+  * ⚠️ Unresolved assignments (will leave unassigned)
 
-STEP 4: Create review tasks for each language
-- Parse "${targetLanguages}" into individual languages
-- For each language, use lokalise_create_task with:
-  * Title: "Review: ${fileName} - [language]"
-  * Type: "review"
-  * Language: specific language ID
-  * Keys: all keys from uploaded file
-  * Assigned to: resolved group ID
-  * Due date: "${reviewDeadline}" if specified
+STEP 4: Get available languages and user selection
+- Use lokalise_list_project_languages with project_id
+- Present list to user:
+  "The following languages are available in the project:
+  1. Spanish (es)
+  2. French (fr)
+  3. German (de)
+  4. Japanese (ja)
+  
+  Which languages should have review tasks created?
+  You can specify: 'all', specific numbers (1,2,4), or language codes (es,fr,ja)"
+- Wait for user response
+- Map selected languages to the assignment mapping
 
-STEP 5: Set up quality checks
-- Add task description mentioning:
-  * Automation used: ${automationSettings}
-  * Quality criteria to check
-  * Specific terminology requirements
+STEP 5: Preview task creation
+${
+	confirmBeforeTaskCreation !== "false"
+		? `- Show preview table:
+  | Language | Assignee Type | Assignee Name | Keys Count | Due Date |
+  |----------|---------------|---------------|------------|----------|
+  | Spanish  | User Group    | EMEA Team     | [count]    | ${reviewDeadline || "Not set"} |
+  | French   | Individual    | marie@...     | [count]    | ${reviewDeadline || "Not set"} |
+  
+- Ask: "Ready to create these [X] review tasks? (yes/no)"
+- Only proceed if user confirms`
+		: "- Skip confirmation and proceed with task creation"
+}
+
+STEP 6: Create review tasks
+- For each selected language with resolved assignee:
+  * Use lokalise_create_task with:
+    - title: "Review: ${uploadedFileName} - [language name]"
+    - type: "review"
+    - languages: [language_id]
+    - keys: all key IDs from Step 2
+    - users: [assignee_id] if individual user
+    - groups: [group_id] if user group
+    - due_date: "${reviewDeadline}" if specified
+    - description: "Review file upload with TM+MT automation applied. Please check for:\n- Translation accuracy\n- Terminology consistency\n- Context appropriateness"
+- Track created task IDs
+
+STEP 7: Report results
+- Show summary of created tasks
+- Include any warnings for unassigned languages
+- Provide direct links to tasks if available
 </instructions>
 
 <output_format>
-## File Upload & Review Workflow Complete
+## ✅ Review Workflow Complete
 
-### Upload Summary
-- File: ${fileName}
-- Status: ✅ Successfully processed
-- Keys Added: [number]
-- Words Processed: [number]
+### File Information
+- **File**: ${uploadedFileName}
+- **Project**: ${projectName}
+- **Total Keys**: [number]
+- **Estimated Words**: [number if available]
 
-### Automation Applied
-- Settings: ${automationSettings}
-- TM Matches: [percentage]
-- MT Applied: [percentage]
+### Assignment Resolution
+| Assignee | Type | Status | ID |
+|----------|------|--------|----|
+[Table showing resolution of each assignee]
 
 ### Review Tasks Created
-| Language | Task ID | Assigned To | Due Date | Words |
-|----------|---------|-------------|----------|-------|
+| Language | Task ID | Assigned To | Type | Due Date | Status |
+|----------|---------|-------------|------|----------|--------|
 [Table of created tasks]
 
-### Quality Metrics
-- Estimated Review Time: [hours] total
-- Coverage: [percentage] of content needs review
-- Priority Keys: [number] flagged for attention
+### ⚠️ Warnings (if any)
+- [Language X]: No assignee found, task created but unassigned
+- [Language Y]: User group not found, left unassigned
 
 ### Next Steps
-1. Monitor task progress
-2. Address any questions from reviewers
-3. Approve reviewed translations
-4. Export for deployment
-</output_format>`,
+1. Monitor task progress in Lokalise dashboard
+2. Reviewers will receive notifications
+3. Track completion via task status
+4. Export approved translations when ready
+
+### Task URLs
+[Direct links to created tasks if available]
+</output_format>
+
+<error_handling>
+If no keys found with filename:
+- Suggest checking exact filename in Lokalise
+- List recent files in project for reference
+
+If assignee not found:
+- Continue with task creation but leave unassigned
+- Note in warnings section
+
+If language not in project:
+- Skip that language
+- Note in warnings
+</error_handling>`,
 					},
 				},
 			],
@@ -1488,6 +1543,163 @@ ${
 - Consistency: [improved by X%]
 - Predictability: [deadline confidence]
 </output_format>`,
+					},
+				},
+			],
+		}),
+	);
+
+	server.registerPrompt(
+		"document_extraction_review_workflow",
+		{
+			title: "Document Extraction and Review Workflow",
+			description:
+				"Extract document content as translation keys and create review tasks",
+			argsSchema: schemas.DocumentExtractionReviewWorkflowArgs.shape,
+		},
+		({
+			projectName,
+			documentContent,
+			keyPrefix,
+			baseLanguage,
+			languageAssignmentMapping,
+			assignmentType,
+			reviewDeadline,
+		}: schemas.DocumentExtractionReviewWorkflowArgsType) => ({
+			messages: [
+				{
+					role: "user" as const,
+					content: {
+						type: "text" as const,
+						text: `<task_description>
+Extract content from the provided document, create translation keys in project "${projectName}" with prefix "${keyPrefix}", and set up review tasks with language-specific assignments: "${languageAssignmentMapping}".
+</task_description>
+
+<context>
+This workflow handles documents that need to be added to Lokalise as translation keys. Since MCP doesn't support file uploads, we extract the content, create keys programmatically, then set up review tasks for translation into target languages.
+</context>
+
+<instructions>
+STEP 1: Resolve project and base language
+- Use lokalise_list_projects to find "${projectName}"
+- Store project_id for all operations
+- Use lokalise_list_system_languages to find ISO code for "${baseLanguage}"
+- Verify base language is configured in project
+
+STEP 2: Parse document content into keys
+- Split "${documentContent}" into logical segments:
+  * If contains headers (# or ##), use as section breaks
+  * If contains numbered lists, each item becomes a key
+  * If contains paragraphs, each becomes a key
+  * For single-line content, split by sentences
+- Generate key names with pattern: "${keyPrefix}.[section].[index]"
+  * Example: "${keyPrefix}.intro.1", "${keyPrefix}.intro.2"
+  * Use descriptive suffixes when possible
+- Prepare key objects with:
+  * key_name: generated name
+  * description: "Extracted from document upload"
+  * platforms: ["web"] (default)
+  * translations: [{language_iso: [base_language_iso], translation: [content]}]
+
+STEP 3: Create keys in batches
+- Use lokalise_create_keys with batches of up to 100 keys
+- For the base language "${baseLanguage}":
+  * Include the extracted content as initial translation
+- Track all created key IDs
+- Show progress: "Created [X] of [total] keys..."
+
+STEP 4: Resolve assignments (same as post-upload workflow)
+- Parse "${languageAssignmentMapping}"
+- Determine assignee types:
+  * Email addresses → Individual contributors
+  * Names with "Team", "Group" → User groups
+  * ${assignmentType === "user-groups" ? "Force all as groups" : assignmentType === "individual-users" ? "Force all as individuals" : "Auto-detect"}
+- Use lokalise_list_usergroups and lokalise_list_contributors to resolve IDs
+- Show resolution status
+
+STEP 5: Language selection for translation
+- Use lokalise_list_project_languages
+- Exclude base language from selection
+- Present available target languages:
+  "Content has been added in ${baseLanguage}.
+  Select target languages for translation:
+  1. Spanish (es)
+  2. French (fr)
+  3. German (de)
+  
+  Enter your selection (all/specific numbers/codes):"
+
+STEP 6: Create translation tasks
+- For each selected language with assignee:
+  * Use lokalise_create_task with:
+    - title: "Translate: ${keyPrefix} content - [language]"
+    - type: "translation"
+    - source_language_iso: [base_language_iso]
+    - languages: [target_language_id]
+    - keys: all created key IDs
+    - users/groups: based on assignment resolution
+    - due_date: "${reviewDeadline}" if specified
+    - description: "Translate extracted document content. Source: ${baseLanguage}. Maintain tone and context."
+
+STEP 7: Summary report
+- Keys created summary
+- Tasks created summary
+- Any warnings or unassigned languages
+</instructions>
+
+<output_format>
+## ✅ Document Extraction & Translation Setup Complete
+
+### Content Extraction Summary
+- **Source Language**: ${baseLanguage}
+- **Key Prefix**: ${keyPrefix}
+- **Keys Created**: [number]
+- **Total Words**: [approximate count]
+
+### Sample Keys Created
+| Key Name | Content Preview | Word Count |
+|----------|-----------------|------------|
+| ${keyPrefix}.intro.1 | [first 50 chars]... | [count] |
+| ${keyPrefix}.section1.1 | [first 50 chars]... | [count] |
+[Show first 5 keys as examples]
+
+### Assignment Resolution
+| Language | Assignee | Type | Status |
+|----------|----------|------|--------|
+[Resolution table]
+
+### Translation Tasks Created
+| Language | Task ID | Assigned To | Type | Due Date |
+|----------|---------|-------------|------|----------|
+[Task creation results]
+
+### Warnings
+[Any issues during processing]
+
+### Next Steps
+1. Translators can begin work immediately
+2. Source content (${baseLanguage}) is already in place
+3. Monitor progress via task dashboard
+4. Review translations as they're completed
+
+### Quick Stats
+- **Estimated Translation Volume**: [words] × [languages] = [total words]
+- **Expected Completion**: ${reviewDeadline || "Based on team velocity"}
+</output_format>
+
+<error_handling>
+If content parsing fails:
+- Fall back to simple line-by-line extraction
+- Warn user about formatting limitations
+
+If key creation fails:
+- Check for duplicate key names
+- Add numeric suffixes to ensure uniqueness
+
+If no target languages available:
+- Inform user to add languages to project first
+- Provide language addition instructions
+</error_handling>`,
 					},
 				},
 			],

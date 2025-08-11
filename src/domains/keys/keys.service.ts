@@ -42,6 +42,7 @@ export interface KeyListParams extends ApiRequestOptions {
 	filter_keys?: string[];
 	filter_platforms?: string[];
 	filter_tags?: string[];
+	filter_filenames?: string[];
 	pagination?: "offset" | "cursor";
 	cursor?: string;
 }
@@ -160,6 +161,9 @@ export async function getKeys(
 		}
 		if (options.filter_tags && options.filter_tags.length > 0) {
 			apiParams.filter_tags = options.filter_tags.join(",");
+		}
+		if (options.filter_filenames && options.filter_filenames.length > 0) {
+			apiParams.filter_filenames = options.filter_filenames.join(",");
 		}
 
 		const result = await api.keys().list(apiParams);
