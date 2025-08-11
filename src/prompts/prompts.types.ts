@@ -635,30 +635,71 @@ export const EmergencyHotfixArgs = z
 // New Workflow Prompts (Based on Requirements)
 // ============================================================================
 
-export const FileUploadReviewWorkflowArgs = z
+export const PostUploadReviewWorkflowArgs = z
 	.object({
 		projectName: z.string().describe("Name of your Lokalise project"),
-		fileName: z.string().describe("Name or description of the uploaded file"),
-		targetLanguages: z
+		uploadedFileName: z
 			.string()
-			.describe("Languages to translate to (e.g., 'Spanish, French, German')"),
-		reviewerGroupName: z
+			.describe("Name of the file already uploaded to Lokalise"),
+		languageAssignmentMapping: z
 			.string()
-			.describe("Name of the reviewer group to assign tasks to"),
-		automationSettings: z
+			.describe(
+				"Language to assignee mapping (e.g., 'Spanish: EMEA Group, Japanese: user@example.com, French: Localization Team')",
+			),
+		assignmentType: z
 			.string()
 			.optional()
 			.describe(
-				"Automation to apply: 'TM only', 'MT only', 'TM+MT', 'none' (default: TM+MT)",
+				"Type of assignment: 'auto-detect', 'user-groups', 'individual-users' (default: auto-detect)",
+			),
+		confirmBeforeTaskCreation: z
+			.string()
+			.optional()
+			.describe(
+				"Ask for confirmation before creating tasks (true/false, default: true)",
 			),
 		reviewDeadline: z
 			.string()
 			.optional()
 			.describe(
-				"When reviews should be complete (e.g., 'end of day', 'tomorrow')",
+				"When reviews should be complete (e.g., 'end of week', '2024-12-31')",
 			),
 	})
-	.describe("Arguments for file upload and review workflow");
+	.describe(
+		"Arguments for creating review tasks for files already uploaded to Lokalise",
+	);
+
+export const DocumentExtractionReviewWorkflowArgs = z
+	.object({
+		projectName: z.string().describe("Name of your Lokalise project"),
+		documentContent: z
+			.string()
+			.describe("Content to extract and add as translation keys"),
+		keyPrefix: z
+			.string()
+			.describe("Prefix for generated keys (e.g., 'doc.page1')"),
+		baseLanguage: z
+			.string()
+			.describe("Language of the content (e.g., 'English', 'Spanish')"),
+		languageAssignmentMapping: z
+			.string()
+			.describe(
+				"Language to assignee mapping (groups or users, e.g., 'German: DACH Team, Italian: marco@company.it')",
+			),
+		assignmentType: z
+			.string()
+			.optional()
+			.describe(
+				"Type of assignment: 'auto-detect', 'user-groups', 'individual-users' (default: auto-detect)",
+			),
+		reviewDeadline: z
+			.string()
+			.optional()
+			.describe("When reviews should be complete"),
+	})
+	.describe(
+		"Arguments for extracting document content as keys and creating review tasks",
+	);
 
 export const TeamTranslationSetupArgs = z
 	.object({
@@ -913,8 +954,11 @@ export type SeasonalCampaignCloningArgsType = z.infer<
 export type EmergencyHotfixArgsType = z.infer<typeof EmergencyHotfixArgs>;
 
 // New workflow types
-export type FileUploadReviewWorkflowArgsType = z.infer<
-	typeof FileUploadReviewWorkflowArgs
+export type PostUploadReviewWorkflowArgsType = z.infer<
+	typeof PostUploadReviewWorkflowArgs
+>;
+export type DocumentExtractionReviewWorkflowArgsType = z.infer<
+	typeof DocumentExtractionReviewWorkflowArgs
 >;
 export type TeamTranslationSetupArgsType = z.infer<
 	typeof TeamTranslationSetupArgs

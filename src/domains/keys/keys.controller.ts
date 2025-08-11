@@ -63,6 +63,7 @@ async function listKeys(
 			include_translations: args.includeTranslations,
 			filter_keys: args.filterKeys,
 			filter_platforms: args.filterPlatforms,
+			filter_filenames: args.filterFilenames,
 			pagination: "cursor", // Use cursor pagination for better performance
 		};
 
