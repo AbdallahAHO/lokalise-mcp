@@ -147,18 +147,49 @@ jobs:
 
             # Step 11: Back-merge to develop
             - name: Back-merge to develop
+              env:
+                  GH_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
               run: |
-                  # Fetch latest develop
-                  git fetch origin develop:develop
-
+                  # Fetch latest branches
+                  git fetch origin develop:refs/remotes/origin/develop
+                  git fetch origin main:refs/remotes/origin/main
+                  
                   # Checkout develop
-                  git checkout develop
-
-                  # Merge main
-                  git merge main -m "chore: back-merge main to develop after v${{ steps.get-version.outputs.version }} release"
-
-                  # Push to develop
-                  git push origin develop
+                  git checkout -B develop origin/develop
+                  
+                  # Try to merge main
+                  if git merge origin/main -m "chore: back-merge main to develop after v${{ steps.get-version.outputs.version }} release" --no-edit; then
+                      echo "✅ Merge successful"
+                      # Push to develop
+                      git push origin develop
+                  else
+                      echo "⚠️ Merge conflicts detected. Creating a PR for manual resolution."
+                      
+                      # Create a branch for the back-merge
+                      BACKMERGE_BRANCH="backmerge/v${{ steps.get-version.outputs.version }}-to-develop"
+                      git checkout -b "$BACKMERGE_BRANCH"
+                      
+                      # Stage any resolved files (in case of partial auto-resolution)
+                      git add -A
+                      
+                      # Commit with conflicts markers if any
+                      git commit -m "chore: back-merge main to develop after v${{ steps.get-version.outputs.version }} release (with conflicts)" || true
+                      
+                      # Push the branch
+                      git push origin "$BACKMERGE_BRANCH"
+                      
+                      # Create a PR for manual resolution
+                      gh pr create \
+                        --title "Back-merge: v${{ steps.get-version.outputs.version }} from main to develop" \
+                        --body "This PR back-merges the changes from the v${{ steps.get-version.outputs.version }} release into develop.
+                        
+                        ⚠️ **Merge conflicts were detected and need manual resolution.**
+                        
+                        Please review and resolve any conflicts before merging." \
+                        --base develop \
+                        --head "$BACKMERGE_BRANCH" \
+                        --repo ${{ github.repository }} || echo "PR creation failed, please create manually"
+                  fi
 
             # Step 12: Summary
             - name: Release Summary
@@ -168,7 +199,7 @@ jobs:
                   echo "- **Version**: ${{ steps.get-version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
                   echo "- **npm Published**: ${{ steps.npm-publish.outputs.published }}" >> $GITHUB_STEP_SUMMARY
                   echo "- **GitHub Release**: ✅" >> $GITHUB_STEP_SUMMARY
-                  echo "- **Back-merged to develop**: ✅" >> $GITHUB_STEP_SUMMARY
+                  echo "- **Back-merge Status**: Check workflow logs" >> $GITHUB_STEP_SUMMARY
                   echo "" >> $GITHUB_STEP_SUMMARY
                   echo "### 📋 Release Assets" >> $GITHUB_STEP_SUMMARY
                   echo '```' >> $GITHUB_STEP_SUMMARY
