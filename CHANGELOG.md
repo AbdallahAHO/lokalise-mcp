@@ -1,4 +1,49 @@
-# Changelog
+## [1.0.4] - 2025-08-11
+
+### Added
+- **Queued Processes Domain** (2 tools + 1 resource): Monitor and manage asynchronous operations
+  - `lokalise_list_queued_processes` - List all queued processes with filtering
+  - `lokalise_get_queued_process` - Get detailed status of specific processes
+  - Resource: `lokalise-queued-processes` for process monitoring
+- **Team Users Domain** (4 tools + 2 resources): Comprehensive team member management
+  - `lokalise_list_team_users` - List all team users with pagination
+  - `lokalise_get_team_user` - Get detailed user information
+  - `lokalise_update_team_user` - Update user role and permissions
+  - `lokalise_delete_team_user` - Remove users from team
+  - Resources: `lokalise-team-users` (collection) and `lokalise-team-user-details` (individual)
+- **User Groups Domain** (9 tools + 2 resources): Advanced group-based permission management
+  - `lokalise_list_usergroups` - List all user groups in team
+  - `lokalise_get_usergroup` - Get group details with members and projects
+  - `lokalise_create_usergroup` - Create new permission groups
+  - `lokalise_update_usergroup` - Update group settings and permissions
+  - `lokalise_delete_usergroup` - Remove user groups
+  - `lokalise_add_members_to_group` - Add team members to groups
+  - `lokalise_remove_members_from_group` - Remove members from groups
+  - `lokalise_add_projects_to_group` - Assign projects to groups
+  - `lokalise_remove_projects_from_group` - Unassign projects from groups
+  - Resources: `lokalise-usergroups` (collection) and `lokalise-usergroup-details` (individual)
+- **Enhanced MCP Prompts System**: Comprehensive workflow prompts for AI assistants
+  - Post-upload validation workflows for translation file imports
+  - Document extraction review workflows for content verification
+  - Expanded prompt schemas with detailed type definitions
+  - Structured workflow templates for common localization tasks
+
+### Changed
+- **MCP Prompts Architecture**: Complete restructure with detailed schemas and validation
+  - Added 700+ lines of type definitions for better type safety
+  - Expanded prompt templates from basic to comprehensive workflows
+  - Improved prompt organization with clear separation of concerns
+- **Documentation Updates**: Enhanced README and CLAUDE.md with latest features
+
+### Fixed
+- Export ordering consistency across domain modules
+
+### Developer Experience
+- Total MCP tools increased from 39 to **54 tools** (+15)
+- Total MCP resources increased from 16 to **21 resources** (+5)
+- Enhanced auto-discovery system seamlessly integrates new domains
+- Maintained 100% backward compatibility with existing integrations
+
 
 All notable changes to this project will be documented in this file.
 
@@ -89,6 +134,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Commander.js for CLI framework
 - ES modules with Node.js >=18.0.0 requirement
 
+[1.0.4]: https://github.com/AbdallahAHO/lokalise-mcp/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/AbdallahAHO/lokalise-mcp/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/AbdallahAHO/lokalise-mcp/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/AbdallahAHO/lokalise-mcp/compare/v1.0.0...v1.0.1
