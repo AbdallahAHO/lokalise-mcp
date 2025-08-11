@@ -15,13 +15,13 @@ import {
 } from "./keys.formatter.js";
 import * as keysService from "./keys.service.js";
 import type {
+	BulkDeleteKeysToolArgsType,
+	BulkUpdateKeysToolArgsType,
 	CreateKeysToolArgsType,
 	DeleteKeyToolArgsType,
 	GetKeyToolArgsType,
 	ListKeysToolArgsType,
 	UpdateKeyToolArgsType,
-	BulkUpdateKeysToolArgsType,
-	BulkDeleteKeysToolArgsType,
 } from "./keys.types.js";
 
 /**
