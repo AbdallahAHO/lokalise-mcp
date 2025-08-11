@@ -3,8 +3,8 @@
 	"name": "lokalise-mcp",
 	"display_name": "Lokalise MCP",
 	"version": "1.0.3",
-	"description": "Unofficial Lokalise integration for AI assistants - manage projects, keys, languages, tasks, and translations through natural language.",
-	"long_description": "# Lokalise MCP Server\n\n> **Disclaimer**: This is an independent project and not affiliated with Lokalise Inc. It uses the publicly available Lokalise Node.js SDK to provide MCP integration.\n\n## Transform Your Localization Workflow with Conversational AI\n\n**Stop clicking, start commanding.** With 44 intelligent tools across 9 domains, this MCP server transforms Lokalise from a complex UI into your personal localization assistant. Simply describe what you need in natural language, and watch as your AI orchestrates sophisticated API workflows in seconds.\n\nInstead of clicking through multiple screens, just chat with your AI assistant:\n- *\"Show me all projects with less than 80% translation progress\"*\n- *\"Create a new mobile app project with German, French, and Spanish support\"*\n- *\"Find all untranslated keys in the iOS app and assign them to the German team\"*\n- *\"Archive all keys tagged 'v1_deprecated' across all projects\"*\n\n### 44 Production-Ready Tools Across 9 Domains\n\n**Contributors (5 tools)** - Team collaboration and permission management\n**Keys (5 tools)** - Intelligent key management with bulk operations and smart filtering\n**Glossary (5 tools)** - Terminology consistency and brand voice enforcement\n**Project (5 tools)** - Comprehensive project management capabilities\n**Tasks (5 tools)** - Workflow automation and deadline management\n**Projects (4 tools)** - Complete project lifecycle management from creation to archival\n**Translations (4 tools)** - Direct translation management with review workflows\n**Languages (4 tools)** - Multi-language orchestration with progress tracking\n\n### Real-World Workflows That Save Hours\n\n**For Localization Managers:**\n- *Morning standup in 10 seconds*: \"Give me the health check for all active projects. Who's behind schedule?\"\n- *Instant team scaling*: \"Add marie@company.com as a French reviewer to all e-commerce projects\"\n- *Proactive monitoring*: \"Alert me when any project drops below 70% completion\"\n\n**For Developers:**\n- *Zero-friction deployment*: \"Sync the feature/new-login branch to Lokalise and create tasks for Spanish and German\"\n- *Instant validation*: \"Check if all keys in the Android app have iOS equivalents\"\n- *Automated QA*: \"Find all keys with unbalanced brackets and create a cleanup task\"\n\n**For Marketing Teams:**\n- *Campaign launch in one command*: \"Create a project from this Google Doc, translate to our tier-1 markets, use informal tone\"\n- *Brand consistency*: \"Add 'QuantumLeap' to the glossary as non-translatable across all projects\"\n- *Content updates*: \"Update all homepage headlines with the new tagline across all languages\"\n\n**Traditional UI Workflow:**\n- Navigate through multiple screens\n- Click through complex forms\n- Context switch between tools\n- Time: 10-15 minutes per task\n\n**Conversational MCP Workflow:**\n- Express intent in natural language\n- AI orchestrates API calls\n- Results delivered instantly\n- Time: 10-30 seconds per task\n\n\n### Get Started in 30 Seconds\n\n1. Install the MCP server\n2. Add your Lokalise API token\n3. Start commanding your localization workflow\n",
+	"description": "Unofficial Lokalise integration for AI assistants - manage projects, keys, languages, tasks, translations, teams, and workflows through natural language with 59 intelligent tools across 11 domains.",
+	"long_description": "# Lokalise MCP Server\n\n> **Disclaimer**: This is an independent project and not affiliated with Lokalise Inc. It uses the publicly available Lokalise Node.js SDK to provide MCP integration.\n\n## Transform Your Localization Workflow with Conversational AI\n\n**Stop clicking, start commanding.** With 59 intelligent tools across 11 domains, 21 MCP resources for direct data access, and 17 workflow automation prompts, this MCP server transforms Lokalise from a complex UI into your personal localization assistant. Simply describe what you need in natural language, and watch as your AI orchestrates sophisticated API workflows in seconds.\n\nInstead of clicking through multiple screens, just chat with your AI assistant:\n- *\"Show me all projects with less than 80% translation progress\"*\n- *\"Create a new mobile app project with German, French, and Spanish support\"*\n- *\"Find all untranslated keys in the iOS app and assign them to the German team\"*\n- *\"Archive all keys tagged 'v1_deprecated' across all projects\"*\n\n### 59 Production-Ready Tools Across 11 Domains\n\n**User Groups (9 tools)** - Team organization with project and permission management\n**Keys (7 tools)** - Enhanced with file filtering, bulk operations, and smart search\n**Languages (6 tools)** - Multi-language orchestration with progress tracking\n**Contributors (6 tools)** - Team collaboration and permission management\n**Projects (6 tools)** - Complete project lifecycle management from creation to archival\n**Tasks (5 tools)** - Workflow automation and deadline management\n**Comments (5 tools)** - Key discussions and collaboration threads\n**Glossary (5 tools)** - Terminology consistency and brand voice enforcement\n**Translations (4 tools)** - Direct translation management with review workflows\n**Team Users (4 tools)** - Workspace user management and role assignment\n**Queued Processes (2 tools)** - Background job monitoring and status tracking\n\n### Real-World Workflows That Save Hours\n\n**NEW: File Upload & Review Workflows**\n- *Post-upload automation*: \"Process the file I just uploaded to Lokalise and create review tasks for Spanish, French, and German teams\"\n- *Document extraction*: \"Extract content from my product catalog, create keys in Lokalise, and set up review workflows with TM+MT for all European markets\"\n- *Smart assignment*: \"Automatically detect and assign to user groups or individual reviewers based on language expertise\"\n\n**For Localization Managers:**\n- *Morning standup in 10 seconds*: \"Give me the health check for all active projects. Who's behind schedule?\"\n- *Instant team scaling*: \"Add marie@company.com as a French reviewer to all e-commerce projects\"\n- *User group management*: \"Create an EMEA translation team and assign them to all European language projects\"\n\n**For Developers:**\n- *File-based filtering*: \"Show me all keys from the uploaded 'strings.json' file that need translation\"\n- *Process monitoring*: \"Check the status of all background import jobs and alert me when they complete\"\n- *Automated QA*: \"Find all keys with unbalanced brackets and create a cleanup task\"\n\n**Traditional UI Workflow:**\n- Navigate through multiple screens\n- Click through complex forms\n- Context switch between tools\n- Time: 10-15 minutes per task\n\n**Conversational MCP Workflow:**\n- Express intent in natural language\n- AI orchestrates API calls\n- Results delivered instantly\n- Time: 10-30 seconds per task\n\n\n### Get Started in 30 Seconds\n\n1. Install the MCP server\n2. Add your Lokalise API token\n3. Start commanding your localization workflow\n",
 	"author": {
 		"name": "Abdallah Othman",
 		"email": "contact@abdallahaho.com",
@@ -231,6 +231,66 @@
 		{
 			"name": "lokalise_update_translation",
 			"description": "Modifies actual translated text or its review status. Required: projectId, translationId. Optional: translation (new text), is_reviewed, is_unverified. Use to fix typos, approve translations, or mark problematic content. Returns: Updated translation. Note: Changes visible immediately to all users."
+		},
+		{
+			"name": "lokalise_list_usergroups",
+			"description": "Lists all user groups in your workspace for team organization. Required: teamId. Optional: limit (100), page. Use to view existing groups, check permissions structure, or prepare bulk assignments. Returns: Groups with names, permissions, member counts, and project assignments. Essential for team management."
+		},
+		{
+			"name": "lokalise_get_usergroup",
+			"description": "Gets detailed information about a specific user group. Required: teamId, groupId. Use to understand group permissions, view all members, check project assignments, or audit access levels. Returns: Complete group data including members list, permissions matrix, and assigned projects."
+		},
+		{
+			"name": "lokalise_create_usergroup",
+			"description": "Creates a new user group for organizing team members. Required: teamId, name. Optional: is_reviewer, is_admin, admin_rights[], languages[]. Use to organize teams by function, region, or expertise. Returns: Created group with ID. Tip: Add members and projects after creation."
+		},
+		{
+			"name": "lokalise_update_usergroup",
+			"description": "Updates user group settings and permissions. Required: teamId, groupId. Optional: name, is_reviewer, is_admin, admin_rights[], languages[]. Use to modify group permissions, rename groups, or adjust language assignments. Returns: Updated group details. Changes apply to all members."
+		},
+		{
+			"name": "lokalise_delete_usergroup",
+			"description": "Permanently deletes a user group from the workspace. Required: teamId, groupId. Use to remove obsolete groups or restructure teams. Returns: Deletion confirmation. Warning: Members retain individual permissions but lose group-based access. Cannot be undone."
+		},
+		{
+			"name": "lokalise_add_usergroup_members",
+			"description": "Adds team members to a user group. Required: teamId, groupId, users[] (array of user IDs). Use to bulk assign permissions, organize teams, or grant project access. Returns: Updated group with new members. Members inherit all group permissions immediately."
+		},
+		{
+			"name": "lokalise_remove_usergroup_members",
+			"description": "Removes members from a user group. Required: teamId, groupId, users[] (array of user IDs). Use to revoke group permissions or reorganize teams. Returns: Updated group without removed members. Members retain any individual permissions."
+		},
+		{
+			"name": "lokalise_list_usergroup_members",
+			"description": "Lists all members of a specific user group. Required: teamId, groupId. Optional: limit (100), page. Use to audit group membership, check user assignments, or prepare reorganization. Returns: Paginated list of group members with user details."
+		},
+		{
+			"name": "lokalise_add_usergroup_projects",
+			"description": "Assigns projects to a user group for bulk access management. Required: teamId, groupId, projects[] (array of project IDs or 'all'). Use to grant group access to multiple projects at once. Returns: Updated group with project assignments. All members gain access immediately."
+		},
+		{
+			"name": "lokalise_list_teamusers",
+			"description": "Lists all users in your workspace with their roles and permissions. Required: teamId. Optional: limit (100), page. Use to audit workspace access, check user roles, or find specific team members. Returns: Users with emails, roles, creation dates, and project counts."
+		},
+		{
+			"name": "lokalise_get_teamuser",
+			"description": "Gets detailed information about a specific workspace user. Required: teamId, userId. Use to check user permissions, view project assignments, or verify role settings. Returns: Complete user profile with role, permissions, and activity information."
+		},
+		{
+			"name": "lokalise_update_teamuser",
+			"description": "Updates a user's workspace role and permissions. Required: teamId, userId, role (owner/admin/member). Use to promote/demote users, adjust permissions, or change workspace access. Returns: Updated user details. Changes apply immediately across all projects."
+		},
+		{
+			"name": "lokalise_delete_teamuser",
+			"description": "Removes a user from the workspace entirely. Required: teamId, userId. Use for offboarding, security cleanup, or removing inactive users. Returns: Deletion confirmation. Warning: User loses all workspace and project access immediately. Cannot be undone."
+		},
+		{
+			"name": "lokalise_list_queued_processes",
+			"description": "Lists all background processes for monitoring long-running operations. Required: projectId. Optional: limit (100), page. Use to track imports, exports, or bulk operations. Returns: Processes with type, status, progress, and creation time. Essential for operation monitoring."
+		},
+		{
+			"name": "lokalise_get_queued_process",
+			"description": "Gets detailed status of a specific background process. Required: projectId, processId. Use to check operation progress, get error details, or retrieve results. Returns: Complete process data including type, status, progress percentage, and operation-specific details."
 		}
 	],
 	"prompts": [
@@ -433,6 +493,33 @@
 				"priority"
 			],
 			"text": "URGENT: ${arguments.issueDescription} in project '${arguments.projectId}' affecting keys: ${arguments.affectedKeys}. Priority: ${arguments.priority || 'critical'}. Create emergency fix tasks, notify relevant team members immediately, fast-track review process, and prepare hotfix bundle."
+		},
+		{
+			"name": "post_upload_review_workflow",
+			"description": "Create review tasks for files already uploaded to Lokalise with flexible assignment",
+			"arguments": [
+				"projectName",
+				"uploadedFileName",
+				"languageAssignmentMapping",
+				"assignmentType",
+				"confirmBeforeTaskCreation",
+				"reviewDeadline"
+			],
+			"text": "Process the file '${arguments.uploadedFileName}' already uploaded to project '${arguments.projectName}'. Set up review tasks with this mapping: ${arguments.languageAssignmentMapping}. ${arguments.assignmentType ? 'Assignment type: ' + arguments.assignmentType + '.' : ''} ${arguments.confirmBeforeTaskCreation === 'false' ? 'Create tasks immediately.' : 'Confirm before creating tasks.'} ${arguments.reviewDeadline ? 'Reviews due by: ' + arguments.reviewDeadline : ''}"
+		},
+		{
+			"name": "document_extraction_review_workflow",
+			"description": "Extract content from documents and create translation keys with review workflow",
+			"arguments": [
+				"projectName",
+				"documentContent",
+				"targetLanguages",
+				"languageAssignmentMapping",
+				"assignmentType",
+				"useTmMt",
+				"reviewDeadline"
+			],
+			"text": "Extract and process this content: '${arguments.documentContent}' for project '${arguments.projectName}'. Target languages: ${arguments.targetLanguages}. ${arguments.useTmMt === 'true' ? 'Apply TM+MT for initial translations.' : ''} Set up review with mapping: ${arguments.languageAssignmentMapping}. ${arguments.assignmentType ? 'Assignment type: ' + arguments.assignmentType + '.' : ''} ${arguments.reviewDeadline ? 'Complete by: ' + arguments.reviewDeadline : ''}"
 		}
 	],
 	"tools_generated": true,

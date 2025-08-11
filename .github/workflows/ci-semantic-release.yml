@@ -129,12 +129,46 @@ jobs:
 
                       ### 📦 Installation
 
-                      #### Desktop Extension (Recommended)
-                      Download and double-click `lokalise-mcp-${{ steps.get-version.outputs.version }}.dxt` to install in Claude Desktop.
+                      #### 1) Smithery (Recommended)
+                      Automated install and configuration for popular MCP clients.
 
-                      #### npm Package
                       ```bash
-                      npm install -g lokalise-mcp@${{ steps.get-version.outputs.version }}
+                      # Claude Desktop
+                      npx -y @smithery/cli install @AbdallahAHO/lokalise-mcp --client claude
+
+                      # Cursor
+                      npx -y @smithery/cli install @AbdallahAHO/lokalise-mcp --client cursor
+
+                      # VS Code (Claude Code)
+                      npx -y @smithery/cli install @AbdallahAHO/lokalise-mcp --client vscode
+
+                      # Claude Code
+                      claude mcp add --transport http abdallah-aho-lokalise-mcp "https://server.smithery.ai/@AbdallahAHO/lokalise-mcp/mcp"
+
+                      # Gemini CLI
+                      npx -y @smithery/cli install @AbdallahAHO/lokalise-mcp --client gemini
+                      ```
+
+                      Inspect tools before installing:
+
+                      ```bash
+                      npx -y @smithery/cli@latest inspect @AbdallahAHO/lokalise-mcp
+                      ```
+
+                      #### 2) Claude Desktop Extension (DXT)
+                      Download and double-click `lokalise-mcp-${{ steps.get-version.outputs.version }}.dxt` to install in ClaudeDesktop.
+                      When prompted, enter your `LOKALISE_API_KEY`. Updates by installing the newer `.dxt`.
+
+                      #### 3) Local (clone + run)
+                      ```bash
+                      git clone https://github.com/AbdallahAHO/lokalise-mcp.git
+                      cd lokalise-mcp
+                      npm install
+
+                      export LOKALISE_API_KEY="your-api-key-here"
+                      npm run mcp:http   # HTTP (SSE) at http://localhost:3000/mcp
+                      # or
+                      npm run mcp:stdio  # STDIO
                       ```
 
                       ### 🔐 Verify Downloads
@@ -153,10 +187,10 @@ jobs:
                   # Fetch latest branches
                   git fetch origin develop:refs/remotes/origin/develop
                   git fetch origin main:refs/remotes/origin/main
-                  
+
                   # Checkout develop
                   git checkout -B develop origin/develop
-                  
+
                   # Try to merge main
                   if git merge origin/main -m "chore: back-merge main to develop after v${{ steps.get-version.outputs.version }} release" --no-edit; then
                       echo "✅ Merge successful"
@@ -164,27 +198,27 @@ jobs:
                       git push origin develop
                   else
                       echo "⚠️ Merge conflicts detected. Creating a PR for manual resolution."
-                      
+
                       # Create a branch for the back-merge
                       BACKMERGE_BRANCH="backmerge/v${{ steps.get-version.outputs.version }}-to-develop"
                       git checkout -b "$BACKMERGE_BRANCH"
-                      
+
                       # Stage any resolved files (in case of partial auto-resolution)
                       git add -A
-                      
+
                       # Commit with conflicts markers if any
                       git commit -m "chore: back-merge main to develop after v${{ steps.get-version.outputs.version }} release (with conflicts)" || true
-                      
+
                       # Push the branch
                       git push origin "$BACKMERGE_BRANCH"
-                      
+
                       # Create a PR for manual resolution
                       gh pr create \
                         --title "Back-merge: v${{ steps.get-version.outputs.version }} from main to develop" \
                         --body "This PR back-merges the changes from the v${{ steps.get-version.outputs.version }} release into develop.
-                        
+
                         ⚠️ **Merge conflicts were detected and need manual resolution.**
-                        
+
                         Please review and resolve any conflicts before merging." \
                         --base develop \
                         --head "$BACKMERGE_BRANCH" \
