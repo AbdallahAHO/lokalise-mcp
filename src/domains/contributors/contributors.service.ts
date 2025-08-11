@@ -14,8 +14,8 @@ import type {
 	PaginatedResult,
 } from "@lokalise/node-api";
 import { createUnexpectedError } from "../../shared/utils/error.util.js";
-import { getLokaliseApi } from "../../shared/utils/lokalise-api.util.js";
 import { Logger } from "../../shared/utils/logger.util.js";
+import { getLokaliseApi } from "../../shared/utils/lokalise-api.util.js";
 import type {
 	AddContributorsToolArgsType,
 	GetContributorToolArgsType,

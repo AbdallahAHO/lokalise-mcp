@@ -27,6 +27,12 @@ export const ListKeysToolArgs = z
 			.array(z.enum(["ios", "android", "web", "other"]))
 			.optional()
 			.describe("Filter by platforms (ios, android, web, other)"),
+		filterFilenames: z
+			.array(z.string())
+			.optional()
+			.describe(
+				"Filter by specific filenames (e.g., ['document.docx', 'strings.json'])",
+			),
 	})
 	.strict();
 

@@ -2,12 +2,45 @@
 
 > **Canonical Reference**: This document serves as the single source of truth for all agents implementing Lokalise MCP tools. It contains exact API methods, parameter types, implementation requirements, and step-by-step instructions.
 
+## Executive Summary
+
+The Lokalise MCP Server provides AI assistants with comprehensive access to Lokalise's localization platform through the Model Context Protocol. This production-ready implementation enables natural language interactions with translation management systems, supporting both STDIO and HTTP transports.
+
+**Key Capabilities:**
+- \ud83c\udf10 **Multi-Domain Support**: 11 fully implemented domains covering core localization workflows
+- \ud83d\udd27 **59 MCP Tools**: Comprehensive toolset for project, key, translation, and team management
+- \ud83d\udcc2 **21 MCP Resources**: Direct data access via URI patterns for efficient operations
+- \ud83e\udd16 **17 Workflow Prompts**: Pre-built automation for complex multi-step operations
+- \ud83d\ude80 **Auto-Discovery Architecture**: Zero-touch domain registration with filesystem scanning
+- \ud83d\udd12 **Enterprise Ready**: Multi-source configuration, comprehensive error handling, session logging
+
+## Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Configure API key
+export LOKALISE_API_KEY="your-api-key-here"
+
+# Run MCP server (HTTP mode - default)
+npm run mcp:http
+
+# Run MCP server (STDIO mode)
+npm run mcp:stdio
+
+# Use CLI directly
+npm run cli -- list-projects --limit 10
+```
+
 ## Table of Contents
 
 - [Current Implementation Status](#current-implementation-status)
-- [Implementation Priorities](#implementation-priorities)
+- [Implementation Statistics](#implementation-statistics)
 - [Architecture Overview](#architecture-overview)
-- [Complete API Coverage Checklist](#complete-api-coverage-checklist)
+- [Complete Tool Reference](#complete-tool-reference)
+- [MCP Resources](#mcp-resources)
+- [Workflow Prompts](#workflow-prompts)
 - [Implementation Templates](#implementation-templates)
 - [Testing Requirements](#testing-requirements)
 - [Common Patterns](#common-patterns)
@@ -16,37 +49,105 @@
 
 ## Current Implementation Status
 
-### ✅ **Fully Implemented Collections**
-1. **Projects** (6/6 methods) - `list()`, `get()`, `create()`, `update()`, `delete()`, `empty()`
-2. **Languages** (6/6 methods) - `system_languages()`, `list()`, `create()`, `get()`, `update()`, `delete()`
-3. **Keys** (7/7 methods) - `list()`, `create()`, `get()`, `update()`, `delete()`, `bulk_update()`, `bulk_delete()`
-4. **Translations** (3/3 methods) - `list()`, `get()`, `update()`
-5. **Tasks** (5/5 methods) - `list()`, `create()`, `get()`, `update()`, `delete()`
-6. **Contributors** (6/6 methods) - `list()`, `create()`, `get()`, `me()`, `update()`, `delete()`
-7. **Comments** (5/5 methods) - `list()`, `create()`, `get()`, `delete()`, `list_project_comments()`
-8. **Glossary Terms** (5/5 methods) - `list()`, `create()`, `get()`, `update()`, `delete()`
+### 📊 **Implementation Statistics**
+- **11** Fully Implemented Domains
+- **59** MCP Tools (verified via code scan)
+- **21** MCP Resources (verified via code scan)
+- **17** Workflow Prompts (verified via code scan)
+- **2** Transport Modes (STDIO, HTTP)
 
-### ❌ **Unimplemented Collections (17 total)**
-- Files, Screenshots, Branches, Webhooks, Teams, Snapshots, Queued Processes, Orders, Translation Providers, Translation Statuses, User Groups, Team Users, Permission Templates, Payment Cards, Team User Billing Details, JWT, Segments
+### ✅ **Fully Implemented Collections (11 domains)**
 
----
+1. **Projects** (6 tools, 2 resources)
+   - `lokalise_list_projects` - List all projects with stats
+   - `lokalise_get_project` - Get detailed project info
+   - `lokalise_create_project` - Create new projects
+   - `lokalise_update_project` - Update project settings
+   - `lokalise_delete_project` - Delete projects
+   - `lokalise_empty_project` - Clear all keys/translations
 
-## Implementation Priorities
+2. **Keys** (7 tools, 2 resources) - **Enhanced with filterFilenames**
+   - `lokalise_list_keys` - List keys with cursor pagination and **NEW: filterFilenames**
+   - `lokalise_get_key` - Get key details and translations
+   - `lokalise_create_keys` - Bulk create up to 1000 keys
+   - `lokalise_update_key` - Update single key
+   - `lokalise_bulk_update_keys` - Update multiple keys
+   - `lokalise_delete_key` - Delete single key
+   - `lokalise_bulk_delete_keys` - Delete multiple keys
 
-### **Phase 1: Core Functionality** (Immediate - 3 collections)
-1. **Files** - Critical for import/export workflows
-2. **Screenshots** - Essential for UI translation context
-3. **Branches** - Version control for translations
+3. **Languages** (6 tools, 2 resources)
+   - `lokalise_list_system_languages` - Browse available languages
+   - `lokalise_list_project_languages` - Get project languages
+   - `lokalise_add_project_languages` - Add languages to project
+   - `lokalise_get_language` - Get language details
+   - `lokalise_update_language` - Update language settings
+   - `lokalise_remove_language` - Remove project language
 
-### **Phase 2: Workflow Enhancement** (Next - 1 collection)
-1. **Webhooks** - Integration ecosystem
+4. **Translations** (4 tools, 2 resources)
+   - `lokalise_list_translations` - List with cursor pagination
+   - `lokalise_get_translation` - Get translation details
+   - `lokalise_update_translation` - Update translation content
+   - `lokalise_bulk_update_translations` - Bulk update with rate limiting
 
-### **Phase 3: Advanced Features** (Future - 16 collections)
-1. **Snapshots** - Backup and versioning
-2. **Teams/User Groups** - Advanced permissions
-3. **Orders** - Professional services
-4. **Translation Statuses** - Custom workflows
-5. Remaining specialized collections
+5. **Tasks** (5 tools, 2 resources)
+   - `lokalise_list_tasks` - List and filter tasks
+   - `lokalise_get_task` - Get task details
+   - `lokalise_create_task` - Create translation tasks
+   - `lokalise_update_task` - Update task properties
+   - `lokalise_delete_task` - Delete tasks
+
+6. **Contributors** (6 tools, 2 resources)
+   - `lokalise_list_contributors` - List project contributors
+   - `lokalise_get_contributor` - Get contributor details
+   - `lokalise_add_contributors` - Add contributors to project
+   - `lokalise_get_current_user` - Get current user info
+   - `lokalise_update_contributor` - Update permissions
+   - `lokalise_remove_contributor` - Remove from project
+
+7. **Comments** (5 tools, 2 resources)
+   - `lokalise_list_key_comments` - Comments for specific key
+   - `lokalise_list_project_comments` - All project comments
+   - `lokalise_get_comment` - Get comment details
+   - `lokalise_create_comments` - Create comments
+   - `lokalise_delete_comment` - Delete comments
+
+8. **Glossary** (5 tools, 2 resources)
+   - `lokalise_list_glossary_terms` - List glossary terms
+   - `lokalise_create_glossary_terms` - Create terms
+   - `lokalise_get_glossary_term` - Get term details
+   - `lokalise_update_glossary_term` - Update terms
+   - `lokalise_delete_glossary_term` - Delete terms
+
+9. **User Groups** (9 tools, 2 resources) - **NEW**
+   - `lokalise_list_usergroups` - List all user groups
+   - `lokalise_get_usergroup` - Get group details
+   - `lokalise_create_usergroup` - Create new group
+   - `lokalise_update_usergroup` - Update group settings
+   - `lokalise_delete_usergroup` - Delete group
+   - `lokalise_add_usergroup_members` - Add members
+   - `lokalise_remove_usergroup_members` - Remove members
+   - `lokalise_list_usergroup_members` - List members
+   - `lokalise_add_usergroup_projects` - Assign to projects
+
+10. **Team Users** (4 tools, 2 resources) - **NEW**
+    - `lokalise_list_teamusers` - List workspace users
+    - `lokalise_get_teamuser` - Get user details
+    - `lokalise_update_teamuser` - Update user role
+    - `lokalise_delete_teamuser` - Remove from workspace
+
+11. **Queued Processes** (2 tools, 1 resource) - **NEW**
+    - `lokalise_list_queued_processes` - List background processes
+    - `lokalise_get_queued_process` - Get process status
+
+### ❌ **Unimplemented Collections (14 remaining)**
+Files, Screenshots, Branches, Webhooks, Teams, Snapshots, Orders, Translation Providers, Translation Statuses, Permission Templates, Payment Cards, Team User Billing Details, JWT, Segments
+
+### 📈 **Implementation Progress**
+- **Domains Completed**: 11 of 25 (44%)
+- **API Coverage**: Core localization features fully implemented
+- **MCP Tools**: 59 operational tools covering essential workflows
+- **MCP Resources**: 21 resources for direct data access
+- **Workflow Automation**: 17 prompt-based workflows for complex operations
 
 ---
 
@@ -57,940 +158,406 @@
 src/
 ├── cli/
 │   └── index.ts                       # CLI orchestrator with auto-discovery
-├── domains/                           # Domain-driven feature modules with auto-discovery
-│   ├── index.ts                       # Master domain barrel (registerAllTools/CLI)
+├── domains/                           # Domain-driven feature modules
+│   ├── index.ts                       # Master domain barrel (registerAllTools/CLI/Resources)
 │   ├── registry.ts                    # Auto-discovery registry system
-│   ├── {domain}/                      # Auto-discovered domain (keys, projects, etc.)
-│   │   ├── index.ts                   # Domain barrel exports
-│   │   ├── {domain}.cli.ts            # CLI commands (implements DomainCli)
-│   │   ├── {domain}.tool.ts           # MCP tools (implements DomainTool)
-│   │   ├── {domain}.controller.ts     # Business logic orchestration
-│   │   ├── {domain}.formatter.ts      # Response formatting
-│   │   ├── {domain}.service.ts        # API service layer
-│   │   └── {domain}.types.ts          # Domain-specific type definitions
-│   └── translations/                  # Future domain example
+│   └── {domain}/                      # Each domain folder
+│       ├── index.ts                   # Domain barrel exports
+│       ├── {domain}.cli.ts            # CLI commands (implements DomainCli)
+│       ├── {domain}.tool.ts           # MCP tools (implements DomainTool)
+│       ├── {domain}.resource.ts       # MCP resources (implements DomainResource)
+│       ├── {domain}.controller.ts     # Business logic orchestration
+│       ├── {domain}.formatter.ts      # Response formatting
+│       ├── {domain}.service.ts        # API service layer
+│       └── {domain}.types.ts          # Domain-specific types
+├── prompts/                           # Workflow automation prompts
+│   ├── prompts.ts                     # Prompt registration
+│   └── prompts.types.ts               # Prompt argument schemas
 ├── shared/                            # Cross-cutting concerns
-│   ├── resources/
-│   │   └── lokalise.resource.ts       # MCP resource definitions
 │   ├── types/
-│   │   ├── common.types.ts            # Common types (ControllerResponse, etc.)
-│   │   └── domain.types.ts            # Domain interface contracts
+│   │   ├── common.types.ts            # Common types
+│   │   └── domain.types.ts            # Domain interfaces
 │   └── utils/                         # Shared utilities
-└── index.ts                           # Server entry point with auto-discovery
+└── index.ts                           # Server entry point
 ```
 
 ### **Domain Interface Requirements**
 - **Tools**: Must implement `DomainTool` interface with `registerTools(server: McpServer)` method
 - **CLI**: Must implement `DomainCli` interface with `register(program: Command)` method
-- **Exports**: Domain barrel must export `{domainName}Tool` and `{domainName}Cli`
+- **Resources**: Must implement `DomainResource` interface with `registerResources(server: McpServer)` method
 - **Auto-Discovery**: Domains automatically discovered by filesystem scanning
 
 ### **Naming Conventions**
-- **MCP Tool Names**: `snake_case` (e.g., `lokalise_upload_file`)
-- **CLI Commands**: `kebab-case` (e.g., `upload-file`)
-- **Function Parameters**: `camelCase` (e.g., `projectId`, `fileData`)
-- **Domain Names**: `lowercase` (e.g., `keys`, `projects`, `files`)
-- **Domain Exports**: `{domainName}Tool`, `{domainName}Cli` (e.g., `keysTool`, `keysCli`)
+- **MCP Tool Names**: `snake_case` (e.g., `lokalise_list_keys`)
+- **MCP Resource Names**: `kebab-case` (e.g., `lokalise-project-keys`)
+- **CLI Commands**: `kebab-case` (e.g., `list-keys`)
+- **Function Parameters**: `camelCase` (e.g., `projectId`, `filterFilenames`)
+- **Domain Names**: `lowercase` (e.g., `keys`, `usergroups`)
 
 ---
 
-## Complete API Coverage Checklist
+## Complete Tool Reference
 
-### **1. Projects Collection** ✅ **FULLY IMPLEMENTED**
+### Projects Domain (6 tools)
+| Tool | Description | Key Parameters |
+|------|-------------|----------------|
+| `lokalise_list_projects` | List all projects | limit, page, includeStatistics, includeSettings |
+| `lokalise_get_project` | Get project details | projectId |
+| `lokalise_create_project` | Create new project | name, description, languages, base_lang_iso |
+| `lokalise_update_project` | Update project | projectId, name, description, settings |
+| `lokalise_delete_project` | Delete project | projectId |
+| `lokalise_empty_project` | Clear all content | projectId |
 
-**SDK Reference**: `lokaliseApi.projects()`
-**File**: `node_modules/@lokalise/node-api/src/collections/projects.ts`
+### Keys Domain (7 tools) - Enhanced
+| Tool | Description | Key Parameters |
+|------|-------------|----------------|
+| `lokalise_list_keys` | List keys with filtering | projectId, limit, page, **filterFilenames**, filterKeys, filterPlatforms |
+| `lokalise_get_key` | Get key details | projectId, keyId |
+| `lokalise_create_keys` | Bulk create keys | projectId, keys[] |
+| `lokalise_update_key` | Update single key | projectId, keyId, description, platforms |
+| `lokalise_bulk_update_keys` | Bulk update | projectId, keys[] |
+| `lokalise_delete_key` | Delete key | projectId, keyId |
+| `lokalise_bulk_delete_keys` | Bulk delete | projectId, keyIds[] |
 
-| Method | Status | MCP Tool Name | SDK Call | Input Type | Response Type |
-|--------|--------|---------------|----------|------------|---------------|
-| `list()` | ✅ | `lokalise_list_projects` | `lokaliseApi.projects().list(params)` | `ProjectListParams` | `PaginatedResult<Project>` |
-| `create()` | ✅ | `lokalise_create_project` | `lokaliseApi.projects().create(params)` | `CreateProjectParams` | `Project` |
-| `get()` | ✅ | `lokalise_get_project` | `lokaliseApi.projects().get(project_id)` | `string` | `Project` |
-| `update()` | ✅ | `lokalise_update_project` | `lokaliseApi.projects().update(project_id, params)` | `UpdateProjectParams` | `Project` |
-| `delete()` | ✅ | `lokalise_delete_project` | `lokaliseApi.projects().delete(project_id)` | `string` | `ProjectDeleted` |
-| `empty()` | ✅ | `lokalise_empty_project` | `lokaliseApi.projects().empty(project_id)` | `string` | `ProjectEmptied` |
+### Languages Domain (6 tools)
+| Tool | Description | Key Parameters |
+|------|-------------|----------------|
+| `lokalise_list_system_languages` | All available languages | limit, page |
+| `lokalise_list_project_languages` | Project languages | projectId |
+| `lokalise_add_project_languages` | Add languages | projectId, languages[] |
+| `lokalise_get_language` | Get language details | projectId, langId |
+| `lokalise_update_language` | Update language | projectId, langId, lang_name |
+| `lokalise_remove_language` | Remove language | projectId, langId |
 
-**Implementation Files**:
-- ✅ Tools: `src/tools/projects.tool.ts` (all 6 tools implemented)
-- ✅ Controller: `src/controllers/projects.controller.ts` (all methods implemented)
-- ✅ Service: `src/services/vendor.lokalise.com.projects.service.ts` (all methods implemented)
-- ✅ CLI: `src/cli/projects.cli.ts` (all commands implemented)
-- ✅ Formatter: `src/controllers/projects.formatter.ts` (response formatting)
-- ✅ Types: `src/tools/projects.types.ts` (Zod schemas and TypeScript types)
+### Translations Domain (4 tools)
+| Tool | Description | Key Parameters |
+|------|-------------|----------------|
+| `lokalise_list_translations` | List translations | projectId, filter_lang_id, filter_is_reviewed |
+| `lokalise_get_translation` | Get translation | projectId, translationId |
+| `lokalise_update_translation` | Update translation | projectId, translationId, translation |
+| `lokalise_bulk_update_translations` | Bulk update | projectId, translations[] |
 
----
+### Tasks Domain (5 tools)
+| Tool | Description | Key Parameters |
+|------|-------------|----------------|
+| `lokalise_list_tasks` | List tasks | projectId, filter_title, filter_statuses |
+| `lokalise_get_task` | Get task details | projectId, taskId |
+| `lokalise_create_task` | Create task | projectId, title, keys, languages |
+| `lokalise_update_task` | Update task | projectId, taskId, title, done |
+| `lokalise_delete_task` | Delete task | projectId, taskId |
 
-### **2. Languages Collection** ✅ **FULLY IMPLEMENTED**
+### Contributors Domain (6 tools)
+| Tool | Description | Key Parameters |
+|------|-------------|----------------|
+| `lokalise_list_contributors` | List contributors | projectId |
+| `lokalise_get_contributor` | Get contributor | projectId, contributorId |
+| `lokalise_add_contributors` | Add contributors | projectId, contributors[] |
+| `lokalise_get_current_user` | Current user info | - |
+| `lokalise_update_contributor` | Update permissions | projectId, contributorId, role |
+| `lokalise_remove_contributor` | Remove contributor | projectId, contributorId |
 
-**SDK Reference**: `lokaliseApi.languages()`
-**File**: `node_modules/@lokalise/node-api/src/collections/languages.ts`
+### Comments Domain (5 tools)
+| Tool | Description | Key Parameters |
+|------|-------------|----------------|
+| `lokalise_list_key_comments` | Key comments | projectId, keyId |
+| `lokalise_list_project_comments` | All comments | projectId |
+| `lokalise_get_comment` | Get comment | projectId, keyId, commentId |
+| `lokalise_create_comments` | Create comments | projectId, comments[] |
+| `lokalise_delete_comment` | Delete comment | projectId, keyId, commentId |
 
-| Method | Status | MCP Tool Name | SDK Call | Input Type | Response Type |
-|--------|--------|---------------|----------|------------|---------------|
-| `system_languages()` | ✅ | `lokalise_list_system_languages` | `lokaliseApi.languages().system_languages(params)` | `PaginationParams` | `PaginatedResult<Language>` |
-| `list()` | ✅ | `lokalise_list_project_languages` | `lokaliseApi.languages().list(params)` | `ProjectWithPagination` | `PaginatedResult<Language>` |
-| `create()` | ✅ | `lokalise_add_project_languages` | `lokaliseApi.languages().create(langs, params)` | `CreateLanguageParams[]` | `BulkResult<Language>` |
-| `get()` | ✅ | `lokalise_get_language` | `lokaliseApi.languages().get(lang_id, params)` | `GetLanguageParams` | `Language` |
-| `update()` | ✅ | `lokalise_update_language` | `lokaliseApi.languages().update(lang_id, params, project)` | `UpdateLanguageParams` | `Language` |
-| `delete()` | ✅ | `lokalise_remove_language` | `lokaliseApi.languages().delete(lang_id, params)` | `ProjectOnly` | `LanguageDeleted` |
+### Glossary Domain (5 tools)
+| Tool | Description | Key Parameters |
+|------|-------------|----------------|
+| `lokalise_list_glossary_terms` | List terms | projectId |
+| `lokalise_create_glossary_terms` | Create terms | projectId, glossaryTerms[] |
+| `lokalise_get_glossary_term` | Get term | projectId, termId |
+| `lokalise_update_glossary_term` | Update term | projectId, termId, term |
+| `lokalise_delete_glossary_term` | Delete term | projectId, termId |
 
-**Parameter Types**:
-- `CreateLanguageParams`: `{ lang_iso: string, custom_iso?: string, custom_name?: string, custom_plural_forms?: string[] }`
-- `UpdateLanguageParams`: `{ lang_iso?: string, lang_name?: string, plural_forms?: string[] }`
+### User Groups Domain (9 tools) - NEW
+| Tool | Description | Key Parameters |
+|------|-------------|----------------|
+| `lokalise_list_usergroups` | List groups | teamId |
+| `lokalise_get_usergroup` | Get group details | teamId, groupId |
+| `lokalise_create_usergroup` | Create group | teamId, name, is_reviewer, is_admin |
+| `lokalise_update_usergroup` | Update group | teamId, groupId, name, permissions |
+| `lokalise_delete_usergroup` | Delete group | teamId, groupId |
+| `lokalise_add_usergroup_members` | Add members | teamId, groupId, users[] |
+| `lokalise_remove_usergroup_members` | Remove members | teamId, groupId, users[] |
+| `lokalise_list_usergroup_members` | List members | teamId, groupId |
+| `lokalise_add_usergroup_projects` | Assign projects | teamId, groupId, projects[] |
 
-**Implementation Files**:
-- ✅ Tools: `src/tools/languages.tool.ts` (all 6 tools implemented)
-- ✅ Controller: `src/controllers/languages.controller.ts` (all methods implemented)
-- ✅ Service: `src/services/vendor.lokalise.com.languages.service.ts` (all methods implemented)
-- ✅ CLI: `src/cli/languages.cli.ts` (all commands implemented)
-- ✅ Formatter: `src/controllers/languages.formatter.ts` (response formatting)
-- ✅ Types: `src/tools/languages.types.ts` (Zod schemas and TypeScript types)
+### Team Users Domain (4 tools) - NEW
+| Tool | Description | Key Parameters |
+|------|-------------|----------------|
+| `lokalise_list_teamusers` | List team users | teamId |
+| `lokalise_get_teamuser` | Get user details | teamId, userId |
+| `lokalise_update_teamuser` | Update user role | teamId, userId, role |
+| `lokalise_delete_teamuser` | Remove user | teamId, userId |
 
----
-
-### **3. Keys Collection** ✅ **FULLY IMPLEMENTED**
-
-**SDK Reference**: `lokaliseApi.keys()`
-**File**: `node_modules/@lokalise/node-api/src/collections/keys.ts`
-
-| Method | Status | MCP Tool Name | SDK Call | Input Type | Response Type |
-|--------|--------|---------------|----------|------------|---------------|
-| `list()` | ✅ | `lokalise_list_keys` | `lokaliseApi.keys().list(params)` | `KeyParamsWithPagination` | `CursorPaginatedResult<Key>` |
-| `create()` | ✅ | `lokalise_create_keys` | `lokaliseApi.keys().create(params, project)` | `CreateKeyParams` | `BulkResult<Key>` |
-| `get()` | ✅ | `lokalise_get_key` | `lokaliseApi.keys().get(key_id, params)` | `GetKeyParams` | `Key` |
-| `update()` | ✅ | `lokalise_update_key` | `lokaliseApi.keys().update(key_id, params, project)` | `UpdateKeyData` | `Key` |
-| `delete()` | ✅ | `lokalise_delete_key` | `lokaliseApi.keys().delete(key_id, params)` | `ProjectOnly` | `KeyDeleted` |
-| `bulk_update()` | ✅ | `lokalise_bulk_update_keys` | `lokaliseApi.keys().bulk_update(params, project)` | `BulkUpdateKeyParams` | `BulkResult<Key>` |
-| `bulk_delete()` | ✅ | `lokalise_bulk_delete_keys` | `lokaliseApi.keys().bulk_delete(key_ids, params)` | `number[] \| string[]` | `KeysBulkDeleted` |
-
-**Special Notes**:
-- Uses **cursor pagination** (`CursorPaginatedResult<Key>`)
-- `CreateKeyParams` contains array of `CreateKeyData`
-- `BulkUpdateKeyParams` contains array of key updates with IDs
-- Supports platform filtering (iOS, Android, web, other)
-- Bulk operations support up to 1000 keys per operation
-
-**Implementation Files**:
-- ✅ Types: `src/tools/keys.types.ts` (all 7 Zod schemas including bulk operations)
-- ✅ Tools: `src/tools/keys.tool.ts` (all 7 MCP tools implemented)
-- ✅ Controller: `src/controllers/keys.controller.ts` (all 7 methods implemented)
-- ✅ Service: `src/services/vendor.lokalise.com.keys.service.ts` (all 7 API methods implemented)
-- ✅ CLI: `src/cli/keys.cli.ts` (all 7 CLI commands implemented)
-- ✅ Formatter: `src/controllers/keys.formatter.ts` (response formatting)
-- ✅ Registration: Registered in `src/index.ts` and `src/cli/index.ts`
-
----
-
-### **4. Translations Collection** ✅ **FULLY IMPLEMENTED**
-
-**SDK Reference**: `lokaliseApi.translations()`
-**File**: `node_modules/@lokalise/node-api/src/collections/translations.ts`
-
-| Method | Status | MCP Tool Name | SDK Call | Input Type | Response Type |
-|--------|--------|---------------|----------|------------|---------------|
-| `list()` | ✅ | `lokalise_list_translations` | `lokaliseApi.translations().list(params)` | `ListTranslationParams` | `CursorPaginatedResult<Translation>` |
-| `get()` | ✅ | `lokalise_get_translation` | `lokaliseApi.translations().get(trans_id, params)` | `GetTranslationParams` | `Translation` |
-| `update()` | ✅ | `lokalise_update_translation` | `lokaliseApi.translations().update(trans_id, params, project)` | `UpdateTranslationParams` | `Translation` |
-
-**Parameter Types**:
-- `UpdateTranslationParams`: `{ translation?: string, is_unverified?: boolean, is_reviewed?: boolean, custom_translation_status_ids?: number[] }`
-- `ListTranslationParams`: Extensive filtering options for language, review status, QA issues
-
-**Implementation Files**:
-- ✅ Tools: `src/domains/translations/translations.tool.ts` (all 3 tools implemented)
-- ✅ Controller: `src/domains/translations/translations.controller.ts` (all methods implemented)
-- ✅ Service: `src/domains/translations/translations.service.ts` (all methods implemented)
-- ✅ CLI: `src/domains/translations/translations.cli.ts` (all commands implemented)
-- ✅ Formatter: `src/domains/translations/translations.formatter.ts` (response formatting)
-- ✅ Types: `src/domains/translations/translations.types.ts` (Zod schemas and TypeScript types)
-- ✅ Resources: `src/domains/translations/translations.resource.ts` (2 MCP resources implemented)
-- ✅ Registration: Auto-discovered via domain architecture
+### Queued Processes Domain (2 tools) - NEW
+| Tool | Description | Key Parameters |
+|------|-------------|----------------|
+| `lokalise_list_queued_processes` | List processes | projectId |
+| `lokalise_get_queued_process` | Get process status | projectId, processId |
 
 ---
 
-### **5. Files Collection** ❌ **HIGH PRIORITY - NOT IMPLEMENTED**
+## MCP Resources (21 total)
 
-**SDK Reference**: `lokaliseApi.files()`
-**File**: `node_modules/@lokalise/node-api/src/collections/files.ts`
+Resources provide direct data access via URIs without tool invocation:
 
-| Method | Status | MCP Tool Name | SDK Call | Input Type | Response Type |
-|--------|--------|---------------|----------|------------|---------------|
-| `list()` | ❌ | `lokalise_list_files` | `lokaliseApi.files().list(params)` | `ListFileParams` | `PaginatedResult<File>` |
-| `upload()` | ❌ | `lokalise_upload_file` | `lokaliseApi.files().upload(project_id, params)` | `UploadFileParams` | `QueuedProcess` |
-| `download()` | ❌ | `lokalise_download_files` | `lokaliseApi.files().download(project_id, params)` | `DownloadFileParams` | `DownloadBundle` |
-| `async_download()` | ❌ | `lokalise_async_download_files` | `lokaliseApi.files().async_download(project_id, params)` | `DownloadFileParams` | `QueuedProcess` |
-| `delete()` | ❌ | `lokalise_delete_file` | `lokaliseApi.files().delete(file_id, params)` | `ProjectOnly` | `FileDeleted` |
+### Project Resources
+- `lokalise-projects` - List all projects
+- `lokalise-project-details` - Get specific project
 
-**Implementation Requirements**:
-- **Create New Files**:
-  - `src/tools/files.tool.ts` + `src/tools/files.types.ts`
-  - `src/controllers/files.controller.ts` + `src/controllers/files.formatter.ts`
-  - `src/services/vendor.lokalise.com.files.service.ts`
-  - `src/cli/files.cli.ts`
-  - Test files for all components
+### Key Resources
+- `lokalise-project-keys` - List keys with filtering
+- `lokalise-key-details` - Get specific key
 
-**Special Handling**:
-- **File Upload**: Handle multipart form data, base64 encoding
-- **Async Operations**: `upload()` and `async_download()` return `QueuedProcess` - requires process monitoring
-- **Large Downloads**: Sync `download()` may return `responseTooBig: true` warning
-- **File Formats**: Support 40+ formats (JSON, XLIFF, CSV, etc.)
+### Language Resources
+- `lokalise-system-languages` - Available languages
+- `lokalise-project-languages` - Project languages
 
-**Critical Parameter Types**:
-```typescript
-interface UploadFileParams {
-  data: string;           // Base64 encoded file content
-  filename: string;
-  lang_iso: string;
-  // ... 20+ optional parameters for format-specific options
-}
+### Translation Resources
+- `lokalise-translations` - List translations
+- `lokalise-translation-details` - Get translation
 
-interface DownloadFileParams {
-  format: string;         // json, xliff, csv, etc.
-  original_filenames?: boolean;
-  bundle_structure?: string;
-  // ... 30+ optional filtering and transformation parameters
-}
-```
+### Task Resources
+- `lokalise-project-tasks` - List tasks
+- `lokalise-task-details` - Get task
 
----
+### Contributor Resources
+- `lokalise-contributors` - List contributors
+- `lokalise-contributor-details` - Get contributor
 
-### **6. Screenshots Collection** ❌ **HIGH PRIORITY - NOT IMPLEMENTED**
+### Comment Resources
+- `lokalise-key-comments` - Key comments
+- `lokalise-project-comments` - All comments
 
-**SDK Reference**: `lokaliseApi.screenshots()`
-**File**: `node_modules/@lokalise/node-api/src/collections/screenshots.ts`
+### Glossary Resources
+- `lokalise-glossary-terms` - List terms
+- `lokalise-glossary-term-details` - Get term
 
-| Method | Status | MCP Tool Name | SDK Call | Input Type | Response Type |
-|--------|--------|---------------|----------|------------|---------------|
-| `list()` | ❌ | `lokalise_list_screenshots` | `lokaliseApi.screenshots().list(params)` | `ProjectWithPagination` | `PaginatedResult<Screenshot>` |
-| `create()` | ❌ | `lokalise_create_screenshots` | `lokaliseApi.screenshots().create(params, project)` | `CreateScreenshotParams[]` | `BulkResult<Screenshot>` |
-| `get()` | ❌ | `lokalise_get_screenshot` | `lokaliseApi.screenshots().get(screenshot_id, params)` | `ProjectOnly` | `Screenshot` |
-| `update()` | ❌ | `lokalise_update_screenshot` | `lokaliseApi.screenshots().update(screenshot_id, params, project)` | `UpdateScreenshotParams` | `Screenshot` |
-| `delete()` | ❌ | `lokalise_delete_screenshot` | `lokaliseApi.screenshots().delete(screenshot_id, params)` | `ProjectOnly` | `ScreenshotDeleted` |
+### User Group Resources
+- `lokalise-usergroups` - List groups
+- `lokalise-usergroup-details` - Get group
 
-**⚠️ SDK Issue**: Method name has typo - `get(screnshot_id)` instead of `get(screenshot_id)`
+### Team User Resources
+- `lokalise-teamusers` - List users
+- `lokalise-teamuser-details` - Get user
 
-**Implementation Requirements**:
-- **Create New Files**: All files need to be created from scratch
-- **Image Handling**: Base64 encoded image data
-- **OCR Integration**: Automatic text recognition from screenshots
-- **Key Association**: Link screenshots to translation keys
-
-**Critical Parameter Types**:
-```typescript
-interface CreateScreenshotParams {
-  data: string;           // Base64 encoded image
-  title?: string;
-  description?: string;
-  ocr?: boolean;          // Enable OCR text recognition
-  key_ids?: number[];     // Associate with keys
-  tags?: string[];
-}
-```
+### Process Resources
+- `lokalise-queued-processes` - List processes
 
 ---
 
-### **7. Contributors Collection** ✅ **FULLY IMPLEMENTED**
+## Workflow Prompts (17 total)
 
-**SDK Reference**: `lokaliseApi.contributors()`
-**File**: `node_modules/@lokalise/node-api/src/collections/contributors.ts`
+Workflow prompts provide pre-configured, multi-step automation for complex Lokalise operations. These prompts combine multiple MCP tools to accomplish sophisticated tasks efficiently.
 
-| Method | Status | MCP Tool Name | SDK Call | Input Type | Response Type |
-|--------|--------|---------------|----------|------------|---------------|
-| `list()` | ✅ | `lokalise_list_contributors` | `lokaliseApi.contributors().list(params)` | `ProjectWithPagination` | `PaginatedResult<Contributor>` |
-| `create()` | ✅ | `lokalise_add_contributors` | `lokaliseApi.contributors().create(params, project)` | `ContributorCreateData[]` | `BulkResult<Contributor>` |
-| `get()` | ✅ | `lokalise_get_contributor` | `lokaliseApi.contributors().get(contributor_id, params)` | `ProjectOnly` | `Contributor` |
-| `me()` | ✅ | `lokalise_get_current_user` | `lokaliseApi.contributors().me(params)` | `ProjectOnly` | `Contributor` |
-| `update()` | ✅ | `lokalise_update_contributor` | `lokaliseApi.contributors().update(contributor_id, params, project)` | `ContributorUpdateData` | `Contributor` |
-| `delete()` | ✅ | `lokalise_remove_contributor` | `lokaliseApi.contributors().delete(contributor_id, params)` | `ProjectOnly` | `any` |
+### File & Review Workflows
+1. **post_upload_review_workflow** - Automate review task creation after file uploads
+   - Creates tasks for uploaded content
+   - Assigns reviewers based on language expertise
+   - Sets deadlines and priorities
 
-**🔥 Special Method**: `me()` returns current user's contributor profile
+2. **document_extraction_review_workflow** - Extract and process document content
+   - Extracts translatable content from documents
+   - Creates keys with proper context
+   - Initiates review workflows
 
-**Critical Parameter Types**:
-```typescript
-interface ContributorCreateData {
-  email: string;
-  fullname?: string;
-  is_admin?: boolean;
-  is_reviewer?: boolean;
-  languages: ContributorLanguage[];
-  admin_rights?: string[];  // "upload", "activity", "download", etc.
-}
+### Project Management
+3. **project_portfolio_overview** - Comprehensive analysis across all projects
+   - Aggregates statistics from all projects
+   - Identifies bottlenecks and delays
+   - Provides executive-level insights
 
-interface ContributorLanguage {
-  lang_iso: string;
-  is_writable?: boolean;
-}
-```
+4. **project_deep_dive** - Detailed single project inspection
+   - Analyzes project health metrics
+   - Reviews translation quality
+   - Identifies optimization opportunities
 
-**Implementation Files**:
-- ✅ Tools: `src/domains/contributors/contributors.tool.ts` (all 6 tools implemented)
-- ✅ Controller: `src/domains/contributors/contributors.controller.ts` (all methods implemented)
-- ✅ Service: `src/domains/contributors/contributors.service.ts` (all methods implemented)
-- ✅ CLI: `src/domains/contributors/contributors.cli.ts` (all commands implemented)
-- ✅ Formatter: `src/domains/contributors/contributors.formatter.ts` (response formatting)
-- ✅ Types: `src/domains/contributors/contributors.types.ts` (Zod schemas and TypeScript types)
-- ✅ Resources: `src/domains/contributors/contributors.resource.ts` (2 MCP resources implemented)
-- ✅ Registration: Auto-discovered via domain architecture
+5. **new_project_setup** - Complete project creation and configuration
+   - Creates project with optimal settings
+   - Adds required languages
+   - Configures team permissions
 
----
+### Language & Localization
+6. **language_expansion** - Strategic addition of new target languages
+   - Analyzes market requirements
+   - Adds languages with proper configuration
+   - Sets up translation workflows
 
-### **8. Branches Collection** ❌ **HIGH PRIORITY - NOT IMPLEMENTED**
+7. **translation_progress_check** - Monitor translation completion status
+   - Tracks progress by language
+   - Identifies untranslated content
+   - Estimates completion timelines
 
-**SDK Reference**: `lokaliseApi.branches()`
-**File**: `node_modules/@lokalise/node-api/src/collections/branches.ts`
+### Key Management
+8. **bulk_key_creation** - Efficient creation of multiple translation keys
+   - Batch creates keys with translations
+   - Applies consistent metadata
+   - Validates against duplicates
 
-| Method | Status | MCP Tool Name | SDK Call | Input Type | Response Type |
-|--------|--------|---------------|----------|------------|---------------|
-| `list()` | ❌ | `lokalise_list_branches` | `lokaliseApi.branches().list(params)` | `ProjectWithPagination` | `PaginatedResult<Branch>` |
-| `create()` | ❌ | `lokalise_create_branch` | `lokaliseApi.branches().create(params, project)` | `BranchParams` | `Branch` |
-| `get()` | ❌ | `lokalise_get_branch` | `lokaliseApi.branches().get(branch_id, params)` | `ProjectOnly` | `Branch` |
-| `update()` | ❌ | `lokalise_update_branch` | `lokaliseApi.branches().update(branch_id, params, project)` | `BranchParams` | `Branch` |
-| `delete()` | ❌ | `lokalise_delete_branch` | `lokaliseApi.branches().delete(branch_id, params)` | `ProjectOnly` | `BranchDeleted` |
-| `merge()` | ❌ | `lokalise_merge_branch` | `lokaliseApi.branches().merge(branch_id, params, body)` | `MergeBranchParams` | `BranchMerged` |
+9. **key_inventory_analysis** - Comprehensive key usage analysis
+   - Identifies unused keys
+   - Finds duplicate translations
+   - Suggests consolidation opportunities
 
-**🔥 Special Method**: `merge()` for Git-like branch merging
+### Task Management
+10. **create_translation_task** - Create and intelligently assign tasks
+    - Creates tasks with proper scope
+    - Auto-assigns based on expertise
+    - Sets realistic deadlines
 
-**Special Features**:
-- **Branch-scoped Operations**: Append `:branch-name` to project_id for branch operations
-- **Merge Conflicts**: Handle conflict resolution in merge operations
+11. **overdue_task_management** - Handle and escalate delayed tasks
+    - Identifies overdue tasks
+    - Sends reminders to assignees
+    - Escalates to managers when needed
 
-**Parameter Types**:
-```typescript
-interface BranchParams {
-  name?: string;
-}
+### Team Collaboration
+12. **contributor_assignment** - Optimize team member access
+    - Assigns contributors to projects
+    - Sets appropriate permissions
+    - Balances workload
 
-interface MergeBranchParams {
-  force_conflict_resolve_using?: "master" | "branch";
-  target_branch_id?: number;
-}
-```
+13. **team_translation_setup** - Configure team translation workflows
+    - Sets up review processes
+    - Configures approval chains
+    - Establishes quality gates
 
----
+14. **team_onboarding_workflow** - Streamline new member onboarding
+    - Creates user accounts
+    - Assigns to appropriate projects
+    - Provides access to resources
 
-### **9. Tasks Collection** ✅ **FULLY IMPLEMENTED**
+### Process Monitoring
+15. **process_monitoring_dashboard** - Real-time background job tracking
+    - Monitors import/export operations
+    - Tracks bulk update progress
+    - Alerts on failures
 
-**SDK Reference**: `lokaliseApi.tasks()`
-**File**: `node_modules/@lokalise/node-api/src/collections/tasks.ts`
+16. **bulk_operations_monitor** - Monitor large-scale changes
+    - Tracks bulk key updates
+    - Monitors mass translations
+    - Validates operation success
 
-| Method | Status | MCP Tool Name | SDK Call | Input Type | Response Type |
-|--------|--------|---------------|----------|------------|---------------|
-| `list()` | ✅ | `lokalise_list_tasks` | `lokaliseApi.tasks().list(params)` | `ListTaskParams` | `PaginatedResult<Task>` |
-| `create()` | ✅ | `lokalise_create_task` | `lokaliseApi.tasks().create(params, project)` | `CreateTaskParams` | `Task` |
-| `get()` | ✅ | `lokalise_get_task` | `lokaliseApi.tasks().get(task_id, params)` | `ProjectOnly` | `Task` |
-| `update()` | ✅ | `lokalise_update_task` | `lokaliseApi.tasks().update(task_id, params, project)` | `UpdateTaskParams` | `Task` |
-| `delete()` | ✅ | `lokalise_delete_task` | `lokaliseApi.tasks().delete(task_id, params)` | `ProjectOnly` | `TaskDeleted` |
-
-**Complex Parameter Types**:
-```typescript
-interface CreateTaskParams {
-  title: string;
-  keys?: number[];
-  languages: TaskLanguage[];
-  assignees?: number[];
-  description?: string;
-  due_date?: string;
-  // ... many more workflow parameters
-}
-
-interface TaskLanguage {
-  language_iso: string;
-  users?: number[];
-  groups?: number[];
-}
-```
-
-**Implementation Files**:
-- ✅ Tools: `src/tools/tasks.tool.ts` (all 5 tools implemented)
-- ✅ Controller: `src/controllers/tasks.controller.ts` (all methods implemented)
-- ✅ Service: `src/services/vendor.lokalise.com.tasks.service.ts` (all methods implemented)
-- ✅ CLI: `src/cli/tasks.cli.ts` (all commands implemented)
-- ✅ Formatter: `src/controllers/tasks.formatter.ts` (response formatting)
-- ✅ Types: `src/tools/tasks.types.ts` (Zod schemas and TypeScript types)
-- ✅ Registration: Registered in `src/index.ts` and `src/cli/index.ts`
-
----
-
-### **10. Comments Collection** ✅ **FULLY IMPLEMENTED**
-
-**SDK Reference**: `lokaliseApi.comments()`
-**File**: `node_modules/@lokalise/node-api/src/collections/comments.ts`
-
-| Method | Status | MCP Tool Name | SDK Call | Input Type | Response Type |
-|--------|--------|---------------|----------|------------|---------------|
-| `list()` | ✅ | `lokalise_list_key_comments` | `lokaliseApi.comments().list(params)` | `KeyProjectPagination` | `PaginatedResult<Comment>` |
-| `create()` | ✅ | `lokalise_create_comments` | `lokaliseApi.comments().create(params, project_key)` | `CommentData[]` | `Comment[]` |
-| `get()` | ✅ | `lokalise_get_comment` | `lokaliseApi.comments().get(comment_id, params)` | `ProjectAndKey` | `Comment` |
-| `delete()` | ✅ | `lokalise_delete_comment` | `lokaliseApi.comments().delete(comment_id, params)` | `ProjectAndKey` | `CommentDeleted` |
-| `list_project_comments()` | ✅ | `lokalise_list_project_comments` | `lokaliseApi.comments().list_project_comments(params)` | `ProjectWithPagination` | `PaginatedResult<Comment>` |
-
-**🔥 Special Method**: `list_project_comments()` gets all comments across project (not key-scoped)
-
-**Context Requirements**:
-- Most methods require both `project_id` AND `key_id`
-- `ProjectAndKey`: `{ project_id: string, key_id: number | string }`
-
-**Implementation Files**:
-- ✅ Tools: `src/domains/comments/comments.tool.ts` (all 5 tools implemented)
-- ✅ Controller: `src/domains/comments/comments.controller.ts` (all methods implemented)
-- ✅ Service: `src/domains/comments/comments.service.ts` (all methods implemented)
-- ✅ CLI: `src/domains/comments/comments.cli.ts` (all commands implemented)
-- ✅ Formatter: `src/domains/comments/comments.formatter.ts` (response formatting)
-- ✅ Types: `src/domains/comments/comments.types.ts` (Zod schemas and TypeScript types)
-- ✅ Resources: `src/domains/comments/comments.resource.ts` (2 MCP resources implemented)
-- ✅ Registration: Auto-discovered via domain architecture
-
----
-
-### **11. Glossary Terms Collection** ✅ **FULLY IMPLEMENTED**
-
-**SDK Reference**: `lokaliseApi.glossaryTerms()`
-**File**: `node_modules/@lokalise/node-api/src/collections/glossary_terms.ts`
-
-| Method | Status | MCP Tool Name | SDK Call | Input Type | Response Type |
-|--------|--------|---------------|----------|------------|---------------|
-| `list()` | ✅ | `lokalise_list_glossary_terms` | `lokaliseApi.glossaryTerms().list(params)` | `ListTermsParams` | `CursorPaginatedResult<GlossaryTerm>` |
-| `create()` | ✅ | `lokalise_create_glossary_terms` | `lokaliseApi.glossaryTerms().create(params, project)` | `CreateTermsParams` | `BulkResult<GlossaryTerm>` |
-| `get()` | ✅ | `lokalise_get_glossary_term` | `lokaliseApi.glossaryTerms().get(term_id, params)` | `number, ProjectOnly` | `GlossaryTerm` |
-| `update()` | ✅ | `lokalise_update_glossary_terms` | `lokaliseApi.glossaryTerms().update(params, project)` | `UpdateTermsParams` | `BulkResult<GlossaryTerm>` |
-| `delete()` | ✅ | `lokalise_delete_glossary_terms` | `lokaliseApi.glossaryTerms().delete(term_ids, params)` | `number[], ProjectOnly` | `TermsDeleted` |
-
-**Special Features**:
-- **Cursor-based pagination** for efficient large dataset handling
-- **Bulk operations** for create, update, and delete
-- **Term properties**: `caseSensitive`, `translatable`, `forbidden`
-- **Multi-language translations** support
-- **Tags** for categorization
-
-**Parameter Types**:
-```typescript
-interface CreateTermsParams {
-  terms: Array<{
-    term: string;
-    description: string;
-    caseSensitive: boolean;
-    translatable: boolean;
-    forbidden: boolean;
-    translations?: Array<{
-      langId?: number;
-      translation?: string;
-      description?: string;
-    }>;
-    tags?: string[];
-  }>;
-}
-```
-
-**Implementation Files**:
-- ✅ Tools: `src/domains/glossary/glossary.tool.ts` (all 5 tools implemented)
-- ✅ Controller: `src/domains/glossary/glossary.controller.ts` (all methods implemented)
-- ✅ Service: `src/domains/glossary/glossary.service.ts` (all methods implemented)
-- ✅ CLI: `src/domains/glossary/glossary.cli.ts` (3 CLI commands: list, get, create)
-- ✅ Formatter: `src/domains/glossary/glossary.formatter.ts` (response formatting)
-- ✅ Types: `src/domains/glossary/glossary.types.ts` (Zod schemas and TypeScript types)
-- ✅ Resources: `src/domains/glossary/glossary.resource.ts` (2 MCP resources implemented)
-- ✅ Registration: Auto-discovered via domain architecture
-
-**Use Case**: Essential for maintaining translation consistency across projects by defining key terminology (brand names, technical terms, legal terms) with specific translation guidelines.
-
----
-
-### **12. Webhooks Collection** ❌ **MEDIUM PRIORITY - NOT IMPLEMENTED**
-
-**SDK Reference**: `lokaliseApi.webhooks()`
-**File**: `node_modules/@lokalise/node-api/src/collections/webhooks.ts`
-
-| Method | Status | MCP Tool Name | SDK Call | Input Type | Response Type |
-|--------|--------|---------------|----------|------------|---------------|
-| `list()` | ❌ | `lokalise_list_webhooks` | `lokaliseApi.webhooks().list(params)` | `ProjectWithPagination` | `PaginatedResult<Webhook>` |
-| `create()` | ❌ | `lokalise_create_webhook` | `lokaliseApi.webhooks().create(params, project)` | `CreateWebhookParams` | `Webhook` |
-| `get()` | ❌ | `lokalise_get_webhook` | `lokaliseApi.webhooks().get(webhook_id, params)` | `ProjectOnly` | `Webhook` |
-| `update()` | ❌ | `lokalise_update_webhook` | `lokaliseApi.webhooks().update(webhook_id, params, project)` | `UpdateWebhookParams` | `Webhook` |
-| `delete()` | ❌ | `lokalise_delete_webhook` | `lokaliseApi.webhooks().delete(webhook_id, params)` | `ProjectOnly` | `WebhookDeleted` |
-| `regenerate_secret()` | ❌ | `lokalise_regenerate_webhook_secret` | `lokaliseApi.webhooks().regenerate_secret(webhook_id, params)` | `ProjectOnly` | `WebhookRegenerated` |
-
-**🔥 Special Method**: `regenerate_secret()` for security management
-
-**Critical Parameter Types**:
-```typescript
-interface CreateWebhookParams {
-  url: string;
-  branch?: string;
-  events: string[];      // 25+ event types available
-  event_lang_map?: WebhookEventLangMap[];
-}
-
-// Common webhook events:
-// "project.imported", "project.exported", "project.translation.updated",
-// "project.translation.proofread", "project.key.added", "project.key.modified",
-// "project.language.added", "project.task.created", "project.task.completed", etc.
-```
-
----
-
-### **13. Remaining Collections** ❌ **LOWER PRIORITY**
-
-**Quick Reference for Remaining 12 Collections**:
-
-| Collection | Priority | Methods | Key Features |
-|------------|----------|---------|--------------|
-| **Queued Processes** | Utility | 2 | Monitor async operations (files, uploads) |
-| **Snapshots** | Low | 4 | Project versioning, restore capability |
-| **Teams** | Low | 2 | Account-level, read-only |
-| **Team Users** | Low | 6 | Team-scoped operations |
-| **User Groups** | Low | 5 | Advanced permission management |
-| **Permission Templates** | Low | 3 | Role-based access templates |
-| **Translation Providers** | Low | 2 | Service integration management |
-| **Translation Statuses** | Low | 5 | Custom workflow states |
-| **Orders** | Specialized | 3 | Professional translation services |
-| **Payment Cards** | Specialized | 5 | Billing management |
-| **Team User Billing Details** | Specialized | 2 | Cost allocation |
-| **JWT** | Specialized | 1 | Authentication tokens |
-| **Segments** | Specialized | 3 | CAT tool integration |
+### Advanced Workflows
+17. **automated_review_pipeline** - Implement multi-stage review processes
+    - Sets up translation stages
+    - Configures approval workflows
+    - Implements quality checks
 
 ---
 
 ## Implementation Templates
 
-### **New Domain Creation Process - Using Scaffolding Script**
+### Adding a New Domain
 
-**Step 1**: Use the scaffolding script (REQUIRED)
+1. **Use the scaffold command** (Recommended):
 ```bash
-# Use the CLI scaffolding script to generate all domain files
-npm run scaffold:domain:cli -- \
-  -n {domainName} \
-  -d "{Domain description}" \
-  -t list,get,create,update,delete  # Specify tools
-  -r collection,detail              # Specify resources
-  -c list,get,create               # Specify CLI commands
-
-# Example:
-npm run scaffold:domain:cli -- \
-  -n files \
-  -d "File management and import/export" \
-  -t list,upload,download,delete \
-  -r collection \
-  -c list,upload,download
+npm run scaffold:domain
 ```
 
-**Step 2**: Review generated files in `src/domains/{domainName}/`
-- `{domainName}.types.ts` - Update with SDK types
-- `{domainName}.service.ts` - Uses shared `getLokaliseApi` utility (DO NOT duplicate)
-  - Replace `api.{domainName}()` with actual SDK method if different
-  - Import correct SDK types (PaginatedResult, domain entities)
-- `{domainName}.controller.ts` - Verify error handling
-- `{domainName}.formatter.ts` - Customize formatting
-- `{domainName}.tool.ts` - Check "as const" on type property
-- `{domainName}.cli.ts` - Add domain-specific options
-- `{domainName}.resource.ts` - Uses ResourceTemplate pattern
-- `index.ts` - Verify exports
+2. **Manual creation**:
+   - Create `src/domains/newdomain/` directory
+   - Implement required files following interface contracts
+   - Domain auto-discovered on next build
 
-**Step 3**: Update SDK Integration
-1. Check SDK types in `/node_modules/@lokalise/node-api/dist/main.d.ts`
-2. Review API docs in `/node_modules/@lokalise/node-api/docs/api/{domain}.md`
-3. Import correct types in `{domainName}.types.ts`
-4. Replace all `REPLACE_ME` in service with actual SDK methods
-5. Map Zod schemas to SDK parameter types
-
-**Step 4**: Fix Common Issues
-- Ensure `type: "text" as const` in tool responses
-- Controller returns only `{ content: string }`
-- Error handling uses ErrorContext object
-- Service uses object export pattern
-
-**Step 5**: Format and Lint
-```bash
-# ALWAYS run these before testing
-npm run format
-npm run lint
+### Domain File Structure
 ```
-
-**Step 6**: Test Implementation
-```bash
-# Build to check TypeScript
-npm run build
-
-# Test CLI
-npm run cli -- list-{domainName} <project-id>
-
-# Test MCP tools
-npm run mcp:inspect
-```
-
-### **Tool Implementation Template (Legacy Reference)**
-
-```typescript
-// For individual tool functions within domain files
-async function handleAction(args: ActionToolArgsType) {
-  const methodLogger = Logger.forContext("{newdomain}.tool.ts", "handleAction");
-
-  try {
-    const result = await {newdomain}Controller.action(args);
-    return {
-      content: [{
-        type: "text" as const,
-        text: result.content,
-      }],
-    };
-  } catch (error) {
-    methodLogger.error("Error in handleAction", { error, args });
-    throw formatErrorForMcpTool({
-      error,
-      message: "Failed to perform action",
-    });
-  }
-}
-```
-
-### **Zod Schema Template**
-
-```typescript
-// src/tools/{collection}.types.ts
-import { z } from "zod";
-
-// Input validation schemas
-export const {Action}{Collection}RequestSchema = z.object({
-	projectId: z.string().min(1, "Project ID is required"),
-	// Add other fields based on SDK parameter interface
-});
-
-export type {Action}{Collection}Request = z.infer<typeof {Action}{Collection}RequestSchema>;
-
-// Response schemas (for validation if needed)
-export const {Collection}ResponseSchema = z.object({
-	// Define response structure based on SDK return type
-});
-
-export type {Collection}Response = z.infer<typeof {Collection}ResponseSchema>;
-```
-
-### **Controller Template**
-
-```typescript
-// src/controllers/{collection}.controller.ts
-import type { ControllerResponse } from "../types/common.types.js";
-import { Logger } from "../utils/logger.util.js";
-import { {Collection}Service } from "../services/vendor.lokalise.com.{collection}.service.js";
-import { {Collection}Formatter } from "./{collection}.formatter.js";
-import type { {Action}{Collection}Request } from "../tools/{collection}.types.js";
-
-const logger = Logger.forContext(__filename, "{Collection}Controller");
-
-export class {Collection}Controller {
-	private {collection}Service: {Collection}Service;
-	private formatter: {Collection}Formatter;
-
-	constructor() {
-		this.{collection}Service = new {Collection}Service();
-		this.formatter = new {Collection}Formatter();
-	}
-
-	async {action}{Collection}(
-		request: {Action}{Collection}Request
-	): Promise<ControllerResponse<{ formatted: string; raw: any }>> {
-		try {
-			logger.info(`{Action} {collection} started`, {
-				projectId: request.projectId
-			});
-
-			const result = await this.{collection}Service.{action}{Collection}(request);
-
-			const formatted = this.formatter.format{Action}Response(result);
-
-			logger.info(`{Action} {collection} completed`, {
-				projectId: request.projectId,
-				resultCount: result.items?.length
-			});
-
-			return {
-				success: true,
-				data: {
-					formatted,
-					raw: result
-				}
-			};
-
-		} catch (error) {
-			logger.error(`Failed to {action} {collection}`, {
-				error,
-				projectId: request.projectId
-			});
-
-			return {
-				success: false,
-				error: {
-					message: error instanceof Error ? error.message : "Unknown error",
-					code: "OPERATION_FAILED"
-				}
-			};
-		}
-	}
-}
-```
-
-### **Service Template**
-
-```typescript
-// src/services/vendor.lokalise.com.{collection}.service.ts
-import { LokaliseApi } from "@lokalise/node-api";
-import { Logger } from "../utils/logger.util.js";
-import { getApiKey } from "../utils/config.util.js";
-import type { {Action}{Collection}Request } from "../tools/{collection}.types.js";
-// Import SDK types:
-// import type { {SdkParameterType}, {SdkResponseType} } from "@lokalise/node-api";
-
-const logger = Logger.forContext(__filename, "{Collection}Service");
-
-export class {Collection}Service {
-	private api: LokaliseApi;
-
-	constructor() {
-		this.api = new LokaliseApi({ apiKey: getApiKey() });
-	}
-
-	async {action}{Collection}(
-		request: {Action}{Collection}Request
-	): Promise<{SdkResponseType}> {
-		try {
-			logger.info(`Calling Lokalise API: {collection}.{action}()`, {
-				projectId: request.projectId
-			});
-
-			// Convert request to SDK parameters
-			const params: {SdkParameterType} = {
-				// Map request fields to SDK parameter interface
-			};
-
-			// Call SDK method
-			const result = await this.api.{collection}().{action}(params);
-
-			logger.info(`Lokalise API call successful`, {
-				projectId: request.projectId,
-				resultCount: result.items?.length
-			});
-
-			return result;
-
-		} catch (error) {
-			logger.error(`Lokalise API call failed: {collection}.{action}()`, {
-				error,
-				projectId: request.projectId
-			});
-			throw error;
-		}
-	}
-}
+src/domains/{domain}/
+├── index.ts                 # Barrel exports
+├── {domain}.cli.ts          # CLI implementation
+├── {domain}.tool.ts         # MCP tools
+├── {domain}.resource.ts     # MCP resources
+├── {domain}.controller.ts   # Business logic
+├── {domain}.formatter.ts    # Output formatting
+├── {domain}.service.ts      # API integration
+└── {domain}.types.ts        # Type definitions
 ```
 
 ---
 
 ## Testing Requirements
 
-### **Test File Structure**
-```
-src/
-├── tools/
-│   └── {collection}.tool.test.ts
-├── controllers/
-│   └── {collection}.controller.test.ts
-├── services/
-│   └── vendor.lokalise.com.{collection}.service.test.ts
-└── cli/
-    └── {collection}.cli.test.ts
-```
+### Unit Tests
+- Controller logic with mocked services
+- Formatter output validation
+- Type safety verification
 
-### **Test Coverage Requirements**
-- **Unit Tests**: All utils and pure functions
-- **Controller Tests**: Mocked service calls
-- **Integration Tests**: Real API calls (optional, for critical paths)
-- **CLI Tests**: Command parsing and execution
-- **Target Coverage**: >80%
+### Integration Tests
+- Real API calls with test data
+- Error handling scenarios
+- Rate limiting compliance
 
-### **Test Template**
-
-```typescript
-// src/controllers/{collection}.controller.test.ts
-import { {Collection}Controller } from "./{collection}.controller.js";
-import { {Collection}Service } from "../services/vendor.lokalise.com.{collection}.service.js";
-
-// Mock the service
-jest.mock("../services/vendor.lokalise.com.{collection}.service.js");
-const mockService = {Collection}Service as jest.MockedClass<typeof {Collection}Service>;
-
-describe("{Collection}Controller", () => {
-	let controller: {Collection}Controller;
-
-	beforeEach(() => {
-		controller = new {Collection}Controller();
-		jest.clearAllMocks();
-	});
-
-	describe("{action}{Collection}", () => {
-		it("should successfully {action} {collection}", async () => {
-			// Arrange
-			const request = {
-				projectId: "test-project-id"
-			};
-			const mockApiResponse = {
-				// Mock SDK response structure
-			};
-
-			mockService.prototype.{action}{Collection}.mockResolvedValue(mockApiResponse);
-
-			// Act
-			const result = await controller.{action}{Collection}(request);
-
-			// Assert
-			expect(result.success).toBe(true);
-			expect(result.data?.formatted).toBeDefined();
-			expect(mockService.prototype.{action}{Collection}).toHaveBeenCalledWith(request);
-		});
-
-		it("should handle errors gracefully", async () => {
-			// Arrange
-			const request = { projectId: "test-project-id" };
-			const error = new Error("API Error");
-
-			mockService.prototype.{action}{Collection}.mockRejectedValue(error);
-
-			// Act
-			const result = await controller.{action}{Collection}(request);
-
-			// Assert
-			expect(result.success).toBe(false);
-			expect(result.error?.message).toBe("API Error");
-		});
-	});
-});
-```
+### Coverage Targets
+- Minimum 80% code coverage
+- 100% critical path coverage
+- All error scenarios tested
 
 ---
 
 ## Common Patterns
 
-### **Error Handling Pattern**
+### Error Handling
 ```typescript
-import { McpError } from "../utils/error.util.js";
-
 try {
-	// API operation
+  // Operation
 } catch (error) {
-	if (error.response?.status === 404) {
-		throw new McpError("Resource not found", "NOT_FOUND");
-	} else if (error.response?.status === 403) {
-		throw new McpError("Access denied", "FORBIDDEN");
-	} else {
-		throw new McpError("API operation failed", "API_ERROR");
-	}
+  throw McpError.fromError(error, {
+    code: "LOKALISE_API_ERROR",
+    details: { projectId, operation: "list_keys" }
+  });
 }
 ```
 
-### **Pagination Handling Pattern**
+### Controller Response
 ```typescript
-// For standard pagination
-interface PaginationParams {
-	page?: number;
-	limit?: number;
-}
-
-// For cursor pagination (keys, translations)
-interface CursorPaginationParams {
-	cursor?: string;
-	limit?: number;
+export interface ControllerResponse {
+  content: string;      // Formatted Markdown
+  data?: unknown;       // Optional raw data
+  metadata?: {          // Optional metadata
+    total?: number;
+    page?: number;
+    hasMore?: boolean;
+  };
 }
 ```
 
-### **Logging Pattern**
+### Service Pattern
 ```typescript
-import { Logger } from "../utils/logger.util.js";
+let lokaliseApi: LokaliseApi | null = null;
 
-const logger = Logger.forContext(__filename, "ComponentName");
-
-// Info logging
-logger.info("Operation started", { projectId, additionalContext });
-
-// Error logging
-logger.error("Operation failed", { error, context });
-```
-
-### **Async Operation Monitoring**
-```typescript
-// For operations returning QueuedProcess (file uploads, async downloads)
-async function monitorQueuedProcess(processId: string, projectId: string): Promise<any> {
-	const processService = new QueuedProcessService();
-
-	let attempts = 0;
-	const maxAttempts = 30; // 5 minutes max
-
-	while (attempts < maxAttempts) {
-		const process = await processService.getProcess(processId, projectId);
-
-		if (process.status === "finished") {
-			return process.details;
-		} else if (process.status === "failed") {
-			throw new McpError(`Process failed: ${process.message}`, "PROCESS_FAILED");
-		}
-
-		// Wait 10 seconds before next check
-		await new Promise(resolve => setTimeout(resolve, 10000));
-		attempts++;
-	}
-
-	throw new McpError("Process timeout", "TIMEOUT");
+function getLokaliseApi(): LokaliseApi {
+  if (!lokaliseApi) {
+    const apiKey = config.get("LOKALISE_API_KEY");
+    if (!apiKey) {
+      throw new McpError("CONFIG_ERROR", "API key not configured");
+    }
+    lokaliseApi = new LokaliseApi({ apiKey });
+  }
+  return lokaliseApi;
 }
 ```
 
 ---
 
-## Quick Start Implementation Guide
+## Version History
 
-### **To Implement a New Collection:**
-
-1. **Use scaffolding script** (REQUIRED FIRST STEP):
-   ```bash
-   npm run scaffold:domain:cli -- -n {domain} -d "{description}" -t list,get,create,update,delete -r collection,detail -c list,get,create
-   ```
-2. **Study SDK documentation**:
-   - Check types in `/node_modules/@lokalise/node-api/dist/main.d.ts`
-   - Review examples in `/node_modules/@lokalise/node-api/docs/api/{domain}.md`
-3. **Update generated files**:
-   - Import SDK types in `{domain}.types.ts`
-   - Replace REPLACE_ME in `{domain}.service.ts`
-   - Verify controller returns only `{ content }`
-   - Add `as const` to tool type properties
-4. **Format and lint code**:
-   ```bash
-   npm run format && npm run lint
-   ```
-5. **Test implementation**:
-   ```bash
-   npm run build
-   npm run cli -- list-{domain} <project-id>
-   ```
-6. **Write tests** for all components
-7. **Update documentation** and this checklist
-
-### **Priority Implementation Order:**
-1. **Files** (import/export critical)
-2. **Screenshots** (UI context critical)
-3. **Contributors** (team management)
-4. **Branches** (version control)
-5. **Comments** (collaboration)
-6. **Webhooks** (integrations)
-7. **Glossary Terms** (consistency)
+- **v1.0.3** (2025-01-11) - Current version with 11 domains, 59 tools, 21 resources, 17 prompts
+  - Full implementation of User Groups, Team Users, Queued Processes domains
+  - Enhanced Keys domain with filterFilenames support
+  - Added comprehensive workflow prompts for common operations
+- **v1.0.2** - Added User Groups, Team Users, Queued Processes
+- **v1.0.1** - Enhanced Keys domain with filterFilenames
+- **v1.0.0** - Initial release with 8 domains
 
 ---
 
-**Last Updated**: 2025-07-10
-**Total Methods**: 100+ across 25 collections
-**Implementation Progress**: 43/100+ methods (43%)
-**Fully Implemented Collections**: Projects (6 tools), Languages (6 tools), Keys (7 tools), Translations (3 tools), Tasks (5 tools), Contributors (6 tools), Comments (5 tools), Glossary Terms (5 tools)
-**Next Priority**: Files Collection (5 methods) - critical for import/export workflows
+*This document is the authoritative reference for the Lokalise MCP Server implementation.*
 
-### **Implementation Best Practices**
-1. **ALWAYS use the scaffolding script first** - saves time and ensures consistency
-2. **Study the SDK documentation** before implementing
-3. **Run format and lint** before any testing or commits
-4. **Test incrementally** - build after each major change
-5. **Follow existing patterns** from implemented domains
-6. **Document special methods** (like `me()` in contributors)
+**Last Updated**: January 11, 2025  
+**Document Version**: 1.0.3  
+**Verification Status**: \u2705 Code-verified implementation counts

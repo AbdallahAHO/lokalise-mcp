@@ -15,13 +15,13 @@ import {
 } from "./keys.formatter.js";
 import * as keysService from "./keys.service.js";
 import type {
+	BulkDeleteKeysToolArgsType,
+	BulkUpdateKeysToolArgsType,
 	CreateKeysToolArgsType,
 	DeleteKeyToolArgsType,
 	GetKeyToolArgsType,
 	ListKeysToolArgsType,
 	UpdateKeyToolArgsType,
-	BulkUpdateKeysToolArgsType,
-	BulkDeleteKeysToolArgsType,
 } from "./keys.types.js";
 
 /**
@@ -63,6 +63,7 @@ async function listKeys(
 			include_translations: args.includeTranslations,
 			filter_keys: args.filterKeys,
 			filter_platforms: args.filterPlatforms,
+			filter_filenames: args.filterFilenames,
 			pagination: "cursor", // Use cursor pagination for better performance
 		};
 
