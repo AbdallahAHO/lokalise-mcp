@@ -1,0 +1,38 @@
+# Smithery configuration file: https://smithery.ai/docs/build/project-config
+
+startCommand:
+  type: http
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - LOKALISE_API_KEY
+    properties:
+      LOKALISE_API_KEY:
+        type: string
+        description: Your Lokalise API token
+      LOKALISE_API_HOSTNAME:
+        type: string
+        default: https://api.lokalise.com/api2/
+        description: Custom Lokalise API endpoint
+      debug_mode:
+        type: boolean
+        default: false
+        description: Enable debug_mode mode
+  commandFunction: |
+    (config) => ({
+      "command": "node",
+      "args": [
+        "dist/index.js"
+      ],
+      "env": {
+        "NODE_ENV": "production",
+        "LOKALISE_API_KEY": config.LOKALISE_API_KEY,
+        "LOKALISE_API_HOSTNAME": config.LOKALISE_API_HOSTNAME,
+        "DEBUG": config.debug_mode
+      }
+    })
+  exampleConfig:
+    LOKALISE_API_KEY: your_api_token_here
+    LOKALISE_API_HOSTNAME: https://api.lokalise.com/api2/
+    debug_mode: false

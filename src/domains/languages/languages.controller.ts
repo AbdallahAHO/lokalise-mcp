@@ -6,7 +6,6 @@ import type {
 	ApiRequestOptions,
 	ControllerResponse,
 } from "../../shared/types/common.types.js";
-import { config } from "../../shared/utils/config.util.js";
 import { ErrorType, McpError } from "../../shared/utils/error.util.js";
 import {
 	buildErrorContext,
@@ -56,11 +55,6 @@ async function listSystemLanguages(
 	methodLogger.debug("Getting Lokalise system languages list...");
 
 	try {
-		// Detect if we're running in a test environment
-		const isTestEnvironment =
-			process.env.NODE_ENV === "test" ||
-			process.env.JEST_WORKER_ID !== undefined;
-
 		// Apply defaults and validation
 		const options: ApiRequestOptions = {
 			limit: args.limit,
@@ -86,20 +80,11 @@ async function listSystemLanguages(
 			);
 		}
 
-		// Check for API token
-		const hasApiToken = Boolean(config.get("LOKALISE_API_KEY"));
-		if (!hasApiToken && !isTestEnvironment) {
-			throw new McpError(
-				"Lokalise API token is required. Please set LOKALISE_API_KEY environment variable.",
-				ErrorType.AUTH_MISSING,
-			);
-		}
+		// Note: API key validation is deferred to service layer for lazy loading
 
 		methodLogger.debug("Getting system languages from Lokalise", {
 			originalOptions: args,
 			options,
-			isTestEnvironment,
-			hasApiToken,
 		});
 
 		try {
@@ -161,11 +146,6 @@ async function listProjectLanguages(
 	methodLogger.debug("Getting Lokalise project languages...", args);
 
 	try {
-		// Detect if we're running in a test environment
-		const isTestEnvironment =
-			process.env.NODE_ENV === "test" ||
-			process.env.JEST_WORKER_ID !== undefined;
-
 		// Validate project ID
 		if (!args.projectId || typeof args.projectId !== "string") {
 			throw new McpError(
@@ -174,19 +154,10 @@ async function listProjectLanguages(
 			);
 		}
 
-		// Check for API token
-		const hasApiToken = Boolean(config.get("LOKALISE_API_KEY"));
-		if (!hasApiToken && !isTestEnvironment) {
-			throw new McpError(
-				"Lokalise API token is required. Please set LOKALISE_API_KEY environment variable.",
-				ErrorType.AUTH_MISSING,
-			);
-		}
+		// Note: API key validation is deferred to service layer for lazy loading
 
 		methodLogger.debug("Getting project languages from Lokalise", {
 			projectId: args.projectId,
-			isTestEnvironment,
-			hasApiToken,
 		});
 
 		try {
@@ -268,10 +239,6 @@ async function addProjectLanguages(
 	});
 
 	try {
-		const isTestEnvironment =
-			process.env.NODE_ENV === "test" ||
-			process.env.JEST_WORKER_ID !== undefined;
-
 		// Validate project ID
 		if (!args.projectId || typeof args.projectId !== "string") {
 			throw new McpError(
@@ -299,20 +266,11 @@ async function addProjectLanguages(
 			);
 		}
 
-		// Check for API token
-		const hasApiToken = Boolean(config.get("LOKALISE_API_KEY"));
-		if (!hasApiToken && !isTestEnvironment) {
-			throw new McpError(
-				"Lokalise API token is required. Please set LOKALISE_API_KEY environment variable.",
-				ErrorType.AUTH_MISSING,
-			);
-		}
+		// Note: API key validation is deferred to service layer for lazy loading
 
 		methodLogger.debug("Adding languages to Lokalise", {
 			projectId: args.projectId,
 			languageCount: args.languages.length,
-			isTestEnvironment,
-			hasApiToken,
 		});
 
 		try {
@@ -386,10 +344,6 @@ async function getLanguage(
 	methodLogger.debug("Getting Lokalise language details...", args);
 
 	try {
-		const isTestEnvironment =
-			process.env.NODE_ENV === "test" ||
-			process.env.JEST_WORKER_ID !== undefined;
-
 		// Validate project ID
 		if (!args.projectId || typeof args.projectId !== "string") {
 			throw new McpError(
@@ -410,20 +364,11 @@ async function getLanguage(
 			);
 		}
 
-		// Check for API token
-		const hasApiToken = Boolean(config.get("LOKALISE_API_KEY"));
-		if (!hasApiToken && !isTestEnvironment) {
-			throw new McpError(
-				"Lokalise API token is required. Please set LOKALISE_API_KEY environment variable.",
-				ErrorType.AUTH_MISSING,
-			);
-		}
+		// Note: API key validation is deferred to service layer for lazy loading
 
 		methodLogger.debug("Getting language details from Lokalise", {
 			projectId: args.projectId,
 			languageId: args.languageId,
-			isTestEnvironment,
-			hasApiToken,
 		});
 
 		try {
@@ -499,10 +444,6 @@ async function updateLanguage(
 	});
 
 	try {
-		const isTestEnvironment =
-			process.env.NODE_ENV === "test" ||
-			process.env.JEST_WORKER_ID !== undefined;
-
 		// Validate project ID
 		if (!args.projectId || typeof args.projectId !== "string") {
 			throw new McpError(
@@ -539,21 +480,12 @@ async function updateLanguage(
 			);
 		}
 
-		// Check for API token
-		const hasApiToken = Boolean(config.get("LOKALISE_API_KEY"));
-		if (!hasApiToken && !isTestEnvironment) {
-			throw new McpError(
-				"Lokalise API token is required. Please set LOKALISE_API_KEY environment variable.",
-				ErrorType.AUTH_MISSING,
-			);
-		}
+		// Note: API key validation is deferred to service layer for lazy loading
 
 		methodLogger.debug("Updating language in Lokalise", {
 			projectId: args.projectId,
 			languageId: args.languageId,
 			updateFields: Object.keys(args.languageData),
-			isTestEnvironment,
-			hasApiToken,
 		});
 
 		try {
@@ -630,10 +562,6 @@ async function removeLanguage(
 	methodLogger.debug("Removing Lokalise language...", args);
 
 	try {
-		const isTestEnvironment =
-			process.env.NODE_ENV === "test" ||
-			process.env.JEST_WORKER_ID !== undefined;
-
 		// Validate project ID
 		if (!args.projectId || typeof args.projectId !== "string") {
 			throw new McpError(
@@ -654,20 +582,11 @@ async function removeLanguage(
 			);
 		}
 
-		// Check for API token
-		const hasApiToken = Boolean(config.get("LOKALISE_API_KEY"));
-		if (!hasApiToken && !isTestEnvironment) {
-			throw new McpError(
-				"Lokalise API token is required. Please set LOKALISE_API_KEY environment variable.",
-				ErrorType.AUTH_MISSING,
-			);
-		}
+		// Note: API key validation is deferred to service layer for lazy loading
 
 		methodLogger.debug("Removing language from Lokalise", {
 			projectId: args.projectId,
 			languageId: args.languageId,
-			isTestEnvironment,
-			hasApiToken,
 		});
 
 		try {

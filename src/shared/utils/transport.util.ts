@@ -184,9 +184,16 @@ export async function fetchLokaliseApi<T>(
 	// Get credentials (token is required)
 	const credentials = getLokaliseApiCredentials();
 
-	// Construct the full URL
-	const baseUrl = "https://api.stage.lokalise.cloud/api2//api2";
-	const url = `${baseUrl}${path}`;
+	// Get the API hostname from configuration
+	const apiHostname =
+		config.get("LOKALISE_API_HOSTNAME") || "https://api.lokalise.com/api2/";
+
+	// Ensure the hostname ends with a slash and remove any duplicate slashes
+	const baseUrl = apiHostname.endsWith("/")
+		? apiHostname.slice(0, -1)
+		: apiHostname;
+	const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+	const url = `${baseUrl}${normalizedPath}`;
 
 	methodLogger.debug(`Constructed Lokalise API URL: ${url}`);
 

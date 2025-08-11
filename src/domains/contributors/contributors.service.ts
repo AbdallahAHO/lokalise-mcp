@@ -13,12 +13,8 @@ import type {
 	ContributorUpdateData,
 	PaginatedResult,
 } from "@lokalise/node-api";
-import { LokaliseApi } from "@lokalise/node-api";
-import { config } from "../../shared/utils/config.util.js";
-import {
-	createApiError,
-	createUnexpectedError,
-} from "../../shared/utils/error.util.js";
+import { createUnexpectedError } from "../../shared/utils/error.util.js";
+import { getLokaliseApi } from "../../shared/utils/lokalise-api.util.js";
 import { Logger } from "../../shared/utils/logger.util.js";
 import type {
 	AddContributorsToolArgsType,
@@ -34,28 +30,6 @@ const logger = Logger.forContext("contributors.service.ts");
 // ============================================================================
 // Service Implementation
 // ============================================================================
-
-let lokaliseApi: LokaliseApi | null = null;
-
-/**
- * Gets or creates the Lokalise API instance
- */
-function getLokaliseApi(): LokaliseApi {
-	if (!lokaliseApi) {
-		const apiKey = config.get("LOKALISE_API_KEY");
-		if (!apiKey) {
-			throw createApiError(
-				"LOKALISE_API_KEY is required but not found in configuration",
-				401,
-			);
-		}
-		const apiHost =
-			config.get("LOKALISE_API_HOSTNAME") ||
-			"https://api.stage.lokalise.cloud/api2/";
-		lokaliseApi = new LokaliseApi({ apiKey, host: apiHost });
-	}
-	return lokaliseApi;
-}
 
 /**
  * Contributors service for Lokalise API operations

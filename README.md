@@ -7,6 +7,7 @@
 
   **Bring the power of Lokalise to your AI assistant**
 
+  [![Smithery](https://smithery.cloud/status/@AbdallahAHO1/lokalise-mcp)](https://smithery.cloud/package/@AbdallahAHO1/lokalise-mcp)
   [![NPM Version](https://img.shields.io/npm/v/lokalise-mcp)](https://www.npmjs.com/package/lokalise-mcp)
   [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.0%2B-blue)](https://www.typescriptlang.org/)
@@ -56,6 +57,14 @@ The Lokalise MCP Server connects AI assistants like Claude to [Lokalise](https:/
 - Support for custom API endpoints
 
 ## 🚀 Quick Start
+
+### Installing via Smithery
+
+To install lokalise-mcp for Claude Desktop automatically via [Smithery](https://smithery.cloud/package/@AbdallahAHO1/lokalise-mcp):
+
+```bash
+npx -y @smithery/cli install @AbdallahAHO1/lokalise-mcp --client claude
+```
 
 ### Prerequisites
 - Node.js 18 or higher

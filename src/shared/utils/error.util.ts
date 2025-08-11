@@ -1,3 +1,4 @@
+import { config } from "./config.util.js";
 import { Logger } from "./logger.util.js";
 
 /**
@@ -414,7 +415,7 @@ export function handleCliError(error: unknown): never {
 	}
 
 	// Display DEBUG tip
-	if (process.env.DEBUG !== "mcp:*") {
+	if (!config.isDebugEnabled()) {
 		console.error(
 			"\nFor more detailed error information, run with DEBUG=mcp:* environment variable.",
 		);

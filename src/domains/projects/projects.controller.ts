@@ -6,7 +6,6 @@ import type {
 	ApiRequestOptions,
 	ControllerResponse,
 } from "../../shared/types/common.types.js";
-import { config } from "../../shared/utils/config.util.js";
 import { ErrorType, McpError } from "../../shared/utils/error.util.js";
 import {
 	buildErrorContext,
@@ -57,11 +56,6 @@ async function listProjects(
 	methodLogger.debug("Getting Lokalise projects list...");
 
 	try {
-		// Detect if we're running in a test environment
-		const isTestEnvironment =
-			process.env.NODE_ENV === "test" ||
-			process.env.JEST_WORKER_ID !== undefined;
-
 		// Apply defaults and validation
 		const options: ApiRequestOptions = {
 			limit: args.limit,
@@ -87,20 +81,10 @@ async function listProjects(
 			);
 		}
 
-		// Check for API token
-		const hasApiToken = Boolean(config.get("LOKALISE_API_KEY"));
-		if (!hasApiToken && !isTestEnvironment) {
-			throw new McpError(
-				"Lokalise API token is required. Please set LOKALISE_API_KEY environment variable.",
-				ErrorType.AUTH_MISSING,
-			);
-		}
-
+		// Note: API key validation is deferred to service layer for lazy loading
 		methodLogger.debug("Getting projects from Lokalise", {
 			originalOptions: args,
 			options,
-			isTestEnvironment,
-			hasApiToken,
 		});
 
 		try {
@@ -161,11 +145,6 @@ async function getProjectDetails(
 	methodLogger.debug("Getting Lokalise project details...", args);
 
 	try {
-		// Detect if we're running in a test environment
-		const isTestEnvironment =
-			process.env.NODE_ENV === "test" ||
-			process.env.JEST_WORKER_ID !== undefined;
-
 		// Validate project ID
 		if (!args.projectId || typeof args.projectId !== "string") {
 			throw new McpError(
@@ -174,19 +153,9 @@ async function getProjectDetails(
 			);
 		}
 
-		// Check for API token
-		const hasApiToken = Boolean(config.get("LOKALISE_API_KEY"));
-		if (!hasApiToken && !isTestEnvironment) {
-			throw new McpError(
-				"Lokalise API token is required. Please set LOKALISE_API_KEY environment variable.",
-				ErrorType.AUTH_MISSING,
-			);
-		}
-
+		// Note: API key validation is deferred to service layer for lazy loading
 		methodLogger.debug("Getting project details from Lokalise", {
 			projectId: args.projectId,
-			isTestEnvironment,
-			hasApiToken,
 		});
 
 		try {
@@ -265,10 +234,6 @@ async function createProject(
 	methodLogger.debug("Creating new Lokalise project...", args);
 
 	try {
-		const isTestEnvironment =
-			process.env.NODE_ENV === "test" ||
-			process.env.JEST_WORKER_ID !== undefined;
-
 		// Validate project name
 		if (
 			!args.name ||
@@ -288,21 +253,11 @@ async function createProject(
 			);
 		}
 
-		// Check for API token
-		const hasApiToken = Boolean(config.get("LOKALISE_API_KEY"));
-		if (!hasApiToken && !isTestEnvironment) {
-			throw new McpError(
-				"Lokalise API token is required. Please set LOKALISE_API_KEY environment variable.",
-				ErrorType.AUTH_MISSING,
-			);
-		}
-
+		// Note: API key validation is deferred to service layer for lazy loading
 		methodLogger.debug("Creating project in Lokalise", {
 			name: args.name,
 			hasDescription: Boolean(args.description),
 			baseLang: args.base_lang_iso || "en",
-			isTestEnvironment,
-			hasApiToken,
 		});
 
 		const projectData: CreateProjectParams = {
@@ -367,10 +322,6 @@ async function updateProject(
 	methodLogger.debug("Updating Lokalise project...", args);
 
 	try {
-		const isTestEnvironment =
-			process.env.NODE_ENV === "test" ||
-			process.env.JEST_WORKER_ID !== undefined;
-
 		// Validate project ID
 		if (!args.projectId || typeof args.projectId !== "string") {
 			throw new McpError(
@@ -395,20 +346,10 @@ async function updateProject(
 			);
 		}
 
-		// Check for API token
-		const hasApiToken = Boolean(config.get("LOKALISE_API_KEY"));
-		if (!hasApiToken && !isTestEnvironment) {
-			throw new McpError(
-				"Lokalise API token is required. Please set LOKALISE_API_KEY environment variable.",
-				ErrorType.AUTH_MISSING,
-			);
-		}
-
+		// Note: API key validation is deferred to service layer for lazy loading
 		methodLogger.debug("Updating project in Lokalise", {
 			projectId: args.projectId,
 			updateFields: Object.keys(args.projectData),
-			isTestEnvironment,
-			hasApiToken,
 		});
 
 		try {
@@ -481,10 +422,6 @@ async function deleteProject(
 	methodLogger.debug("Deleting Lokalise project...", args);
 
 	try {
-		const isTestEnvironment =
-			process.env.NODE_ENV === "test" ||
-			process.env.JEST_WORKER_ID !== undefined;
-
 		// Validate project ID
 		if (!args.projectId || typeof args.projectId !== "string") {
 			throw new McpError(
@@ -493,19 +430,9 @@ async function deleteProject(
 			);
 		}
 
-		// Check for API token
-		const hasApiToken = Boolean(config.get("LOKALISE_API_KEY"));
-		if (!hasApiToken && !isTestEnvironment) {
-			throw new McpError(
-				"Lokalise API token is required. Please set LOKALISE_API_KEY environment variable.",
-				ErrorType.AUTH_MISSING,
-			);
-		}
-
+		// Note: API key validation is deferred to service layer for lazy loading
 		methodLogger.debug("Deleting project in Lokalise", {
 			projectId: args.projectId,
-			isTestEnvironment,
-			hasApiToken,
 		});
 
 		try {
@@ -574,10 +501,6 @@ async function emptyProject(
 	methodLogger.debug("Emptying Lokalise project...", args);
 
 	try {
-		const isTestEnvironment =
-			process.env.NODE_ENV === "test" ||
-			process.env.JEST_WORKER_ID !== undefined;
-
 		// Validate project ID
 		if (!args.projectId || typeof args.projectId !== "string") {
 			throw new McpError(
@@ -586,19 +509,9 @@ async function emptyProject(
 			);
 		}
 
-		// Check for API token
-		const hasApiToken = Boolean(config.get("LOKALISE_API_KEY"));
-		if (!hasApiToken && !isTestEnvironment) {
-			throw new McpError(
-				"Lokalise API token is required. Please set LOKALISE_API_KEY environment variable.",
-				ErrorType.AUTH_MISSING,
-			);
-		}
-
+		// Note: API key validation is deferred to service layer for lazy loading
 		methodLogger.debug("Emptying project in Lokalise", {
 			projectId: args.projectId,
-			isTestEnvironment,
-			hasApiToken,
 		});
 
 		try {
