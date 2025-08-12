@@ -1,4 +1,14 @@
-## [1.0.4] - 2025-08-11
+## [1.0.5] - 2025-08-12
+
+### Added
+- New features go here
+
+### Changed
+- Changes go here
+
+### Fixed
+- Bug fixes go here
+
 
 ### Added
 - **Queued Processes Domain** (2 tools + 1 resource): Monitor and manage asynchronous operations

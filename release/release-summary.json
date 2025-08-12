@@ -1,19 +1,19 @@
 {
-	"version": "1.0.4",
-	"date": "2025-08-11T15:38:51.889Z",
+	"version": "1.0.5",
+	"date": "2025-08-12T09:17:25.228Z",
 	"assets": [
 		{
-			"filename": "lokalise-mcp-1.0.4.dxt",
-			"sha256": "675f7acb22801672679d273a67d94704ecc360059547b7ddbfad5eea1e772a70"
+			"filename": "lokalise-mcp-1.0.5.dxt",
+			"sha256": "c6c87d16f754fcd0be625a87228a7228d09ea16792676b27679a1b5687b23e30"
 		}
 	],
 	"npm": {
 		"package": "lokalise-mcp",
-		"version": "1.0.4",
+		"version": "1.0.5",
 		"registry": "https://registry.npmjs.org/"
 	},
 	"github": {
 		"repository": "AbdallahAHO/lokalise-mcp",
-		"tag": "v1.0.4"
+		"tag": "v1.0.5"
 	}
 }
