@@ -143,8 +143,29 @@ Notes:
 Install globally for persistent access:
 
 ```bash
-# Install globally
-npm install -g lokalise-mcp
+npx -y @smithery/cli@latest inspect @AbdallahAHO/lokalise-mcp
+```
+
+### Option 2: Claude Desktop Extension (DXT)
+
+Fast, local install for Claude Desktop using a packaged extension.
+
+1) Download the latest `.dxt` from Releases:
+   - https://github.com/AbdallahAHO/lokalise-mcp/releases
+
+2) Install in Claude Desktop:
+   - Double‑click the `.dxt` file, or
+   - Drag it into Claude Desktop → Settings → Extensions
+
+3) When prompted, enter your `LOKALISE_API_KEY` (stored securely in the OS keychain). No Node.js needed; Claude ships the runtime.
+
+4) Verify: ask “Can you list my Lokalise projects?”
+
+Notes:
+- Uses the `/mcp` HTTP endpoint internally and stdio as appropriate
+- Updates by installing a newer `.dxt` from Releases
+
+### Option 3: Local (clone + run)
 
 # Run the server
 lokalise-mcp

@@ -1,14 +1,10 @@
 ## [1.0.5] - 2025-08-12
 
 ### Added
-- New features go here
+- Improve the NPX setup
 
-### Changed
-- Changes go here
 
-### Fixed
-- Bug fixes go here
-
+## [1.0.4] - 2025-08-11
 
 ### Added
 - **Queued Processes Domain** (2 tools + 1 resource): Monitor and manage asynchronous operations
@@ -144,6 +140,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Commander.js for CLI framework
 - ES modules with Node.js >=18.0.0 requirement
 
+[1.0.5]: https://github.com/AbdallahAHO/lokalise-mcp/compare/v1.0.4...v1.0.5
 [1.0.4]: https://github.com/AbdallahAHO/lokalise-mcp/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/AbdallahAHO/lokalise-mcp/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/AbdallahAHO/lokalise-mcp/compare/v1.0.1...v1.0.2
