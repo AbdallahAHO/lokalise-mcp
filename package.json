@@ -1,6 +1,6 @@
 {
 	"name": "lokalise-mcp",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "The Lokalise MCP Server brings Lokalise's localization power to Claude and AI assistants—manage projects, keys, and translations by chat.",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -8,8 +8,12 @@
 		"type": "git",
 		"url": "git+https://github.com/AbdallahAHO/lokalise-mcp.git"
 	},
+	"bugs": {
+		"url": "https://github.com/AbdallahAHO/lokalise-mcp/issues"
+	},
+	"homepage": "https://github.com/AbdallahAHO/lokalise-mcp#readme",
 	"bin": {
-		"lokalise-mcp": "dist/index.js"
+		"lokalise-mcp": "bin/lokalise-mcp.js"
 	},
 	"type": "module",
 	"module": "dist/index.js",
@@ -29,8 +33,9 @@
 		"mcp:inspect": "dotenv npm run build && dotenv -- npx @modelcontextprotocol/inspector -e TRANSPORT_MODE=stdio -e DEBUG=true node dist/index.js",
 		"mcp:inspect:http": "dotenv npm run build && (dotenv -e TRANSPORT_MODE=http -- node dist/index.js &) && sleep 3 && dotenv -- npx @modelcontextprotocol/inspector http://localhost:3000/mcp",
 		"mcp:stdio": "dotenv npm run build && dotenv -e TRANSPORT_MODE=stdio -- node dist/index.js",
-		"postinstall": "node scripts/ensure-executable.js",
+		"postinstall": "node scripts/ensure-executable.js 2>/dev/null || true",
 		"prepare": "husky",
+		"prepublishOnly": "npm run clean && npm run build",
 		"release:checksums": "node scripts/generate-checksums.js",
 		"release:dry-run": "npm run build && npm run release:prepare && echo '✅ Dry run completed successfully'",
 		"release:prepare": "node scripts/prepare-release.js",
@@ -111,6 +116,15 @@
 		"registry": "https://registry.npmjs.org/",
 		"access": "public"
 	},
+	"files": [
+		"dist/**/*",
+		"bin/**/*",
+		"scripts/ensure-executable.js",
+		"manifest.json",
+		"README.md",
+		"LICENSE",
+		"CHANGELOG.md"
+	],
 	"lint-staged": {
 		"*.{js,ts,json}": [
 			"biome format --write",

@@ -138,7 +138,69 @@ Notes:
 - Uses the `/mcp` HTTP endpoint internally and stdio as appropriate
 - Updates by installing a newer `.dxt` from Releases
 
+### Option 3: NPM Global Install
+
+Install globally for persistent access:
+
+```bash
+npx -y @smithery/cli@latest inspect @AbdallahAHO/lokalise-mcp
+```
+
+### Option 2: Claude Desktop Extension (DXT)
+
+Fast, local install for Claude Desktop using a packaged extension.
+
+1) Download the latest `.dxt` from Releases:
+   - https://github.com/AbdallahAHO/lokalise-mcp/releases
+
+2) Install in Claude Desktop:
+   - Double‑click the `.dxt` file, or
+   - Drag it into Claude Desktop → Settings → Extensions
+
+3) When prompted, enter your `LOKALISE_API_KEY` (stored securely in the OS keychain). No Node.js needed; Claude ships the runtime.
+
+4) Verify: ask “Can you list my Lokalise projects?”
+
+Notes:
+- Uses the `/mcp` HTTP endpoint internally and stdio as appropriate
+- Updates by installing a newer `.dxt` from Releases
+
 ### Option 3: Local (clone + run)
+
+# Run the server
+lokalise-mcp
+```
+
+### Option 4: NPX (Quick Start)
+
+Use npx to run the server without installation:
+
+```bash
+# Run directly with npx
+npx lokalise-mcp
+
+# Or configure in Claude Desktop's config file:
+```
+
+**Claude Desktop Configuration** (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "lokalise": {
+      "command": "npx",
+      "args": ["-y", "lokalise-mcp"],
+      "env": {
+        "LOKALISE_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
+
+This will automatically download and run the latest version when Claude Desktop starts.
+
+### Option 4: Local (clone + run)
 
 Use this for development or when you prefer to run locally:
 

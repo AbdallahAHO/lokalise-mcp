@@ -191,38 +191,36 @@ jobs:
                   # Checkout develop
                   git checkout -B develop origin/develop
 
-                  # Try to merge main
-                  if git merge origin/main -m "chore: back-merge main to develop after v${{ steps.get-version.outputs.version }} release" --no-edit; then
-                      echo "✅ Merge successful"
+                  # Try to merge main with strategy to automatically resolve conflicts
+                  # Using -X theirs to always take changes from main when conflicts occur
+                  echo "🔄 Attempting to merge main into develop..."
+                  
+                  if git merge origin/main -X theirs -m "chore: back-merge main to develop after v${{ steps.get-version.outputs.version }} release" --no-edit; then
+                      echo "✅ Merge successful (conflicts auto-resolved using main's version)"
                       # Push to develop
                       git push origin develop
+                      echo "✅ Successfully pushed merged changes to develop"
                   else
-                      echo "⚠️ Merge conflicts detected. Creating a PR for manual resolution."
-
-                      # Create a branch for the back-merge
-                      BACKMERGE_BRANCH="backmerge/v${{ steps.get-version.outputs.version }}-to-develop"
-                      git checkout -b "$BACKMERGE_BRANCH"
-
-                      # Stage any resolved files (in case of partial auto-resolution)
-                      git add -A
-
-                      # Commit with conflicts markers if any
-                      git commit -m "chore: back-merge main to develop after v${{ steps.get-version.outputs.version }} release (with conflicts)" || true
-
-                      # Push the branch
-                      git push origin "$BACKMERGE_BRANCH"
-
-                      # Create a PR for manual resolution
-                      gh pr create \
-                        --title "Back-merge: v${{ steps.get-version.outputs.version }} from main to develop" \
-                        --body "This PR back-merges the changes from the v${{ steps.get-version.outputs.version }} release into develop.
-
-                        ⚠️ **Merge conflicts were detected and need manual resolution.**
-
-                        Please review and resolve any conflicts before merging." \
-                        --base develop \
-                        --head "$BACKMERGE_BRANCH" \
-                        --repo ${{ github.repository }} || echo "PR creation failed, please create manually"
+                      # This should rarely happen with -X theirs, but handle it just in case
+                      echo "⚠️ Unexpected merge failure even with auto-resolution. Attempting force resolution..."
+                      
+                      # Reset to develop and try a different approach
+                      git reset --hard origin/develop
+                      
+                      # Create a temporary branch from main
+                      git checkout -B temp-main origin/main
+                      
+                      # Merge develop into this branch (reverse merge) and take all from main
+                      git merge origin/develop --strategy=ours -m "chore: back-merge main to develop after v${{ steps.get-version.outputs.version }} release (force resolved)"
+                      
+                      # Now force push this as the new develop
+                      git branch -f develop HEAD
+                      git checkout develop
+                      
+                      # Push the resolved develop branch
+                      git push origin develop --force-with-lease
+                      
+                      echo "✅ Force-resolved conflicts by taking all changes from main"
                   fi
 
             # Step 12: Summary
