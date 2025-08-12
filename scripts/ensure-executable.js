@@ -7,9 +7,20 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
+const binScript = path.join(rootDir, "bin", "lokalise-mcp.js");
 const entryPoint = path.join(rootDir, "dist", "index.js");
 
 try {
+	// Make the bin script executable
+	if (fs.existsSync(binScript)) {
+		try {
+			fs.chmodSync(binScript, 0o755);
+		} catch (err) {
+			// Silently fail if chmod is not available (Windows, some containers)
+		}
+	}
+
+	// Also make the dist entry point executable if it exists
 	if (fs.existsSync(entryPoint)) {
 		// Ensure the file is executable (cross-platform)
 		const currentMode = fs.statSync(entryPoint).mode;

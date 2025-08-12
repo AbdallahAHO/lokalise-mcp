@@ -138,7 +138,48 @@ Notes:
 - Uses the `/mcp` HTTP endpoint internally and stdio as appropriate
 - Updates by installing a newer `.dxt` from Releases
 
-### Option 3: Local (clone + run)
+### Option 3: NPM Global Install
+
+Install globally for persistent access:
+
+```bash
+# Install globally
+npm install -g lokalise-mcp
+
+# Run the server
+lokalise-mcp
+```
+
+### Option 4: NPX (Quick Start)
+
+Use npx to run the server without installation:
+
+```bash
+# Run directly with npx
+npx lokalise-mcp
+
+# Or configure in Claude Desktop's config file:
+```
+
+**Claude Desktop Configuration** (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "lokalise": {
+      "command": "npx",
+      "args": ["-y", "lokalise-mcp"],
+      "env": {
+        "LOKALISE_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
+
+This will automatically download and run the latest version when Claude Desktop starts.
+
+### Option 4: Local (clone + run)
 
 Use this for development or when you prefer to run locally:
 
