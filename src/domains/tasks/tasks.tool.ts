@@ -56,7 +56,7 @@ async function handleListTasks(args: ListTasksToolArgsType) {
 		};
 	} catch (error) {
 		methodLogger.error("Error in handleListTasks", { error, args });
-		throw formatErrorForMcpTool(error);
+		return formatErrorForMcpTool(error);
 	}
 }
 
@@ -92,7 +92,7 @@ async function handleCreateTask(args: CreateTaskToolArgsType) {
 		};
 	} catch (error) {
 		methodLogger.error("Error in handleCreateTask", { error, args });
-		throw formatErrorForMcpTool(error);
+		return formatErrorForMcpTool(error);
 	}
 }
 
@@ -128,7 +128,7 @@ async function handleGetTask(args: GetTaskToolArgsType) {
 		};
 	} catch (error) {
 		methodLogger.error("Error in handleGetTask", { error, args });
-		throw formatErrorForMcpTool(error);
+		return formatErrorForMcpTool(error);
 	}
 }
 
@@ -164,7 +164,7 @@ async function handleUpdateTask(args: UpdateTaskToolArgsType) {
 		};
 	} catch (error) {
 		methodLogger.error("Error in handleUpdateTask", { error, args });
-		throw formatErrorForMcpTool(error);
+		return formatErrorForMcpTool(error);
 	}
 }
 
@@ -200,7 +200,7 @@ async function handleDeleteTask(args: DeleteTaskToolArgsType) {
 		};
 	} catch (error) {
 		methodLogger.error("Error in handleDeleteTask", { error, args });
-		throw formatErrorForMcpTool(error);
+		return formatErrorForMcpTool(error);
 	}
 }
 

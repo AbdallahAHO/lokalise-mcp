@@ -70,6 +70,10 @@ export function formatTasksList(
 		title: task.title || "Untitled",
 		status: task.status || "Unknown",
 		type: task.task_type || "Unknown",
+		sourceLanguage: task.source_language_iso || "Unknown",
+		progress: typeof task.progress === "number" ? `${task.progress}%` : "N/A",
+		keys: typeof task.keys_count === "number" ? task.keys_count : "N/A",
+		words: typeof task.words_count === "number" ? task.words_count : "N/A",
 		dueDate: formatDueDate(task.due_date),
 		created: formatCreatedDate(task.created_at),
 	}));
@@ -79,12 +83,26 @@ export function formatTasksList(
 		{ key: "title", header: "Title", maxWidth: 30 },
 		{ key: "status", header: "Status" },
 		{ key: "type", header: "Type" },
+		{ key: "progress", header: "Progress" },
+		{ key: "keys", header: "Keys" },
+		{ key: "words", header: "Words" },
 		{ key: "dueDate", header: "Due Date" },
 		{ key: "created", header: "Created" },
 	]);
 
 	lines.push(table);
 	lines.push("");
+
+	// Detailed snapshots per task covering all fields
+	lines.push(formatHeading("Detailed Task Snapshots", 2));
+	lines.push("");
+	for (const task of tasks) {
+		lines.push(
+			formatHeading(`Task #${task.task_id} – ${task.title || "Untitled"}`, 3),
+		);
+		lines.push(formatTaskSnapshot(task));
+		lines.push("");
+	}
 
 	// Summary
 	lines.push(formatHeading("Summary", 2));
@@ -135,6 +153,11 @@ export function formatTaskDetails(task: Task, projectId: string): string {
 		Description: task.description || "*No description provided*",
 		Type: task.task_type || "Unknown",
 		Status: task.status || "Unknown",
+		"Can Be Parent": boolToYesNo(task.can_be_parent),
+		"Parent Task ID": task.parent_task_id ?? "None",
+		"Closing Tags": formatArray(task.closing_tags),
+		"Lock Translations": boolToYesNo(task.do_lock_translations),
+		"Custom Status IDs": formatArray(task.custom_translation_status_ids),
 	};
 	lines.push(formatBulletList(coreInfo));
 	lines.push("");
@@ -153,57 +176,51 @@ export function formatTaskDetails(task: Task, projectId: string): string {
 		lines.push("");
 	}
 
-	// Language assignments
+	// Language assignments (detailed)
 	lines.push(formatHeading("Language Assignments", 2));
 	if (task.languages && task.languages.length > 0) {
 		lines.push(`**Target Languages:** ${task.languages.length}`);
 		lines.push("");
-
 		for (const language of task.languages) {
-			lines.push(formatHeading(language.language_iso.toUpperCase(), 3));
-			lines.push("");
-
-			if (language.users && language.users.length > 0) {
-				lines.push(`**Assigned Users (${language.users.length}):**`);
-				for (const user of language.users) {
-					lines.push(
-						`- ${user.fullname || user.email || `ID: ${user.user_id}`}`,
-					);
-				}
-				lines.push("");
-			}
-
-			if (language.groups && language.groups.length > 0) {
-				lines.push(`**Assigned Groups (${language.groups.length}):**`);
-				for (const group of language.groups) {
-					lines.push(`- ${group.name || `ID: ${group.id}`}`);
-				}
-				lines.push("");
-			}
-
-			if (
-				(!language.users || language.users.length === 0) &&
-				(!language.groups || language.groups.length === 0)
-			) {
-				lines.push("*No specific users or groups assigned to this language*");
-				lines.push("");
-			}
+			lines.push(formatLanguageDetails(language));
 		}
 	} else {
 		lines.push("*No languages assigned to this task*");
 		lines.push("");
 	}
 
-	// Task configuration
-	lines.push(formatHeading("Task Configuration", 2));
+	// Task configuration & metrics
+	lines.push(formatHeading("Configuration & Metrics", 2));
 	const configInfo: Record<string, unknown> = {
 		"Source Language": task.source_language_iso || "Not specified",
-		"Auto-close Languages": task.auto_close_languages ? "Yes" : "No",
-		"Auto-close Task": task.auto_close_task ? "Yes" : "No",
-		"Auto-close Items": task.auto_close_items ? "Yes" : "No",
-		"Lock Translations": task.do_lock_translations ? "Yes" : "No",
+		"Auto-close Languages": boolToYesNo(task.auto_close_languages),
+		"Auto-close Task": boolToYesNo(task.auto_close_task),
+		"Auto-close Items": boolToYesNo(task.auto_close_items),
+		"Total Keys": task.keys_count ?? 0,
+		"Total Words": task.words_count ?? 0,
+		"Overall Progress":
+			typeof task.progress === "number" ? `${task.progress}%` : "N/A",
 	};
 	lines.push(formatBulletList(configInfo));
+	lines.push("");
+
+	// Audit & completion
+	lines.push(formatHeading("Audit", 2));
+	const auditInfo: Record<string, unknown> = {
+		"Created By": task.created_by ?? "Unknown",
+		"Created By Email": task.created_by_email ?? "Unknown",
+		"Created At": task.created_at
+			? formatCreatedDateWithTime(task.created_at)
+			: "Unknown",
+		"Created At (ts)": task.created_at_timestamp ?? "N/A",
+		"Completed By": task.completed_by ?? "N/A",
+		"Completed By Email": task.completed_by_email ?? "N/A",
+		"Completed At": task.completed_at
+			? formatCreatedDateWithTime(task.completed_at)
+			: "N/A",
+		"Completed At (ts)": task.completed_at_timestamp ?? "N/A",
+	};
+	lines.push(formatBulletList(auditInfo));
 	lines.push("");
 
 	// Summary for LLM reasoning
@@ -584,5 +601,146 @@ function formatScheduleInfo(task: Task): string {
 	}
 
 	lines.push("");
+	return lines.join("\n");
+}
+
+// --- Additional rich formatters ---
+
+function boolToYesNo(value?: boolean): string {
+	return value ? "Yes" : "No";
+}
+
+function formatArray(arr?: Array<string | number> | null): string {
+	if (!arr || arr.length === 0) return "None";
+	return arr.join(", ");
+}
+
+function formatTaskSnapshot(task: Task): string {
+	const lines: string[] = [];
+
+	const meta: Record<string, unknown> = {
+		Status: task.status || "Unknown",
+		Type: task.task_type || "Unknown",
+		Progress: typeof task.progress === "number" ? `${task.progress}%` : "N/A",
+		"Due Date": task.due_date
+			? formatDueDateWithTime(task.due_date)
+			: "No deadline",
+		"Due Date (ts)": task.due_date_timestamp ?? "N/A",
+		"Created At": task.created_at
+			? formatCreatedDateWithTime(task.created_at)
+			: "Unknown",
+		"Created At (ts)": task.created_at_timestamp ?? "N/A",
+		"Created By": task.created_by ?? "Unknown",
+		"Created By Email": task.created_by_email ?? "Unknown",
+		"Completed At": task.completed_at
+			? formatCreatedDateWithTime(task.completed_at)
+			: "N/A",
+		"Completed At (ts)": task.completed_at_timestamp ?? "N/A",
+		"Completed By": task.completed_by ?? "N/A",
+		"Completed By Email": task.completed_by_email ?? "N/A",
+		"Can Be Parent": boolToYesNo(task.can_be_parent),
+		"Parent Task ID": task.parent_task_id ?? "None",
+		"Closing Tags": formatArray(task.closing_tags),
+		"Lock Translations": boolToYesNo(task.do_lock_translations),
+		"Custom Status IDs": formatArray(task.custom_translation_status_ids),
+		"Source Language": task.source_language_iso || "Not specified",
+		"Auto-close Languages": boolToYesNo(task.auto_close_languages),
+		"Auto-close Task": boolToYesNo(task.auto_close_task),
+		"Auto-close Items": boolToYesNo(task.auto_close_items),
+		"Total Keys": task.keys_count ?? 0,
+		"Total Words": task.words_count ?? 0,
+		"Target Languages": task.languages?.length ?? 0,
+	};
+
+	lines.push(formatBulletList(meta));
+	lines.push("");
+
+	if (task.languages && task.languages.length > 0) {
+		lines.push("**Languages:**");
+		for (const language of task.languages) {
+			lines.push(
+				`- ${language.language_iso.toUpperCase()} • status: ${language.status || "Unknown"} • progress: ${typeof language.progress === "number" ? `${language.progress}%` : "N/A"} • keys: ${language.keys_count ?? 0} • words: ${language.words_count ?? 0}`,
+			);
+		}
+		lines.push("");
+	}
+
+	return lines.join("\n");
+}
+
+function formatLanguageDetails(language: Task["languages"][number]): string {
+	const lines: string[] = [];
+	lines.push(formatHeading(language.language_iso.toUpperCase(), 3));
+	lines.push("");
+
+	const langInfo: Record<string, unknown> = {
+		Status: language.status || "Unknown",
+		Progress:
+			typeof language.progress === "number" ? `${language.progress}%` : "N/A",
+		"Keys Count": language.keys_count ?? 0,
+		"Words Count": language.words_count ?? 0,
+		"Completed At": language.completed_at || "N/A",
+		"Completed At (ts)": language.completed_at_timestamp ?? "N/A",
+		"Completed By": language.completed_by ?? "N/A",
+		"Completed By Email": language.completed_by_email ?? "N/A",
+	};
+	lines.push(formatBulletList(langInfo));
+	lines.push("");
+
+	if (Array.isArray(language.keys) && language.keys.length > 0) {
+		lines.push(`Keys scope: ${language.keys.length} key(s)`);
+	}
+
+	if (language.users && language.users.length > 0) {
+		lines.push(`Assigned Users (${language.users.length}):`);
+		for (const user of language.users) {
+			lines.push(`- ${user.fullname || user.email || `ID: ${user.user_id}`}`);
+		}
+		lines.push("");
+	}
+
+	if (language.groups && language.groups.length > 0) {
+		lines.push(`Assigned Groups (${language.groups.length}):`);
+		for (const group of language.groups) {
+			lines.push(`- ${group.name || `ID: ${group.id}`}`);
+		}
+		lines.push("");
+	}
+
+	// Leverage
+	if (language.initial_tm_leverage) {
+		lines.push("Initial TM Leverage:");
+		lines.push(formatLeverageBuckets(language.initial_tm_leverage));
+		lines.push("");
+	}
+	if (language.tm_leverage) {
+		lines.push(
+			`TM Leverage Status: ${language.tm_leverage.status || "Unknown"}`,
+		);
+		if (language.tm_leverage.value) {
+			lines.push(formatLeverageBuckets(language.tm_leverage.value));
+		}
+		lines.push("");
+	}
+
+	if (
+		(!language.users || language.users.length === 0) &&
+		(!language.groups || language.groups.length === 0)
+	) {
+		lines.push("*No specific users or groups assigned to this language*");
+		lines.push("");
+	}
+
+	return lines.join("\n");
+}
+
+function formatLeverageBuckets(value: Record<string, number>): string {
+	const orderedKeys = ["0%+", "50%+", "60%+", "75%+", "85%+", "95%+", "100%"];
+	const present = orderedKeys.filter((k) => k in value);
+	if (present.length === 0) return "- No leverage data";
+	const lines: string[] = [];
+	for (const k of present) {
+		lines.push(`- ${k}: ${value[k]}%`);
+	}
 	return lines.join("\n");
 }

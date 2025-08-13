@@ -1,3 +1,9 @@
+## [1.0.6] - 2025-08-13
+
+### Changed
+- Fixed the error handling in the MCP server for tasks domain and return formatErrorForMcpTool for all tools
+- Improved the tasks tool response formatting to include more information about the task
+
 ## [1.0.5] - 2025-08-12
 
 ### Added
