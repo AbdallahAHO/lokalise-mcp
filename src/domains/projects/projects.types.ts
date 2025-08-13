@@ -67,6 +67,18 @@ export const CreateProjectToolArgs = z
 			.optional()
 			.default("en")
 			.describe("Base language ISO code (default: 'en')"),
+		languages: z
+			.array(
+				z.object({
+					lang_iso: z
+						.string()
+						.describe("Language ISO code to initialize in the project"),
+				}),
+			)
+			.optional()
+			.describe(
+				"Initial project languages. If provided, should include base_lang_iso when base language is not 'en'",
+			),
 	})
 	.strict();
 

@@ -144,6 +144,7 @@ async function createProject(
 			name: projectData.name,
 			description: projectData.description,
 			base_lang_iso: projectData.base_lang_iso || "en",
+			languages: projectData.languages,
 		});
 
 		methodLogger.debug(
