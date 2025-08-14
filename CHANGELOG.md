@@ -1,5 +1,26 @@
-## [1.0.6] - 2025-08-13
+## [1.0.7] - 2025-08-14
 
+### Added
+- **Initial Languages Support on Project Creation**: Enhanced project creation to support specifying initial languages when creating a project, with automatic base language inclusion when it differs from English
+- **Comprehensive Test Coverage**: Added extensive test fixtures and snapshot tests for keys, projects, and tasks domains to improve reliability and maintainability
+- **Enhanced Key Name Display Logic**: Unified key name display logic into helper function for consistent formatting across the application
+
+### Changed
+- **Node.js Import Standards**: Updated native module imports to use explicit `node:` protocol for clarity and compliance with current Node.js standards
+- **TypeScript Build Optimization**: Excluded test and fixture files from TypeScript compilation to streamline build process
+- **Improved Error Handling**: Enhanced error handling in scripts with better variable naming to avoid linter warnings
+
+### Fixed
+- **Test Stability**: Implemented stable and repeatable test snapshots by mocking Date to fixed timestamps
+- **Language Code Handling**: Fixed language code handling in task formatters to safely support null/undefined values
+- **Test Coverage**: Added comprehensive test coverage for edge cases including nulls, invalid dates, long content, and markdown escaping
+
+### Developer Experience
+- **Test Infrastructure**: Added 2,130+ lines of test code including fixtures and snapshots
+- **Formatter Testing**: Comprehensive snapshot tests for keys, projects, and tasks formatting
+- **Edge Case Coverage**: Robust testing for special characters, long names, comments, and screenshots
+
+## [1.0.6] - 2025-08-14
 ### Changed
 - Fixed the error handling in the MCP server for tasks domain and return formatErrorForMcpTool for all tools
 - Improved the tasks tool response formatting to include more information about the task

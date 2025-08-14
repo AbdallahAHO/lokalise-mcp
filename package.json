@@ -1,6 +1,6 @@
 {
 	"name": "lokalise-mcp",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"description": "The Lokalise MCP Server brings Lokalise's localization power to Claude and AI assistants—manage projects, keys, and translations by chat.",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
