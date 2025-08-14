@@ -1,0 +1,754 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ProjectsFormatter Edge Cases should handle invalid date formats 1`] = `
+"# 🔴 Project: Demo Phoenix
+
+## 📋 Project Overview
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Project Type**: localization_files
+- **Base Language**: en (ID: 640)
+- **Team ID**: 176692
+- **Created**: Invalid date
+- **Created By**: bodrovis@protonmail.com
+- **Team UUID**: 9ef160a0-d4c7-45f5-ab80-bc9e22e95b12
+- **Description**: Description Phoenix
+
+## 📊 Project Statistics
+### Overall Progress
+- **Completion**: 32%
+- **Total Keys**: 77
+- **Base Words**: 343
+- **Team Members**: 7
+- **Active Languages**: 3
+- **QA Issues**: 256
+
+### 🌐 Language Progress
+🔄 **EN** (ID: 640): 96%
+⚠️ **AR_001** (ID: 731): 0% (343 words remaining)
+⚠️ **SQ** (ID: 803): 0% (343 words remaining)
+
+### 🔍 Quality Assurance Issues
+**Total Issues: 256**
+
+• **Not Reviewed**: 231 issues - *Translations pending review*
+• **Unverified**: 20 issues - *Translations not yet verified*
+• **Spelling/Grammar**: 5 issues - *Potential language quality issues*
+
+🔴 **QA Health Score**: 0.0%
+
+## ⚙️ Project Configuration
+- **Review Workflow**: ✅ Enabled
+- **Auto-toggle Unverified**: ✅ Enabled
+- **Offline Translation**: ✅ Enabled
+- **Per-platform Key Names**: ✅ Enabled
+- **Key Editing**: ✅ Enabled
+- **Inline Machine Translations**: ✅ Enabled
+- **Branching**: ✅ Enabled
+- **Segmentation**: ❌ Disabled
+- **Custom Translation Statuses**: ❌ Disabled
+- **Multiple Custom Statuses**: ❌ Disabled
+
+## 📋 Project Context
+• 📊 **Progress**: 32% complete
+• 🔑 **Scale**: 77 keys, 343 words
+• 👥 **Team**: 7 members
+• 🌐 **Languages**: 3 active
+• 📝 **Remaining Work**: 686 words
+
+## 🔗 Quick Actions
+• [📊 View Dashboard](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi)
+• [⚙️ Project Settings](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/settings)
+• [📈 Statistics](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/statistics)
+• [🔑 Keys](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/keys)
+• [🌐 Languages](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/languages)
+• [🔍 QA Issues](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/qa)
+
+---
+*Complete project data exported at 2024-01-15 10:30:00 UTC*
+*Project ID: \`803826145ba90b42d5d860.46800099\`*"
+`;
+
+exports[`ProjectsFormatter Edge Cases should handle null and undefined values gracefully 1`] = `
+"# ⚪ Project: null
+
+## 📋 Project Overview
+- **Project ID**: \`test-id\`
+- **Project Type**: localization_files
+- **Base Language**:  (ID: null)
+- **Created**: Not available
+- **Description**: *No description provided*
+
+## 📊 Project Statistics
+*No statistics available for this project*
+
+### ✅ Quality Assurance
+No QA issues detected.
+
+## ⚙️ Project Configuration
+*No configuration settings available*
+
+## 📋 Project Context
+
+## 🔗 Quick Actions
+• [📊 View Dashboard](https://app.stage.lokalise.cloud/project/test-id/?view=multi)
+• [⚙️ Project Settings](https://app.stage.lokalise.cloud/project/test-id/?view=multi/settings)
+• [📈 Statistics](https://app.stage.lokalise.cloud/project/test-id/?view=multi/statistics)
+• [🔑 Keys](https://app.stage.lokalise.cloud/project/test-id/?view=multi/keys)
+• [🌐 Languages](https://app.stage.lokalise.cloud/project/test-id/?view=multi/languages)
+
+---
+*Complete project data exported at 2024-01-15 10:30:00 UTC*
+*Project ID: \`test-id\`*"
+`;
+
+exports[`ProjectsFormatter Edge Cases should handle projects with zero statistics 1`] = `
+"# ⚪ Project: Demo Phoenix
+
+## 📋 Project Overview
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Project Type**: localization_files
+- **Base Language**: en (ID: 640)
+- **Team ID**: 176692
+- **Created**: 2018-09-24 14:05:22 UTC
+- **Created By**: bodrovis@protonmail.com
+- **Team UUID**: 9ef160a0-d4c7-45f5-ab80-bc9e22e95b12
+- **Description**: Description Phoenix
+
+## 📊 Project Statistics
+### Overall Progress
+- **Completion**: 0%
+- **Total Keys**: 0
+- **Base Words**: 0
+- **Team Members**: 0
+- **Active Languages**: 0
+- **QA Issues**: 0
+
+### ✅ Quality Assurance
+No QA issues detected.
+
+## ⚙️ Project Configuration
+- **Review Workflow**: ✅ Enabled
+- **Auto-toggle Unverified**: ✅ Enabled
+- **Offline Translation**: ✅ Enabled
+- **Per-platform Key Names**: ✅ Enabled
+- **Key Editing**: ✅ Enabled
+- **Inline Machine Translations**: ✅ Enabled
+- **Branching**: ✅ Enabled
+- **Segmentation**: ❌ Disabled
+- **Custom Translation Statuses**: ❌ Disabled
+- **Multiple Custom Statuses**: ❌ Disabled
+
+## 📋 Project Context
+• 📊 **Progress**: 0% complete
+• 🔑 **Scale**: 0 keys, 0 words
+• 👥 **Team**: 0 members
+• 🌐 **Languages**: 0 active
+
+## 🔗 Quick Actions
+• [📊 View Dashboard](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi)
+• [⚙️ Project Settings](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/settings)
+• [📈 Statistics](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/statistics)
+• [🔑 Keys](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/keys)
+• [🌐 Languages](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/languages)
+
+---
+*Complete project data exported at 2024-01-15 10:30:00 UTC*
+*Project ID: \`803826145ba90b42d5d860.46800099\`*"
+`;
+
+exports[`ProjectsFormatter Edge Cases should handle special characters in project names 1`] = `
+"# 🔴 Project: Project with **markdown** & <html> tags
+
+## 📋 Project Overview
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Project Type**: localization_files
+- **Base Language**: en (ID: 640)
+- **Team ID**: 176692
+- **Created**: 2018-09-24 14:05:22 UTC
+- **Created By**: bodrovis@protonmail.com
+- **Team UUID**: 9ef160a0-d4c7-45f5-ab80-bc9e22e95b12
+- **Description**: Contains | pipes | and [links](http://example.com)
+
+## 📊 Project Statistics
+### Overall Progress
+- **Completion**: 32%
+- **Total Keys**: 77
+- **Base Words**: 343
+- **Team Members**: 7
+- **Active Languages**: 3
+- **QA Issues**: 256
+
+### 🌐 Language Progress
+🔄 **EN** (ID: 640): 96%
+⚠️ **AR_001** (ID: 731): 0% (343 words remaining)
+⚠️ **SQ** (ID: 803): 0% (343 words remaining)
+
+### 🔍 Quality Assurance Issues
+**Total Issues: 256**
+
+• **Not Reviewed**: 231 issues - *Translations pending review*
+• **Unverified**: 20 issues - *Translations not yet verified*
+• **Spelling/Grammar**: 5 issues - *Potential language quality issues*
+
+🔴 **QA Health Score**: 0.0%
+
+## ⚙️ Project Configuration
+- **Review Workflow**: ✅ Enabled
+- **Auto-toggle Unverified**: ✅ Enabled
+- **Offline Translation**: ✅ Enabled
+- **Per-platform Key Names**: ✅ Enabled
+- **Key Editing**: ✅ Enabled
+- **Inline Machine Translations**: ✅ Enabled
+- **Branching**: ✅ Enabled
+- **Segmentation**: ❌ Disabled
+- **Custom Translation Statuses**: ❌ Disabled
+- **Multiple Custom Statuses**: ❌ Disabled
+
+## 📋 Project Context
+• 📊 **Progress**: 32% complete
+• 🔑 **Scale**: 77 keys, 343 words
+• 👥 **Team**: 7 members
+• 🌐 **Languages**: 3 active
+• 📝 **Remaining Work**: 686 words
+
+## 🔗 Quick Actions
+• [📊 View Dashboard](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi)
+• [⚙️ Project Settings](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/settings)
+• [📈 Statistics](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/statistics)
+• [🔑 Keys](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/keys)
+• [🌐 Languages](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/languages)
+• [🔍 QA Issues](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/qa)
+
+---
+*Complete project data exported at 2024-01-15 10:30:00 UTC*
+*Project ID: \`803826145ba90b42d5d860.46800099\`*"
+`;
+
+exports[`ProjectsFormatter Edge Cases should handle very long project names 1`] = `
+"# Lokalise Projects (1)
+
+## Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name 
+
+### Project Information
+- **Project ID**: 2273827860c1e2473eb195.11207948
+- **Base Language**: en
+- **Created**: 2021-06-10 07:58:31 UTC
+- **Created By**: bodrovis@protonmail.com
+- **Progress**: 0%
+- **Total Keys**: 0
+- **Languages**: 6
+
+### Dashboard
+[View in Lokalise Dashboard](https://app.stage.lokalise.cloud/project/2273827860c1e2473eb195.11207948/?view=multi)
+
+---
+*List retrieved at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`ProjectsFormatter formatCreateProjectResult should format project creation result 1`] = `
+"# Project Created Successfully
+
+## Project Information
+- **Project Name**: Node.js test
+- **Project ID**: 43820238650c56462a27f0.61419394
+- **Base Language**: en
+- **Created**: 2023-09-21 12:42:14 UTC
+- **Created By**: bodrovis@protonmail.com
+- **Description**: Test description
+
+## Next Steps
+- Add target languages to your project
+- Upload or create translation keys
+- Invite team members as translators
+- Set up integrations with your development workflow
+
+## Dashboard
+[Open Project in Lokalise Dashboard](https://app.stage.lokalise.cloud/project/43820238650c56462a27f0.61419394/?view=multi)
+
+---
+*Project created at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`ProjectsFormatter formatDeleteProjectResult should format project deletion result 1`] = `
+"# Project Deleted Successfully
+
+## Deletion Details
+- **Deleted Project ID**: [object Object]
+- **Deletion Time**: 2024-01-15 10:30:00 UTC
+- **Status**: Permanently deleted
+
+## ⚠️ Important
+- This action cannot be undone
+- All translation keys and data have been permanently removed
+- Team members will lose access to this project
+- Consider creating a backup before deleting projects in the future
+
+---
+*Project deleted at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`ProjectsFormatter formatDeleteProjectResult should handle failed deletion 1`] = `
+"# Project Deleted Successfully
+
+## Deletion Details
+- **Deleted Project ID**: [object Object]
+- **Deletion Time**: 2024-01-15 10:30:00 UTC
+- **Status**: Permanently deleted
+
+## ⚠️ Important
+- This action cannot be undone
+- All translation keys and data have been permanently removed
+- Team members will lose access to this project
+- Consider creating a backup before deleting projects in the future
+
+---
+*Project deleted at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`ProjectsFormatter formatEmptyProjectResult should format project empty result 1`] = `
+"# Project Emptied Successfully
+
+## Operation Details
+- **Project ID**: [object Object]
+- **Operation Time**: 2024-01-15 10:30:00 UTC
+- **Keys Deleted**: All translation keys removed
+- **Project Status**: Empty project retained
+
+## Next Steps
+- Upload new translation files or create new keys
+- Set up your project structure again
+- Import content from backup if needed
+- Configure project settings as required
+
+## Dashboard
+[View Project in Lokalise Dashboard](https://app.stage.lokalise.cloud/project/[object Object]/?view=multi)
+
+---
+*Project emptied at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`ProjectsFormatter formatEmptyProjectResult should handle large number of deleted keys 1`] = `
+"# Project Emptied Successfully
+
+## Operation Details
+- **Project ID**: [object Object]
+- **Operation Time**: 2024-01-15 10:30:00 UTC
+- **Keys Deleted**: All translation keys removed
+- **Project Status**: Empty project retained
+
+## Next Steps
+- Upload new translation files or create new keys
+- Set up your project structure again
+- Import content from backup if needed
+- Configure project settings as required
+
+## Dashboard
+[View Project in Lokalise Dashboard](https://app.stage.lokalise.cloud/project/[object Object]/?view=multi)
+
+---
+*Project emptied at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`ProjectsFormatter formatProjectDetails should format branch information 1`] = `
+"# 🔴 Project: Demo Phoenix
+
+## 📋 Project Overview
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Project Type**: localization_files
+- **Base Language**: en (ID: 640)
+- **Team ID**: 176692
+- **Created**: 2018-09-24 14:05:22 UTC
+- **Created By**: bodrovis@protonmail.com
+- **Team UUID**: 9ef160a0-d4c7-45f5-ab80-bc9e22e95b12
+- **Description**: Description Phoenix
+
+## 📊 Project Statistics
+### Overall Progress
+- **Completion**: 32%
+- **Total Keys**: 77
+- **Base Words**: 343
+- **Team Members**: 7
+- **Active Languages**: 3
+- **QA Issues**: 256
+
+### 🌐 Language Progress
+🔄 **EN** (ID: 640): 96%
+⚠️ **AR_001** (ID: 731): 0% (343 words remaining)
+⚠️ **SQ** (ID: 803): 0% (343 words remaining)
+
+### 🔍 Quality Assurance Issues
+**Total Issues: 256**
+
+• **Not Reviewed**: 231 issues - *Translations pending review*
+• **Unverified**: 20 issues - *Translations not yet verified*
+• **Spelling/Grammar**: 5 issues - *Potential language quality issues*
+
+🔴 **QA Health Score**: 0.0%
+
+## ⚙️ Project Configuration
+- **Review Workflow**: ✅ Enabled
+- **Auto-toggle Unverified**: ✅ Enabled
+- **Offline Translation**: ✅ Enabled
+- **Per-platform Key Names**: ✅ Enabled
+- **Key Editing**: ✅ Enabled
+- **Inline Machine Translations**: ✅ Enabled
+- **Branching**: ✅ Enabled
+- **Segmentation**: ❌ Disabled
+- **Custom Translation Statuses**: ❌ Disabled
+- **Multiple Custom Statuses**: ❌ Disabled
+
+## 📋 Project Context
+• 📊 **Progress**: 32% complete
+• 🔑 **Scale**: 77 keys, 343 words
+• 👥 **Team**: 7 members
+• 🌐 **Languages**: 3 active
+• 📝 **Remaining Work**: 686 words
+
+## 🔗 Quick Actions
+• [📊 View Dashboard](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi)
+• [⚙️ Project Settings](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/settings)
+• [📈 Statistics](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/statistics)
+• [🔑 Keys](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/keys)
+• [🌐 Languages](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/languages)
+• [🔍 QA Issues](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/qa)
+
+---
+*Complete project data exported at 2024-01-15 10:30:00 UTC*
+*Project ID: \`803826145ba90b42d5d860.46800099\`*"
+`;
+
+exports[`ProjectsFormatter formatProjectDetails should format detailed project information 1`] = `
+"# 🔴 Project: Demo Phoenix
+
+## 📋 Project Overview
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Project Type**: localization_files
+- **Base Language**: en (ID: 640)
+- **Team ID**: 176692
+- **Created**: 2018-09-24 14:05:22 UTC
+- **Created By**: bodrovis@protonmail.com
+- **Team UUID**: 9ef160a0-d4c7-45f5-ab80-bc9e22e95b12
+- **Description**: Description Phoenix
+
+## 📊 Project Statistics
+### Overall Progress
+- **Completion**: 32%
+- **Total Keys**: 77
+- **Base Words**: 343
+- **Team Members**: 7
+- **Active Languages**: 3
+- **QA Issues**: 256
+
+### 🌐 Language Progress
+🔄 **EN** (ID: 640): 96%
+⚠️ **AR_001** (ID: 731): 0% (343 words remaining)
+⚠️ **SQ** (ID: 803): 0% (343 words remaining)
+
+### 🔍 Quality Assurance Issues
+**Total Issues: 256**
+
+• **Not Reviewed**: 231 issues - *Translations pending review*
+• **Unverified**: 20 issues - *Translations not yet verified*
+• **Spelling/Grammar**: 5 issues - *Potential language quality issues*
+
+🔴 **QA Health Score**: 0.0%
+
+## ⚙️ Project Configuration
+- **Review Workflow**: ✅ Enabled
+- **Auto-toggle Unverified**: ✅ Enabled
+- **Offline Translation**: ✅ Enabled
+- **Per-platform Key Names**: ✅ Enabled
+- **Key Editing**: ✅ Enabled
+- **Inline Machine Translations**: ✅ Enabled
+- **Branching**: ✅ Enabled
+- **Segmentation**: ❌ Disabled
+- **Custom Translation Statuses**: ❌ Disabled
+- **Multiple Custom Statuses**: ❌ Disabled
+
+## 📋 Project Context
+• 📊 **Progress**: 32% complete
+• 🔑 **Scale**: 77 keys, 343 words
+• 👥 **Team**: 7 members
+• 🌐 **Languages**: 3 active
+• 📝 **Remaining Work**: 686 words
+
+## 🔗 Quick Actions
+• [📊 View Dashboard](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi)
+• [⚙️ Project Settings](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/settings)
+• [📈 Statistics](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/statistics)
+• [🔑 Keys](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/keys)
+• [🌐 Languages](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/languages)
+• [🔍 QA Issues](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/qa)
+
+---
+*Complete project data exported at 2024-01-15 10:30:00 UTC*
+*Project ID: \`803826145ba90b42d5d860.46800099\`*"
+`;
+
+exports[`ProjectsFormatter formatProjectDetails should format project with statistics 1`] = `
+"# 🔴 Project: Blog
+
+## 📋 Project Overview
+- **Project ID**: \`71749499610303a83ad8a2.67103833\`
+- **Project Type**: localization_files
+- **Base Language**: en (ID: 640)
+- **Team ID**: 176692
+- **Created**: 2021-07-29 17:38:16 UTC
+- **Created By**: bodrovis@protonmail.com
+- **Description**: *No description provided*
+
+## 📊 Project Statistics
+### Overall Progress
+- **Completion**: 65%
+- **Total Keys**: 60
+- **Base Words**: 293
+- **Team Members**: 3
+- **Active Languages**: 3
+- **QA Issues**: 307
+
+### 🌐 Language Progress
+🔄 **RU** (ID: 597): 99% (1 words remaining)
+🔄 **EN** (ID: 640): 96%
+⚠️ **FR** (ID: 673): 0% (293 words remaining)
+
+### 🔍 Quality Assurance Issues
+**Total Issues: 307**
+
+• **Not Reviewed**: 180 issues - *Translations pending review*
+• **Unverified**: 120 issues - *Translations not yet verified*
+• **Spelling/Grammar**: 7 issues - *Potential language quality issues*
+
+🔴 **QA Health Score**: 0.0%
+
+## ⚙️ Project Configuration
+- **Review Workflow**: ✅ Enabled
+- **Auto-toggle Unverified**: ✅ Enabled
+- **Offline Translation**: ✅ Enabled
+- **Per-platform Key Names**: ❌ Disabled
+- **Key Editing**: ✅ Enabled
+- **Inline Machine Translations**: ✅ Enabled
+- **Branching**: ✅ Enabled
+- **Segmentation**: ❌ Disabled
+- **Custom Translation Statuses**: ❌ Disabled
+- **Multiple Custom Statuses**: ❌ Disabled
+
+## 📋 Project Context
+• 📊 **Progress**: 65% complete
+• 🔑 **Scale**: 60 keys, 293 words
+• 👥 **Team**: 3 members
+• 🌐 **Languages**: 3 active
+• 📝 **Remaining Work**: 294 words
+
+## 🔗 Quick Actions
+• [📊 View Dashboard](https://app.stage.lokalise.cloud/project/71749499610303a83ad8a2.67103833/?view=multi)
+• [⚙️ Project Settings](https://app.stage.lokalise.cloud/project/71749499610303a83ad8a2.67103833/?view=multi/settings)
+• [📈 Statistics](https://app.stage.lokalise.cloud/project/71749499610303a83ad8a2.67103833/?view=multi/statistics)
+• [🔑 Keys](https://app.stage.lokalise.cloud/project/71749499610303a83ad8a2.67103833/?view=multi/keys)
+• [🌐 Languages](https://app.stage.lokalise.cloud/project/71749499610303a83ad8a2.67103833/?view=multi/languages)
+• [🔍 QA Issues](https://app.stage.lokalise.cloud/project/71749499610303a83ad8a2.67103833/?view=multi/qa)
+
+---
+*Complete project data exported at 2024-01-15 10:30:00 UTC*
+*Project ID: \`71749499610303a83ad8a2.67103833\`*"
+`;
+
+exports[`ProjectsFormatter formatProjectDetails should handle project without statistics 1`] = `
+"# ⚪ Project: Demo Phoenix
+
+## 📋 Project Overview
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Project Type**: localization_files
+- **Base Language**: en (ID: 640)
+- **Team ID**: 176692
+- **Created**: 2018-09-24 14:05:22 UTC
+- **Created By**: bodrovis@protonmail.com
+- **Team UUID**: 9ef160a0-d4c7-45f5-ab80-bc9e22e95b12
+- **Description**: Description Phoenix
+
+## 📊 Project Statistics
+*No statistics available for this project*
+
+### ✅ Quality Assurance
+No QA issues detected.
+
+## ⚙️ Project Configuration
+- **Review Workflow**: ✅ Enabled
+- **Auto-toggle Unverified**: ✅ Enabled
+- **Offline Translation**: ✅ Enabled
+- **Per-platform Key Names**: ✅ Enabled
+- **Key Editing**: ✅ Enabled
+- **Inline Machine Translations**: ✅ Enabled
+- **Branching**: ✅ Enabled
+- **Segmentation**: ❌ Disabled
+- **Custom Translation Statuses**: ❌ Disabled
+- **Multiple Custom Statuses**: ❌ Disabled
+
+## 📋 Project Context
+
+## 🔗 Quick Actions
+• [📊 View Dashboard](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi)
+• [⚙️ Project Settings](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/settings)
+• [📈 Statistics](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/statistics)
+• [🔑 Keys](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/keys)
+• [🌐 Languages](https://app.stage.lokalise.cloud/project/803826145ba90b42d5d860.46800099/?view=multi/languages)
+
+---
+*Complete project data exported at 2024-01-15 10:30:00 UTC*
+*Project ID: \`803826145ba90b42d5d860.46800099\`*"
+`;
+
+exports[`ProjectsFormatter formatProjectsList should format a list of projects with statistics 1`] = `
+"# Lokalise Projects (2)
+
+## Angular
+
+### Project Information
+- **Project ID**: 2273827860c1e2473eb195.11207948
+- **Base Language**: en
+- **Created**: 2021-06-10 07:58:31 UTC
+- **Created By**: bodrovis@protonmail.com
+- **Progress**: 0%
+- **Total Keys**: 0
+- **Languages**: 6
+
+### Project Statistics
+- **Progress**: 0%
+- **Total Keys**: 0
+- **Languages**: 6
+- **Team Members**: 7
+- **Base Words**: 0
+
+### Dashboard
+[View in Lokalise Dashboard](https://app.stage.lokalise.cloud/project/2273827860c1e2473eb195.11207948/?view=multi)
+
+## Blog
+
+### Project Information
+- **Project ID**: 71749499610303a83ad8a2.67103833
+- **Base Language**: en
+- **Created**: 2021-07-29 17:38:16 UTC
+- **Created By**: bodrovis@protonmail.com
+- **Progress**: 65%
+- **Total Keys**: 60
+- **Languages**: 3
+
+### Project Statistics
+- **Progress**: 65%
+- **Total Keys**: 60
+- **Languages**: 3
+- **Team Members**: 3
+- **Base Words**: 293
+- **QA Issues**: 307
+
+### Dashboard
+[View in Lokalise Dashboard](https://app.stage.lokalise.cloud/project/71749499610303a83ad8a2.67103833/?view=multi)
+
+---
+*List retrieved at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`ProjectsFormatter formatProjectsList should handle empty project list 1`] = `
+"# Lokalise Projects (0)
+
+No projects found. Create your first project in the Lokalise dashboard.
+
+---
+*List retrieved at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`ProjectsFormatter formatProjectsList should handle multiple projects 1`] = `
+"# Lokalise Projects (2)
+
+## Angular
+
+### Project Information
+- **Project ID**: 2273827860c1e2473eb195.11207948
+- **Base Language**: en
+- **Created**: 2021-06-10 07:58:31 UTC
+- **Created By**: bodrovis@protonmail.com
+- **Progress**: 0%
+- **Total Keys**: 0
+- **Languages**: 6
+
+### Dashboard
+[View in Lokalise Dashboard](https://app.stage.lokalise.cloud/project/2273827860c1e2473eb195.11207948/?view=multi)
+
+## Blog
+
+### Project Information
+- **Project ID**: 71749499610303a83ad8a2.67103833
+- **Base Language**: en
+- **Created**: 2021-07-29 17:38:16 UTC
+- **Created By**: bodrovis@protonmail.com
+- **Progress**: 65%
+- **Total Keys**: 60
+- **Languages**: 3
+
+### Dashboard
+[View in Lokalise Dashboard](https://app.stage.lokalise.cloud/project/71749499610303a83ad8a2.67103833/?view=multi)
+
+---
+*List retrieved at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`ProjectsFormatter formatProjectsList should handle project with statistics 1`] = `
+"# Lokalise Projects (1)
+
+## Blog
+
+### Project Information
+- **Project ID**: 71749499610303a83ad8a2.67103833
+- **Base Language**: en
+- **Created**: 2021-07-29 17:38:16 UTC
+- **Created By**: bodrovis@protonmail.com
+- **Progress**: 65%
+- **Total Keys**: 60
+- **Languages**: 3
+
+### Project Statistics
+- **Progress**: 65%
+- **Total Keys**: 60
+- **Languages**: 3
+- **Team Members**: 3
+- **Base Words**: 293
+- **QA Issues**: 307
+
+### Dashboard
+[View in Lokalise Dashboard](https://app.stage.lokalise.cloud/project/71749499610303a83ad8a2.67103833/?view=multi)
+
+---
+*List retrieved at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`ProjectsFormatter formatUpdateProjectResult should format project update result 1`] = `
+"# Project Updated Successfully
+
+## Updated Project Information
+- **Project Name**: Node.js test - Updated
+- **Project ID**: 43820238650c56462a27f0.61419394
+- **Base Language**: en
+- **Last Modified**: 2024-01-15 10:30:00 UTC
+- **Description**: Updated test description
+
+## Dashboard
+[View Project in Lokalise Dashboard](https://app.stage.lokalise.cloud/project/43820238650c56462a27f0.61419394/?view=multi)
+
+---
+*Project updated at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`ProjectsFormatter formatUpdateProjectResult should include current statistics if available 1`] = `
+"# Project Updated Successfully
+
+## Updated Project Information
+- **Project Name**: Blog
+- **Project ID**: 71749499610303a83ad8a2.67103833
+- **Base Language**: en
+- **Last Modified**: 2024-01-15 10:30:00 UTC
+
+## Dashboard
+[View Project in Lokalise Dashboard](https://app.stage.lokalise.cloud/project/71749499610303a83ad8a2.67103833/?view=multi)
+
+---
+*Project updated at 2024-01-15 10:30:00 UTC*"
+`;

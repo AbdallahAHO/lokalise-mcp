@@ -1,0 +1,506 @@
+import type {
+	Project,
+	ProjectDeleted,
+	ProjectEmptied,
+	PaginatedResult,
+} from "@lokalise/node-api";
+
+/**
+ * Test fixtures for Projects domain
+ * These are TypeScript objects based on actual API responses
+ */
+
+// Helper to create a base project object with default values
+const createBaseProject = (overrides: Partial<Project> = {}): Project => ({
+	project_id: "",
+	project_type: "localization_files",
+	name: "",
+	description: "",
+	created_at: "",
+	created_at_timestamp: 0,
+	created_by: 0,
+	created_by_email: "",
+	team_id: 0,
+	base_language_id: 640,
+	base_language_iso: "en",
+	settings: {
+		per_platform_key_names: false,
+		reviewing: true,
+		auto_toggle_unverified: true,
+		offline_translation: true,
+		key_editing: true,
+		inline_machine_translations: true,
+		branching: true,
+		segmentation: false,
+		contributor_preview_download_enabled: false,
+		custom_translation_statuses: false,
+		custom_translation_statuses_allow_multiple: false,
+	},
+	statistics: {
+		progress_total: 0,
+		keys_total: 0,
+		team: 0,
+		base_words: 0,
+		qa_issues_total: 0,
+		qa_issues: {
+			not_reviewed: 0,
+			unverified: 0,
+			spelling_grammar: 0,
+			inconsistent_placeholders: 0,
+			inconsistent_html: 0,
+			different_number_of_urls: 0,
+			different_urls: 0,
+			leading_whitespace: 0,
+			trailing_whitespace: 0,
+			different_number_of_email_address: 0,
+			different_email_address: 0,
+			different_brackets: 0,
+			different_numbers: 0,
+			double_space: 0,
+			special_placeholder: 0,
+			unbalanced_brackets: 0,
+		},
+		languages: [],
+	},
+	...overrides,
+});
+
+// List fixture - multiple projects (from list.json)
+export const projectsListFixture: Project[] = [
+	createBaseProject({
+		project_id: "2273827860c1e2473eb195.11207948",
+		project_type: "localization_files",
+		name: "Angular",
+		description: "",
+		created_at: "2021-06-10 09:58:31 (Etc/UTC)",
+		created_at_timestamp: 1623319111,
+		created_by: 20181,
+		created_by_email: "bodrovis@protonmail.com",
+		team_id: 176692,
+		base_language_id: 1055,
+		base_language_iso: "en",
+		statistics: {
+			progress_total: 0,
+			keys_total: 0,
+			team: 7,
+			base_words: 0,
+			qa_issues_total: 0,
+			qa_issues: {
+				not_reviewed: 0,
+				unverified: 0,
+				spelling_grammar: 0,
+				inconsistent_placeholders: 0,
+				inconsistent_html: 0,
+				different_number_of_urls: 0,
+				different_urls: 0,
+				leading_whitespace: 0,
+				trailing_whitespace: 0,
+				different_number_of_email_address: 0,
+				different_email_address: 0,
+				different_brackets: 0,
+				different_numbers: 0,
+				double_space: 0,
+				special_placeholder: 0,
+				unbalanced_brackets: 0,
+			},
+			languages: [
+				{
+					language_id: 1055,
+					language_iso: "en",
+					progress: 0,
+					words_to_do: 0,
+				},
+				{
+					language_id: 673,
+					language_iso: "fr",
+					progress: 0,
+					words_to_do: 0,
+				},
+				{
+					language_id: 734,
+					language_iso: "it",
+					progress: 0,
+					words_to_do: 0,
+				},
+				{
+					language_id: 10153,
+					language_iso: "lv",
+					progress: 0,
+					words_to_do: 0,
+				},
+				{
+					language_id: 748,
+					language_iso: "pl",
+					progress: 0,
+					words_to_do: 0,
+				},
+				{
+					language_id: 597,
+					language_iso: "ru",
+					progress: 0,
+					words_to_do: 0,
+				},
+			],
+		},
+	}),
+	createBaseProject({
+		project_id: "71749499610303a83ad8a2.67103833",
+		project_type: "localization_files",
+		name: "Blog",
+		description: "",
+		created_at: "2021-07-29 19:38:16 (Etc/UTC)",
+		created_at_timestamp: 1627587496,
+		created_by: 20181,
+		created_by_email: "bodrovis@protonmail.com",
+		team_id: 176692,
+		base_language_id: 640,
+		base_language_iso: "en",
+		statistics: {
+			progress_total: 65,
+			keys_total: 60,
+			team: 3,
+			base_words: 293,
+			qa_issues_total: 307,
+			qa_issues: {
+				not_reviewed: 180,
+				unverified: 120,
+				spelling_grammar: 7,
+				inconsistent_placeholders: 0,
+				inconsistent_html: 0,
+				different_number_of_urls: 0,
+				different_urls: 0,
+				leading_whitespace: 0,
+				trailing_whitespace: 0,
+				different_number_of_email_address: 0,
+				different_email_address: 0,
+				different_brackets: 0,
+				different_numbers: 0,
+				double_space: 0,
+				special_placeholder: 0,
+				unbalanced_brackets: 0,
+			},
+			languages: [
+				{
+					language_id: 640,
+					language_iso: "en",
+					progress: 96,
+					words_to_do: 0,
+				},
+				{
+					language_id: 673,
+					language_iso: "fr",
+					progress: 0,
+					words_to_do: 293,
+				},
+				{
+					language_id: 597,
+					language_iso: "ru",
+					progress: 99,
+					words_to_do: 1,
+				},
+			],
+		},
+	}),
+];
+
+// Pagination fixture (from list_pagination.json)
+export const projectPaginationFixture: Project = createBaseProject({
+	project_id: "71749499610303a83ad8a2.67103833",
+	project_type: "localization_files",
+	name: "Blog",
+	description: "",
+	created_at: "2021-07-29 19:38:16 (Etc/UTC)",
+	created_at_timestamp: 1627587496,
+	created_by: 20181,
+	created_by_email: "bodrovis@protonmail.com",
+	team_id: 176692,
+	base_language_id: 640,
+	base_language_iso: "en",
+	statistics: {
+		progress_total: 65,
+		keys_total: 60,
+		team: 3,
+		base_words: 293,
+		qa_issues_total: 307,
+		qa_issues: {
+			not_reviewed: 180,
+			unverified: 120,
+			spelling_grammar: 7,
+			inconsistent_placeholders: 0,
+			inconsistent_html: 0,
+			different_number_of_urls: 0,
+			different_urls: 0,
+			leading_whitespace: 0,
+			trailing_whitespace: 0,
+			different_number_of_email_address: 0,
+			different_email_address: 0,
+			different_brackets: 0,
+			different_numbers: 0,
+			double_space: 0,
+			special_placeholder: 0,
+			unbalanced_brackets: 0,
+		},
+		languages: [
+			{
+				language_id: 640,
+				language_iso: "en",
+				progress: 96,
+				words_to_do: 0,
+			},
+			{
+				language_id: 673,
+				language_iso: "fr",
+				progress: 0,
+				words_to_do: 293,
+			},
+			{
+				language_id: 597,
+				language_iso: "ru",
+				progress: 99,
+				words_to_do: 1,
+			},
+		],
+	},
+});
+
+// Retrieve fixture - single project with full details (from retrieve.json)
+export const projectRetrieveFixture: Project = createBaseProject({
+	project_id: "803826145ba90b42d5d860.46800099",
+	project_type: "localization_files",
+	name: "Demo Phoenix",
+	description: "Description Phoenix",
+	created_at: "2018-09-24 16:05:22 (Etc/UTC)",
+	created_at_timestamp: 1537805122,
+	created_by: 20181,
+	created_by_email: "bodrovis@protonmail.com",
+	team_id: 176692,
+	team_uuid: "9ef160a0-d4c7-45f5-ab80-bc9e22e95b12",
+	base_language_id: 640,
+	base_language_iso: "en",
+	settings: {
+		per_platform_key_names: true,
+		reviewing: true,
+		auto_toggle_unverified: true,
+		offline_translation: true,
+		key_editing: true,
+		inline_machine_translations: true,
+		branching: true,
+		segmentation: false,
+		contributor_preview_download_enabled: false,
+		custom_translation_statuses: false,
+		custom_translation_statuses_allow_multiple: false,
+	},
+	statistics: {
+		progress_total: 32,
+		keys_total: 77,
+		team: 7,
+		base_words: 343,
+		qa_issues_total: 256,
+		qa_issues: {
+			not_reviewed: 231,
+			unverified: 20,
+			spelling_grammar: 5,
+			inconsistent_placeholders: 0,
+			inconsistent_html: 0,
+			different_number_of_urls: 0,
+			different_urls: 0,
+			leading_whitespace: 0,
+			trailing_whitespace: 0,
+			different_number_of_email_address: 0,
+			different_email_address: 0,
+			different_brackets: 0,
+			different_numbers: 0,
+			double_space: 0,
+			special_placeholder: 0,
+			unbalanced_brackets: 0,
+		},
+		languages: [
+			{
+				language_id: 731,
+				language_iso: "ar_001",
+				progress: 0,
+				words_to_do: 343,
+			},
+			{
+				language_id: 640,
+				language_iso: "en",
+				progress: 96,
+				words_to_do: 0,
+			},
+			{
+				language_id: 803,
+				language_iso: "sq",
+				progress: 0,
+				words_to_do: 343,
+			},
+		],
+	},
+});
+
+// Create fixture - Project for creation (from create.json)
+export const projectCreateFixture: Project = createBaseProject({
+	project_id: "43820238650c56462a27f0.61419394",
+	project_type: "localization_files",
+	name: "Node.js test",
+	description: "Test description",
+	created_at: "2023-09-21 14:42:14 (Etc/UTC)",
+	created_at_timestamp: 1695307334,
+	created_by: 20181,
+	created_by_email: "bodrovis@protonmail.com",
+	team_id: 176692,
+	base_language_id: 640,
+	base_language_iso: "en",
+	settings: {
+		per_platform_key_names: false,
+		reviewing: true,
+		auto_toggle_unverified: true,
+		offline_translation: false,
+		key_editing: true,
+		inline_machine_translations: true,
+		branching: false,
+		segmentation: false,
+		contributor_preview_download_enabled: false,
+		custom_translation_statuses: false,
+		custom_translation_statuses_allow_multiple: false,
+	},
+	statistics: {
+		progress_total: 0,
+		keys_total: 0,
+		team: 1,
+		base_words: 0,
+		qa_issues_total: 0,
+		qa_issues: {
+			not_reviewed: 0,
+			unverified: 0,
+			spelling_grammar: 0,
+			inconsistent_placeholders: 0,
+			inconsistent_html: 0,
+			different_number_of_urls: 0,
+			different_urls: 0,
+			leading_whitespace: 0,
+			trailing_whitespace: 0,
+			different_number_of_email_address: 0,
+			different_email_address: 0,
+			different_brackets: 0,
+			different_numbers: 0,
+			double_space: 0,
+			special_placeholder: 0,
+			unbalanced_brackets: 0,
+		},
+		languages: [
+			{
+				language_id: 640,
+				language_iso: "en",
+				progress: 0,
+				words_to_do: 0,
+			},
+		],
+	},
+});
+
+// Update fixture - Project for update operations (based on create fixture with modifications)
+export const projectUpdateFixture: Project = createBaseProject({
+	project_id: "43820238650c56462a27f0.61419394",
+	project_type: "localization_files",
+	name: "Node.js test - Updated",
+	description: "Updated test description",
+	created_at: "2023-09-21 14:42:14 (Etc/UTC)",
+	created_at_timestamp: 1695307334,
+	created_by: 20181,
+	created_by_email: "bodrovis@protonmail.com",
+	team_id: 176692,
+	base_language_id: 640,
+	base_language_iso: "en",
+	settings: {
+		per_platform_key_names: false,
+		reviewing: true,
+		auto_toggle_unverified: true,
+		offline_translation: false,
+		key_editing: true,
+		inline_machine_translations: true,
+		branching: false,
+		segmentation: false,
+		contributor_preview_download_enabled: false,
+		custom_translation_statuses: false,
+		custom_translation_statuses_allow_multiple: false,
+	},
+	statistics: {
+		progress_total: 0,
+		keys_total: 0,
+		team: 1,
+		base_words: 0,
+		qa_issues_total: 0,
+		qa_issues: {
+			not_reviewed: 0,
+			unverified: 0,
+			spelling_grammar: 0,
+			inconsistent_placeholders: 0,
+			inconsistent_html: 0,
+			different_number_of_urls: 0,
+			different_urls: 0,
+			leading_whitespace: 0,
+			trailing_whitespace: 0,
+			different_number_of_email_address: 0,
+			different_email_address: 0,
+			different_brackets: 0,
+			different_numbers: 0,
+			double_space: 0,
+			special_placeholder: 0,
+			unbalanced_brackets: 0,
+		},
+		languages: [
+			{
+				language_id: 640,
+				language_iso: "en",
+				progress: 0,
+				words_to_do: 0,
+			},
+		],
+	},
+});
+
+// Delete fixture - ProjectDeleted (based on the project deletion)
+export const projectDeleteFixture: ProjectDeleted = {
+	project_id: "43820238650c56462a27f0.61419394",
+	project_deleted: true,
+};
+
+// Empty fixture - ProjectEmptied (from empty.json)
+export const projectEmptyFixture: ProjectEmptied = {
+	project_id: "43820238650c56462a27f0.61419394",
+	project_emptied: true,
+	keys_deleted: true,
+};
+
+// Empty list fixture - empty array for testing empty state
+export const projectsEmptyListFixture: Project[] = [];
+
+// Helper function to create mock PaginatedResult
+export const createMockPaginatedResult = <T>(
+	items: T[],
+	options: {
+		totalResults?: number;
+		totalPages?: number;
+		currentPage?: number;
+		resultsPerPage?: number;
+	} = {},
+): PaginatedResult<T> => {
+	const {
+		totalResults = items.length,
+		totalPages = 1,
+		currentPage = 1,
+		resultsPerPage = items.length,
+	} = options;
+
+	return {
+		items,
+		totalResults,
+		totalPages,
+		currentPage,
+		resultsPerPage,
+		hasNextPage: () => currentPage < totalPages,
+		hasPrevPage: () => currentPage > 1,
+		nextPage: () => Math.min(currentPage + 1, totalPages),
+		prevPage: () => Math.max(currentPage - 1, 1),
+	};
+};
