@@ -20,7 +20,7 @@ exports[`TasksFormatter Edge Cases should escape markdown special characters 1`]
 - **Due Date**: No deadline set
 - **Status**: ⚠️ **NO DEADLINE** - consider setting a due date
 
-- **Created**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created**: Invalid date
 
 ## Language Assignments
 **Target Languages:** 1
@@ -31,7 +31,7 @@ exports[`TasksFormatter Edge Cases should escape markdown special characters 1`]
 - **Progress**: 100%
 - **Keys Count**: 1
 - **Words Count**: 2
-- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC)
+- **Completed At**: 2019-10-01 11:09:04 UTC
 - **Completed At (ts)**: 1569928144
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
@@ -65,11 +65,11 @@ TM Leverage Status: completed
 ## Audit
 - **Created By**: 20181
 - **Created By Email**: bodrovis@protonmail.com
-- **Created At**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created At**: Invalid date
 - **Created At (ts)**: 1564589760
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
-- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC) (10/1/2019)
+- **Completed At**: Invalid date
 - **Completed At (ts)**: 1569928144
 
 ## Task Summary
@@ -114,7 +114,7 @@ exports[`TasksFormatter Edge Cases should handle invalid date formats 1`] = `
 - **Progress**: 100%
 - **Keys Count**: 1
 - **Words Count**: 2
-- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC)
+- **Completed At**: 2019-10-01 11:09:04 UTC
 - **Completed At (ts)**: 1569928144
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
@@ -152,7 +152,7 @@ TM Leverage Status: completed
 - **Created At (ts)**: 1564589760
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
-- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC) (10/1/2019)
+- **Completed At**: Invalid date
 - **Completed At (ts)**: 1569928144
 
 ## Task Summary
@@ -186,7 +186,7 @@ exports[`TasksFormatter Edge Cases should handle null and undefined values grace
 - **Due Date**: No deadline set
 - **Status**: ⚠️ **NO DEADLINE** - consider setting a due date
 
-- **Created**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created**: Invalid date
 
 ## Language Assignments
 **Target Languages:** 1
@@ -197,7 +197,7 @@ exports[`TasksFormatter Edge Cases should handle null and undefined values grace
 - **Progress**: 100%
 - **Keys Count**: 1
 - **Words Count**: 2
-- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC)
+- **Completed At**: 2019-10-01 11:09:04 UTC
 - **Completed At (ts)**: 1569928144
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
@@ -231,7 +231,7 @@ TM Leverage Status: completed
 ## Audit
 - **Created By**: 20181
 - **Created By Email**: bodrovis@protonmail.com
-- **Created At**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created At**: Invalid date
 - **Created At (ts)**: 1564589760
 - **Completed By**: N/A
 - **Completed By Email**: N/A
@@ -273,11 +273,11 @@ exports[`TasksFormatter Edge Cases should handle very long content appropriately
 - **Progress**: 0%
 - **Due Date**: No deadline
 - **Due Date (ts)**: N/A
-- **Created At**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created At**: Invalid date
 - **Created At (ts)**: 1564589760
 - **Created By**: 20181
 - **Created By Email**: bodrovis@protonmail.com
-- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC) (10/1/2019)
+- **Completed At**: Invalid date
 - **Completed At (ts)**: 1569928144
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
@@ -315,7 +315,7 @@ exports[`TasksFormatter formatCreateTaskResult should format task creation resul
 - **Title**: New Translation Task
 - **Type**: translation
 - **Status**: created
-- **Created**: 2024-01-15 10:00:00 (Etc/UTC) (1/15/2024)
+- **Created**: Invalid date
 - **Due Date**: 12/31/2024 at 11:59:59 PM
 
 ## Language Coverage
@@ -344,7 +344,7 @@ exports[`TasksFormatter formatCreateTaskResult should handle language coverage i
 - **Title**: New Translation Task
 - **Type**: translation
 - **Status**: created
-- **Created**: 2024-01-15 10:00:00 (Etc/UTC) (1/15/2024)
+- **Created**: Invalid date
 - **Due Date**: 12/31/2024 at 11:59:59 PM
 
 ## Language Coverage
@@ -373,7 +373,7 @@ exports[`TasksFormatter formatCreateTaskResult should suggest setting due date i
 - **Title**: New Translation Task
 - **Type**: translation
 - **Status**: created
-- **Created**: 2024-01-15 10:00:00 (Etc/UTC) (1/15/2024)
+- **Created**: Invalid date
 
 ## Language Coverage
 **1 language(s) configured:**
@@ -402,8 +402,8 @@ exports[`TasksFormatter formatCreateTaskResult should warn about approaching dea
 - **Title**: New Translation Task
 - **Type**: translation
 - **Status**: created
-- **Created**: 2024-01-15 10:00:00 (Etc/UTC) (1/15/2024)
-- **Due Date**: 1/16/2024 at 11:30:00 AM
+- **Created**: Invalid date
+- **Due Date**: 1/16/2024 at 10:30:00 AM
 
 ## Language Coverage
 **1 language(s) configured:**
@@ -505,7 +505,7 @@ exports[`TasksFormatter formatTaskDetails should format detailed task informatio
 - **Due Date**: No deadline set
 - **Status**: ⚠️ **NO DEADLINE** - consider setting a due date
 
-- **Created**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created**: Invalid date
 
 ## Language Assignments
 **Target Languages:** 1
@@ -516,7 +516,7 @@ exports[`TasksFormatter formatTaskDetails should format detailed task informatio
 - **Progress**: 100%
 - **Keys Count**: 1
 - **Words Count**: 2
-- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC)
+- **Completed At**: 2019-10-01 11:09:04 UTC
 - **Completed At (ts)**: 1569928144
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
@@ -550,11 +550,11 @@ TM Leverage Status: completed
 ## Audit
 - **Created By**: 20181
 - **Created By Email**: bodrovis@protonmail.com
-- **Created At**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created At**: Invalid date
 - **Created At (ts)**: 1564589760
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
-- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC) (10/1/2019)
+- **Completed At**: Invalid date
 - **Completed At (ts)**: 1569928144
 
 ## Task Summary
@@ -588,7 +588,7 @@ exports[`TasksFormatter formatTaskDetails should format schedule information cor
 - **Due Date**: No deadline set
 - **Status**: ⚠️ **NO DEADLINE** - consider setting a due date
 
-- **Created**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created**: Invalid date
 
 ## Language Assignments
 **Target Languages:** 1
@@ -599,7 +599,7 @@ exports[`TasksFormatter formatTaskDetails should format schedule information cor
 - **Progress**: 100%
 - **Keys Count**: 1
 - **Words Count**: 2
-- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC)
+- **Completed At**: 2019-10-01 11:09:04 UTC
 - **Completed At (ts)**: 1569928144
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
@@ -633,11 +633,11 @@ TM Leverage Status: completed
 ## Audit
 - **Created By**: 20181
 - **Created By Email**: bodrovis@protonmail.com
-- **Created At**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created At**: Invalid date
 - **Created At (ts)**: 1564589760
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
-- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC) (10/1/2019)
+- **Completed At**: Invalid date
 - **Completed At (ts)**: 1569928144
 
 ## Task Summary
@@ -671,7 +671,7 @@ exports[`TasksFormatter formatTaskDetails should handle overdue tasks 1`] = `
 - **Due Date**: 4/29/2019 at 10:00:00 PM
 - **Status**: 🔴 **OVERDUE** by 1721 days
 
-- **Created**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created**: Invalid date
 
 ## Language Assignments
 **Target Languages:** 1
@@ -682,7 +682,7 @@ exports[`TasksFormatter formatTaskDetails should handle overdue tasks 1`] = `
 - **Progress**: 100%
 - **Keys Count**: 1
 - **Words Count**: 2
-- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC)
+- **Completed At**: 2019-10-01 11:09:04 UTC
 - **Completed At (ts)**: 1569928144
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
@@ -716,11 +716,11 @@ TM Leverage Status: completed
 ## Audit
 - **Created By**: 20181
 - **Created By Email**: bodrovis@protonmail.com
-- **Created At**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created At**: Invalid date
 - **Created At (ts)**: 1564589760
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
-- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC) (10/1/2019)
+- **Completed At**: Invalid date
 - **Completed At (ts)**: 1569928144
 
 ## Task Summary
@@ -754,7 +754,7 @@ exports[`TasksFormatter formatTaskDetails should handle tasks with TM leverage d
 - **Due Date**: No deadline set
 - **Status**: ⚠️ **NO DEADLINE** - consider setting a due date
 
-- **Created**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created**: Invalid date
 
 ## Language Assignments
 **Target Languages:** 1
@@ -765,7 +765,7 @@ exports[`TasksFormatter formatTaskDetails should handle tasks with TM leverage d
 - **Progress**: 100%
 - **Keys Count**: 1
 - **Words Count**: 2
-- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC)
+- **Completed At**: 2019-10-01 11:09:04 UTC
 - **Completed At (ts)**: 1569928144
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
@@ -799,11 +799,11 @@ TM Leverage Status: completed
 ## Audit
 - **Created By**: 20181
 - **Created By Email**: bodrovis@protonmail.com
-- **Created At**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created At**: Invalid date
 - **Created At (ts)**: 1564589760
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
-- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC) (10/1/2019)
+- **Completed At**: Invalid date
 - **Completed At (ts)**: 1569928144
 
 ## Task Summary
@@ -837,7 +837,7 @@ exports[`TasksFormatter formatTaskDetails should handle tasks without languages 
 - **Due Date**: No deadline set
 - **Status**: ⚠️ **NO DEADLINE** - consider setting a due date
 
-- **Created**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created**: Invalid date
 
 ## Language Assignments
 *No languages assigned to this task*
@@ -854,11 +854,11 @@ exports[`TasksFormatter formatTaskDetails should handle tasks without languages 
 ## Audit
 - **Created By**: 20181
 - **Created By Email**: bodrovis@protonmail.com
-- **Created At**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created At**: Invalid date
 - **Created At (ts)**: 1564589760
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
-- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC) (10/1/2019)
+- **Completed At**: Invalid date
 - **Completed At (ts)**: 1569928144
 
 ## Task Summary
@@ -898,11 +898,11 @@ exports[`TasksFormatter formatTasksList should format a list of tasks with rich 
 - **Progress**: 0%
 - **Due Date**: No deadline
 - **Due Date (ts)**: N/A
-- **Created At**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created At**: Invalid date
 - **Created At (ts)**: 1564589760
 - **Created By**: 20181
 - **Created By Email**: bodrovis@protonmail.com
-- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC) (10/1/2019)
+- **Completed At**: Invalid date
 - **Completed At (ts)**: 1569928144
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
@@ -929,11 +929,11 @@ exports[`TasksFormatter formatTasksList should format a list of tasks with rich 
 - **Progress**: 0%
 - **Due Date**: No deadline
 - **Due Date (ts)**: N/A
-- **Created At**: 2019-05-13 16:15:26 (Etc/UTC) (5/13/2019)
+- **Created At**: Invalid date
 - **Created At (ts)**: 1557764126
 - **Created By**: 20181
 - **Created By Email**: bodrovis@protonmail.com
-- **Completed At**: 2019-10-01 11:09:12 (Etc/UTC) (10/1/2019)
+- **Completed At**: Invalid date
 - **Completed At (ts)**: 1569928152
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
@@ -961,11 +961,11 @@ exports[`TasksFormatter formatTasksList should format a list of tasks with rich 
 - **Progress**: 0%
 - **Due Date**: 4/29/2019 at 10:00:00 PM
 - **Due Date (ts)**: 1556575200
-- **Created At**: 2019-04-17 13:44:00 (Etc/UTC) (4/17/2019)
+- **Created At**: Invalid date
 - **Created At (ts)**: 1555508640
 - **Created By**: 20181
 - **Created By Email**: bodrovis@protonmail.com
-- **Completed At**: 2019-10-01 11:14:10 (Etc/UTC) (10/1/2019)
+- **Completed At**: Invalid date
 - **Completed At (ts)**: 1569928450
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
@@ -1019,11 +1019,11 @@ exports[`TasksFormatter formatTasksList should format task with language assignm
 - **Progress**: 0%
 - **Due Date**: 4/29/2019 at 10:00:00 PM
 - **Due Date (ts)**: 1556575200
-- **Created At**: 2019-04-17 13:44:00 (Etc/UTC) (4/17/2019)
+- **Created At**: Invalid date
 - **Created At (ts)**: 1555508640
 - **Created By**: 20181
 - **Created By Email**: bodrovis@protonmail.com
-- **Completed At**: 2019-10-01 11:14:10 (Etc/UTC) (10/1/2019)
+- **Completed At**: Invalid date
 - **Completed At (ts)**: 1569928450
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
@@ -1077,11 +1077,11 @@ exports[`TasksFormatter formatTasksList should handle due dates and overdue stat
 - **Progress**: 0%
 - **Due Date**: 4/29/2019 at 10:00:00 PM
 - **Due Date (ts)**: 1556575200
-- **Created At**: 2019-04-17 13:44:00 (Etc/UTC) (4/17/2019)
+- **Created At**: Invalid date
 - **Created At (ts)**: 1555508640
 - **Created By**: 20181
 - **Created By Email**: bodrovis@protonmail.com
-- **Completed At**: 2019-10-01 11:14:10 (Etc/UTC) (10/1/2019)
+- **Completed At**: Invalid date
 - **Completed At (ts)**: 1569928450
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
@@ -1159,11 +1159,11 @@ exports[`TasksFormatter formatTasksList should handle pagination information 1`]
 - **Progress**: 0%
 - **Due Date**: 4/29/2019 at 10:00:00 PM
 - **Due Date (ts)**: 1556575200
-- **Created At**: 2019-04-17 13:44:00 (Etc/UTC) (4/17/2019)
+- **Created At**: Invalid date
 - **Created At (ts)**: 1555508640
 - **Created By**: 20181
 - **Created By Email**: bodrovis@protonmail.com
-- **Completed At**: 2019-10-01 11:14:10 (Etc/UTC) (10/1/2019)
+- **Completed At**: Invalid date
 - **Completed At (ts)**: 1569928450
 - **Completed By**: 20181
 - **Completed By Email**: bodrovis@protonmail.com
@@ -1202,7 +1202,7 @@ exports[`TasksFormatter formatUpdateTaskResult should format task update result 
 - **Project**: \`803826145ba90b42d5d860.46800099\`
 - **Title**: demo task
 - **Status**: completed
-- **Last Modified**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Last Modified**: Invalid date
 
 ## Language Assignments
 **1 language(s) configured:**
@@ -1231,7 +1231,7 @@ exports[`TasksFormatter formatUpdateTaskResult should handle closed status 1`] =
 - **Project**: \`803826145ba90b42d5d860.46800099\`
 - **Title**: demo task
 - **Status**: closed
-- **Last Modified**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Last Modified**: Invalid date
 
 ## Language Assignments
 **1 language(s) configured:**
@@ -1260,7 +1260,7 @@ exports[`TasksFormatter formatUpdateTaskResult should handle completed status 1`
 - **Project**: \`803826145ba90b42d5d860.46800099\`
 - **Title**: demo task
 - **Status**: completed
-- **Last Modified**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Last Modified**: Invalid date
 
 ## Language Assignments
 **1 language(s) configured:**

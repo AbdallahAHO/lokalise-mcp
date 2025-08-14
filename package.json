@@ -42,8 +42,8 @@
 		"release:sign": "node scripts/sign-dxt.js",
 		"scaffold:domain": "node scripts/scaffold-domain.js",
 		"scaffold:domain:cli": "node scripts/scaffold-domain-cli.js",
-		"test": "NODE_OPTIONS='--experimental-vm-modules' jest",
-		"test:coverage": "NODE_OPTIONS='--experimental-vm-modules' jest --coverage",
+		"test": "TZ=UTC NODE_OPTIONS='--experimental-vm-modules' jest",
+		"test:coverage": "TZ=UTC NODE_OPTIONS='--experimental-vm-modules' jest --coverage",
 		"update:deps": "npx npm-check-updates -u && npm install --legacy-peer-deps",
 		"validate:manifest": "node scripts/generate-manifest.js --validate"
 	},

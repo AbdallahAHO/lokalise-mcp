@@ -141,7 +141,7 @@ describe("TasksFormatter", () => {
 		it("should handle due dates and overdue status", () => {
 			const overdueTask: Task = {
 				...taskPaginationFixture,
-				due_date: "2019-04-29 22:00:00 (Etc/UTC)",
+				due_date: "2019-04-29T22:00:00.000Z",
 				due_date_timestamp: 1556575200,
 			};
 
@@ -193,7 +193,7 @@ describe("TasksFormatter", () => {
 		it("should handle overdue tasks", () => {
 			const overdueTask: Task = {
 				...task,
-				due_date: "2019-04-29 22:00:00 (Etc/UTC)",
+				due_date: "2019-04-29T22:00:00.000Z",
 				due_date_timestamp: 1556575200,
 			};
 

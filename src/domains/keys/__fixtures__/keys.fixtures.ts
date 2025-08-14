@@ -62,7 +62,7 @@ const createBaseKeyWithTranslations = (overrides: Partial<Key> = {}): Key => ({
 export const keysListFixture: Key[] = [
 	createBaseKey({
 		key_id: 15519786,
-		created_at: "2018-12-09 18:39:20 (Etc/UTC)",
+		created_at: "2018-12-09T18:39:20.000Z",
 		created_at_timestamp: 1544380760,
 		key_name: {
 			ios: "another_k",
@@ -90,7 +90,7 @@ export const keysListFixture: Key[] = [
 	}),
 	createBaseKey({
 		key_id: 15571975,
-		created_at: "2018-12-10 17:35:34 (Etc/UTC)",
+		created_at: "2018-12-10T17:35:34.000Z",
 		created_at_timestamp: 1544463334,
 		key_name: {
 			ios: "rspec k",
@@ -122,7 +122,7 @@ export const keysListFixture: Key[] = [
 export const keysCursorPaginationFixture: Key[] = [
 	createBaseKey({
 		key_id: 15519786,
-		created_at: "2018-12-09 18:39:20 (Etc/UTC)",
+		created_at: "2018-12-09T18:39:20.000Z",
 		created_at_timestamp: 1544380760,
 		key_name: {
 			ios: "another_k",
@@ -150,7 +150,7 @@ export const keysCursorPaginationFixture: Key[] = [
 	}),
 	createBaseKey({
 		key_id: 15571975,
-		created_at: "2018-12-10 17:35:34 (Etc/UTC)",
+		created_at: "2018-12-10T17:35:34.000Z",
 		created_at_timestamp: 1544463334,
 		key_name: {
 			ios: "rspec k",
@@ -181,7 +181,7 @@ export const keysCursorPaginationFixture: Key[] = [
 // Retrieve fixture - single key with full details (from retrieve.json)
 export const keyRetrieveFixture: Key = createBaseKeyWithTranslations({
 	key_id: 74189435,
-	created_at: "2021-01-29 17:34:16 (Etc/UTC)",
+	created_at: "2021-01-29T17:34:16.000Z",
 	created_at_timestamp: 1611941656,
 	key_name: {
 		ios: "callback",
@@ -205,7 +205,7 @@ export const keyRetrieveFixture: Key = createBaseKeyWithTranslations({
 			comment: "Single",
 			added_by: 20181,
 			added_by_email: "bodrovis@protonmail.com",
-			added_at: "2023-09-19 13:26:15 (Etc/UTC)",
+			added_at: "2023-09-19T13:26:15.000Z",
 			added_at_timestamp: 1695129975,
 		},
 	],
@@ -219,7 +219,7 @@ export const keyRetrieveFixture: Key = createBaseKeyWithTranslations({
 			translation: "",
 			modified_by: 20181,
 			modified_by_email: "bodrovis@protonmail.com",
-			modified_at: "2021-01-29 17:34:16 (Etc/UTC)",
+			modified_at: "2021-01-29T17:34:16.000Z",
 			modified_at_timestamp: 1611941656,
 			is_reviewed: false,
 			reviewed_by: 0,
@@ -238,9 +238,9 @@ export const keyRetrieveFixture: Key = createBaseKeyWithTranslations({
 	base_words: 5,
 	char_limit: 0,
 	custom_attributes: "",
-	modified_at: "2023-09-19 13:26:15 (Etc/UTC)",
+	modified_at: "2023-09-19T13:26:15.000Z",
 	modified_at_timestamp: 1695129975,
-	translations_modified_at: "2021-07-27 10:42:09 (Etc/UTC)",
+	translations_modified_at: "2021-07-27T10:42:09.000Z",
 	translations_modified_at_timestamp: 1627382529,
 });
 
@@ -249,7 +249,7 @@ export const keyCreateFixture: BulkResult<Key> = {
 	items: [
 		createBaseKeyWithTranslations({
 			key_id: 378217831,
-			created_at: "2023-09-21 12:18:47 (Etc/UTC)",
+			created_at: "2023-09-21T12:18:47.000Z",
 			created_at_timestamp: 1695298727,
 			key_name: {
 				ios: "welcome_web_new",
@@ -277,7 +277,7 @@ export const keyCreateFixture: BulkResult<Key> = {
 					translation: "Welcome",
 					modified_by: 20181,
 					modified_by_email: "bodrovis@protonmail.com",
-					modified_at: "2023-09-21 12:18:47 (Etc/UTC)",
+					modified_at: "2023-09-21T12:18:47.000Z",
 					modified_at_timestamp: 1695298727,
 					is_reviewed: false,
 					reviewed_by: 0,
@@ -295,7 +295,7 @@ export const keyCreateFixture: BulkResult<Key> = {
 					translation: "",
 					modified_by: 20181,
 					modified_by_email: "bodrovis@protonmail.com",
-					modified_at: "2023-09-21 12:18:47 (Etc/UTC)",
+					modified_at: "2023-09-21T12:18:47.000Z",
 					modified_at_timestamp: 1695298727,
 					is_reviewed: false,
 					reviewed_by: 0,
@@ -313,7 +313,7 @@ export const keyCreateFixture: BulkResult<Key> = {
 					translation: "",
 					modified_by: 20181,
 					modified_by_email: "bodrovis@protonmail.com",
-					modified_at: "2023-09-21 12:18:47 (Etc/UTC)",
+					modified_at: "2023-09-21T12:18:47.000Z",
 					modified_at_timestamp: 1695298727,
 					is_reviewed: false,
 					reviewed_by: 0,
@@ -332,14 +332,14 @@ export const keyCreateFixture: BulkResult<Key> = {
 			base_words: 1,
 			char_limit: 0,
 			custom_attributes: "",
-			modified_at: "2023-09-21 12:18:47 (Etc/UTC)",
+			modified_at: "2023-09-21T12:18:47.000Z",
 			modified_at_timestamp: 1695298727,
-			translations_modified_at: "2023-09-21 12:18:47 (Etc/UTC)",
+			translations_modified_at: "2023-09-21T12:18:47.000Z",
 			translations_modified_at_timestamp: 1695298727,
 		}),
 		createBaseKeyWithTranslations({
 			key_id: 378217832,
-			created_at: "2023-09-21 12:18:47 (Etc/UTC)",
+			created_at: "2023-09-21T12:18:47.000Z",
 			created_at_timestamp: 1695298727,
 			key_name: {
 				ios: "welcome_ios_new",
@@ -368,7 +368,7 @@ export const keyCreateFixture: BulkResult<Key> = {
 						'{"one":"I have one apple","other":"I have a lot of apples"}',
 					modified_by: 20181,
 					modified_by_email: "bodrovis@protonmail.com",
-					modified_at: "2023-09-21 12:18:47 (Etc/UTC)",
+					modified_at: "2023-09-21T12:18:47.000Z",
 					modified_at_timestamp: 1695298727,
 					is_reviewed: false,
 					reviewed_by: 0,
@@ -387,7 +387,7 @@ export const keyCreateFixture: BulkResult<Key> = {
 						'{"zero":"","one":"","two":"","few":"","many":"","other":""}',
 					modified_by: 20181,
 					modified_by_email: "bodrovis@protonmail.com",
-					modified_at: "2023-09-21 12:18:47 (Etc/UTC)",
+					modified_at: "2023-09-21T12:18:47.000Z",
 					modified_at_timestamp: 1695298727,
 					is_reviewed: false,
 					reviewed_by: 0,
@@ -405,7 +405,7 @@ export const keyCreateFixture: BulkResult<Key> = {
 					translation: '{"one":"","other":""}',
 					modified_by: 20181,
 					modified_by_email: "bodrovis@protonmail.com",
-					modified_at: "2023-09-21 12:18:47 (Etc/UTC)",
+					modified_at: "2023-09-21T12:18:47.000Z",
 					modified_at_timestamp: 1695298727,
 					is_reviewed: false,
 					reviewed_by: 0,
@@ -424,9 +424,9 @@ export const keyCreateFixture: BulkResult<Key> = {
 			base_words: 10,
 			char_limit: 0,
 			custom_attributes: "",
-			modified_at: "2023-09-21 12:18:47 (Etc/UTC)",
+			modified_at: "2023-09-21T12:18:47.000Z",
 			modified_at_timestamp: 1695298727,
-			translations_modified_at: "2023-09-21 12:18:47 (Etc/UTC)",
+			translations_modified_at: "2023-09-21T12:18:47.000Z",
 			translations_modified_at_timestamp: 1695298727,
 		}),
 	],
@@ -436,7 +436,7 @@ export const keyCreateFixture: BulkResult<Key> = {
 // Update fixture - single key for update operations
 export const keyUpdateFixture: Key = createBaseKey({
 	key_id: 378217831,
-	created_at: "2023-09-21 12:18:47 (Etc/UTC)",
+	created_at: "2023-09-21T12:18:47.000Z",
 	created_at_timestamp: 1695298727,
 	key_name: {
 		ios: "welcome_web_updated",
@@ -481,7 +481,7 @@ export const keysBulkUpdateFixture: BulkResult<Key> = {
 	items: [
 		createBaseKey({
 			key_id: 378217831,
-			created_at: "2023-09-21 12:18:47 (Etc/UTC)",
+			created_at: "2023-09-21T12:18:47.000Z",
 			created_at_timestamp: 1695298727,
 			key_name: {
 				ios: "welcome_web_bulk_updated",
@@ -509,7 +509,7 @@ export const keysBulkUpdateFixture: BulkResult<Key> = {
 		}),
 		createBaseKey({
 			key_id: 378217832,
-			created_at: "2023-09-21 12:18:47 (Etc/UTC)",
+			created_at: "2023-09-21T12:18:47.000Z",
 			created_at_timestamp: 1695298727,
 			key_name: {
 				ios: "welcome_ios_bulk_updated",

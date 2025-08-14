@@ -15,7 +15,7 @@ try {
 	if (fs.existsSync(binScript)) {
 		try {
 			fs.chmodSync(binScript, 0o755);
-		} catch (err) {
+		} catch (_err) {
 			// Silently fail if chmod is not available (Windows, some containers)
 		}
 	}
