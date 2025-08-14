@@ -18,6 +18,17 @@ import {
 	formatTruncated,
 } from "../../shared/utils/formatter.util.js";
 
+// Helper to consistently render key_name (object per platform) as a single display string
+function displayKeyName(keyName: unknown): string {
+	if (keyName == null) return "Unnamed";
+	if (typeof keyName === "string") return keyName;
+	if (typeof keyName === "object") {
+		const names = keyName as Record<string, string>;
+		return names.web || names.ios || names.android || names.other || "Unnamed";
+	}
+	return String(keyName);
+}
+
 /**
  * @namespace KeysFormatter
  * @description Utility functions for formatting Lokalise Keys API responses into readable formats.
@@ -62,12 +73,9 @@ export function formatKeysList(
 	lines.push(formatHeading(`Project: ${projectId}`, 2));
 	lines.push("");
 
-	// Helper function to get primary key name
-	const getPrimaryKeyName = (keyName: unknown): string => {
-		if (!keyName || typeof keyName !== "object") return "Unnamed";
-		const names = keyName as Record<string, string>;
-		return names.web || names.ios || names.android || names.other || "Unnamed";
-	};
+	// Helper function to get primary key name (uses shared display helper)
+	const getPrimaryKeyName = (keyName: unknown): string =>
+		displayKeyName(keyName);
 
 	// Calculate comprehensive statistics
 	const stats = {
@@ -662,7 +670,7 @@ export function formatCreateKeysResult(
 
 		const tableData = createdKeys.map((key) => ({
 			keyId: key.key_id || "N/A",
-			keyName: key.key_name || "Unnamed",
+			keyName: displayKeyName(key.key_name),
 			platforms: formatSafeArray(key.platforms),
 		}));
 
@@ -829,7 +837,7 @@ export function formatBulkUpdateKeysResult(
 
 		const tableData = updatedKeys.map((key) => ({
 			keyId: key.key_id || "N/A",
-			keyName: key.key_name || "Unnamed",
+			keyName: displayKeyName(key.key_name),
 			lastModified: key.modified_at || "Unknown",
 		}));
 

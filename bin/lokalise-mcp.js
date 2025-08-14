@@ -7,9 +7,9 @@
  * globally, locally, or via npx.
  */
 
-import { spawn } from "child_process";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
+import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

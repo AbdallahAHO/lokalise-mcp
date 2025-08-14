@@ -264,6 +264,11 @@ async function createProject(
 			name: args.name.trim(),
 			description: args.description?.trim(),
 			base_lang_iso: args.base_lang_iso || "en",
+			languages:
+				args.languages ??
+				(args.base_lang_iso && args.base_lang_iso !== "en"
+					? [{ lang_iso: args.base_lang_iso }]
+					: undefined),
 		};
 
 		try {

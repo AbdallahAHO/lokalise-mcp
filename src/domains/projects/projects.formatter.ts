@@ -55,9 +55,15 @@ export function formatProjectsList(
 		}
 
 		// Add basic stats inline if not detailed
-		projectInfo.Progress = `${project.statistics?.progress_total}%`;
-		projectInfo["Total Keys"] = project.statistics?.keys_total;
-		projectInfo.Languages = project.statistics?.languages?.length;
+		if (project.statistics) {
+			projectInfo.Progress = `${project.statistics.progress_total}%`;
+			projectInfo["Total Keys"] = project.statistics.keys_total;
+			projectInfo.Languages = project.statistics.languages?.length;
+		} else {
+			projectInfo.Progress = "N/A";
+			projectInfo["Total Keys"] = "N/A";
+			projectInfo.Languages = "N/A";
+		}
 
 		lines.push(formatBulletList(projectInfo));
 		lines.push("");
@@ -158,20 +164,28 @@ export function formatProjectDetails(
 	// Comprehensive statistics
 	lines.push(formatHeading("📊 Project Statistics", 2));
 
-	// Overall metrics
-	lines.push(formatHeading("Overall Progress", 3));
-	const overallStats: Record<string, unknown> = {
-		Completion: `${project.statistics.progress_total}%`,
-		"Total Keys": project.statistics.keys_total.toLocaleString(),
-		"Base Words": project.statistics.base_words.toLocaleString(),
-		"Team Members": project.statistics.team,
-		"Active Languages": project.statistics.languages?.length || 0,
-		"QA Issues": project.statistics.qa_issues_total,
-	};
-	lines.push(formatBulletList(overallStats));
-	lines.push("");
+	if (project.statistics) {
+		// Overall metrics
+		lines.push(formatHeading("Overall Progress", 3));
+		const overallStats: Record<string, unknown> = {
+			Completion: `${project.statistics.progress_total}%`,
+			"Total Keys": project.statistics.keys_total.toLocaleString(),
+			"Base Words": project.statistics.base_words.toLocaleString(),
+			"Team Members": project.statistics.team,
+			"Active Languages": project.statistics.languages?.length || 0,
+			"QA Issues": project.statistics.qa_issues_total,
+		};
+		lines.push(formatBulletList(overallStats));
+		lines.push("");
+	} else {
+		lines.push("*No statistics available for this project*");
+		lines.push("");
+	}
 
-	if (project.statistics.languages && project.statistics.languages.length > 0) {
+	if (
+		project.statistics?.languages &&
+		project.statistics.languages.length > 0
+	) {
 		// Language-specific progress
 		lines.push(formatHeading("🌐 Language Progress", 3));
 
@@ -194,7 +208,7 @@ export function formatProjectDetails(
 		lines.push("");
 	}
 
-	if (project.statistics.qa_issues_total > 0) {
+	if (project.statistics && project.statistics.qa_issues_total > 0) {
 		// Detailed QA Analysis
 		lines.push(formatHeading("🔍 Quality Assurance Issues", 3));
 		lines.push(`**Total Issues: ${project.statistics.qa_issues_total}**`);
@@ -317,36 +331,47 @@ export function formatProjectDetails(
 	// Complete project settings
 	lines.push(formatHeading("⚙️ Project Configuration", 2));
 
-	const allSettings: Record<string, unknown> = {
-		"Review Workflow": project.settings.reviewing
-			? "✅ Enabled"
-			: "❌ Disabled",
-		"Auto-toggle Unverified": project.settings.auto_toggle_unverified
-			? "✅ Enabled"
-			: "❌ Disabled",
-		"Offline Translation": project.settings.offline_translation
-			? "✅ Enabled"
-			: "❌ Disabled",
-		"Per-platform Key Names": project.settings.per_platform_key_names
-			? "✅ Enabled"
-			: "❌ Disabled",
-		"Key Editing": project.settings.key_editing ? "✅ Enabled" : "❌ Disabled",
-		"Inline Machine Translations": project.settings.inline_machine_translations
-			? "✅ Enabled"
-			: "❌ Disabled",
-		Branching: project.settings.branching ? "✅ Enabled" : "❌ Disabled",
-		Segmentation: project.settings.segmentation ? "✅ Enabled" : "❌ Disabled",
-		"Custom Translation Statuses": project.settings.custom_translation_statuses
-			? "✅ Enabled"
-			: "❌ Disabled",
-		"Multiple Custom Statuses": project.settings
-			.custom_translation_statuses_allow_multiple
-			? "✅ Enabled"
-			: "❌ Disabled",
-	};
+	if (project.settings) {
+		const allSettings: Record<string, unknown> = {
+			"Review Workflow": project.settings.reviewing
+				? "✅ Enabled"
+				: "❌ Disabled",
+			"Auto-toggle Unverified": project.settings.auto_toggle_unverified
+				? "✅ Enabled"
+				: "❌ Disabled",
+			"Offline Translation": project.settings.offline_translation
+				? "✅ Enabled"
+				: "❌ Disabled",
+			"Per-platform Key Names": project.settings.per_platform_key_names
+				? "✅ Enabled"
+				: "❌ Disabled",
+			"Key Editing": project.settings.key_editing
+				? "✅ Enabled"
+				: "❌ Disabled",
+			"Inline Machine Translations": project.settings
+				.inline_machine_translations
+				? "✅ Enabled"
+				: "❌ Disabled",
+			Branching: project.settings.branching ? "✅ Enabled" : "❌ Disabled",
+			Segmentation: project.settings.segmentation
+				? "✅ Enabled"
+				: "❌ Disabled",
+			"Custom Translation Statuses": project.settings
+				.custom_translation_statuses
+				? "✅ Enabled"
+				: "❌ Disabled",
+			"Multiple Custom Statuses": project.settings
+				.custom_translation_statuses_allow_multiple
+				? "✅ Enabled"
+				: "❌ Disabled",
+		};
 
-	lines.push(formatBulletList(allSettings));
-	lines.push("");
+		lines.push(formatBulletList(allSettings));
+		lines.push("");
+	} else {
+		lines.push("*No configuration settings available*");
+		lines.push("");
+	}
 
 	// Project context data
 	lines.push(formatHeading("📋 Project Context", 2));
