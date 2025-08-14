@@ -1,0 +1,1114 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`KeysFormatter Edge Cases should handle null and undefined values gracefully 1`] = `
+"# Translation Key Details
+
+## Core Identification
+- **Key ID**: 123
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Description**: *No description provided*
+- **Context**: *No context specified*
+
+## Platform-Specific Key Names
+
+- **OTHER:** \`fallback.key\`
+
+## Platform-Specific Filenames
+
+No platform-specific values set
+
+## Platform Assignments
+
+*No platforms assigned - this key is not targeted to any specific platform*
+
+## Tags and Organization
+
+*No tags assigned - consider adding tags for better organization*
+
+## Content Specifications
+- **Character Limit**: No limit set
+- **Base Word Count**: Not calculated
+- **Supports Pluralization**: No
+- **Plural Form Name**: Not set
+
+## Status and Visibility
+- **Visibility**: 👁️ Visible to translators
+- **Archive Status**: ✅ Active
+
+## Timeline Information
+- **Created**: 2018-12-09 18:39:20 (Etc/UTC) (12/9/2018)
+- **Last Modified**: undefined (Invalid Date)
+- **Translations Last Modified**: undefined (Invalid Date)
+
+## Translation Status
+*No translation data included in this response. Use includeTranslations parameter to fetch translation details.*
+
+## Comments and Collaboration
+
+*No comments on this key yet*
+
+## Visual Context
+
+*No screenshots attached - consider adding visual context for better translations*
+
+## Summary for Analysis
+**Key Characteristics:**
+- 0 platform(s) targeted
+- 0 language(s) configured
+- 0 organizational tag(s)
+- 0 collaboration comment(s)
+- 0 visual context item(s)
+- Content status: Active (Visible)
+
+---
+*Key details retrieved at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`KeysFormatter Edge Cases should handle special characters in translations 1`] = `
+"# Translation Key Details
+
+## Core Identification
+- **Key ID**: 74189435
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Description**: *No description provided*
+- **Context**: *No context specified*
+
+## Platform-Specific Key Names
+
+- **IOS:** \`callback\`
+- **ANDROID:** \`callback\`
+- **WEB:** \`callback\`
+- **OTHER:** \`callback\`
+
+## Platform-Specific Filenames
+
+No platform-specific values set
+
+## Platform Assignments
+
+**Assigned Platforms:** 1
+
+- **WEB** - Active on this platform
+
+## Tags and Organization
+
+*No tags assigned - consider adding tags for better organization*
+
+## Content Specifications
+- **Character Limit**: No limit set
+- **Base Word Count**: 5 words
+- **Supports Pluralization**: No
+- **Plural Form Name**: Not set
+
+## Status and Visibility
+- **Visibility**: 👁️ Visible to translators
+- **Archive Status**: ✅ Active
+
+## Timeline Information
+- **Created**: 2021-01-29 17:34:16 (Etc/UTC) (1/29/2021)
+- **Last Modified**: 2023-09-19 13:26:15 (Etc/UTC) (9/19/2023)
+- **Translations Last Modified**: 2021-07-27 10:42:09 (Etc/UTC) (7/27/2021)
+
+## Translation Status
+
+**Total Languages:** 1
+
+### Translation Statistics
+- **Reviewed**: 1/1 (100%)
+- **Unverified**: 0/1 (0%)
+- **Empty/Missing**: 0/1 (0%)
+
+### Translation Details
+
+| Language | Translation | Status | Word Count | Last Modified |
+|---|---|---|---|---|
+| en | Hello <b>World</b> & "friends" with 'quotes' | ✅ Reviewed | 5 | 1/1/2023 |
+
+## Comments and Collaboration
+
+**Total Comments:** 1
+
+**Comment 1** (9/19/2023): Single
+
+## Visual Context
+
+*No screenshots attached - consider adding visual context for better translations*
+
+## Summary for Analysis
+**Key Characteristics:**
+- 1 platform(s) targeted
+- 1 language(s) configured
+- 0 organizational tag(s)
+- 1 collaboration comment(s)
+- 0 visual context item(s)
+- Content status: Active (Visible)
+- Translation completion: 100%
+
+---
+*Key details retrieved at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`KeysFormatter Edge Cases should handle very long key names 1`] = `
+"# Translation Keys Analysis
+
+## Project: 803826145ba90b42d5d860.46800099
+
+## Executive Summary
+
+**1 translation keys** found in this project.
+
+### Key Distribution
+
+- **IOS Platform:** 1 keys (100%)
+- **ANDROID Platform:** 0 keys (0%)
+- **WEB Platform:** 0 keys (0%)
+- **OTHER Platform:** 0 keys (0%)
+
+### Content Quality Indicators
+
+- **Keys with Descriptions:** 0/1 (0%)
+- **Keys with Tags:** 0/1 (0%)
+- **Keys with Comments:** 0/1 (0%)
+- **Keys with Screenshots:** 0/1 (0%)
+
+### Status Overview
+
+- **Hidden Keys:** 0 (0%)
+- **Archived Keys:** 0 (0%)
+- **Plural Keys:** 0 (0%)
+
+
+## Detailed Keys Inventory
+
+| ID | Key Name | Description | Platforms | Tags | Status | Context |
+|---|---|---|---|---|---|---|
+| 15519786 | \`a.very.long.key.name.that.exceeds.normal.length.a.very.long.key.name.that.exceeds.normal.length.a.very.long.key.name.that.exceeds.normal.length.a.very.long.key.name.that.exceeds.normal.length.a.very.long.key.name.that.exceeds.normal.length.a.very.long.key.name.that.exceeds.normal.length.a.very.long.key.name.that.exceeds.normal.length.a.very.long.key.name.that.exceeds.normal.length.a.very.long.key.name.that.exceeds.normal.length.a.very.long.key.name.that.exceeds.normal.length.\` | *No description* | ios | None | ✅Standard | None |
+
+## Advanced Insights
+
+### Recommendations for Improvement
+
+- **1 keys without descriptions** - consider adding descriptions for better translator context
+- **1 keys without tags** - tags help with organization and filtering
+
+### Platform-Specific Analysis
+
+- **iOS:** 1 keys (100%) - Universal coverage ✅
+- **Android:** 0 keys (0%) - No keys assigned ❌
+- **Web:** 0 keys (0%) - No keys assigned ❌
+- **Other:** 0 keys (0%) - No keys assigned ❌
+
+## Summary for Analysis
+
+**Project 803826145ba90b42d5d860.46800099 contains 1 translation keys** with the following characteristics:
+
+- **Most used platform: ios**
+- **Content maturity: 0% of keys have descriptions**
+- **Organization level: 0% of keys are tagged**
+- **Collaboration activity: 0 keys have comments**
+- **Visual context: 0 keys have screenshots**
+
+---
+*Analysis completed at 2024-01-15 10:30:00 UTC* Showing 1 keys from project \`803826145ba90b42d5d860.46800099\`"
+`;
+
+exports[`KeysFormatter formatBulkDeleteKeysResult should format bulk deletion result 1`] = `
+"# Bulk Keys Deletion Successful
+
+**5 keys have been successfully deleted from project \`803826145ba90b42d5d860.46800099\`.**
+
+## Details
+- **Deleted Keys Count**: 5
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Deletion Time**: 2024-01-15 10:30:00 UTC
+- **Status**: ✅ All keys confirmed removed
+
+> **Note:** This action cannot be undone. All translations associated with these keys have also been deleted.
+
+---
+*Bulk deletion completed at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`KeysFormatter formatBulkDeleteKeysResult should handle partial deletion with locked keys 1`] = `
+"# Bulk Keys Deletion Successful
+
+**5 keys have been successfully deleted from project \`803826145ba90b42d5d860.46800099\`.**
+
+## Details
+- **Deleted Keys Count**: 5
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Deletion Time**: 2024-01-15 10:30:00 UTC
+- **Status**: Processing
+
+> **Note:** This action cannot be undone. All translations associated with these keys have also been deleted.
+
+---
+*Bulk deletion completed at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`KeysFormatter formatBulkUpdateKeysResult should format bulk update result 1`] = `
+"# Bulk Keys Update Results
+
+**Project ID:** \`803826145ba90b42d5d860.46800099\`
+
+## Summary
+- **Successfully Updated**: 2 keys
+- **Errors**: 0
+- **Total Requested**: 2
+
+## ✅ Successfully Updated Keys
+
+| Key ID | Key Name | Last Modified |
+|---|---|---|
+| 378217831 | \`welcome_web_bulk_updated\` | Unknown |
+| 378217832 | \`welcome_ios_bulk_updated\` | Unknown |
+
+
+---
+*Bulk update completed at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`KeysFormatter formatBulkUpdateKeysResult should handle partial failures 1`] = `
+"# Bulk Keys Update Results
+
+**Project ID:** \`803826145ba90b42d5d860.46800099\`
+
+## Summary
+- **Successfully Updated**: 1 keys
+- **Errors**: 1
+- **Total Requested**: 2
+
+## ✅ Successfully Updated Keys
+
+| Key ID | Key Name | Last Modified |
+|---|---|---|
+| 378217831 | \`welcome_web_bulk_updated\` | Unknown |
+
+## ❌ Errors
+
+### Error 1
+
+- **Message**: Key not found
+- **Code**: \`404\`
+
+---
+*Bulk update completed at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`KeysFormatter formatCreateKeysResult should format key creation result 1`] = `
+"# Keys Creation Results
+
+**Project ID:** \`803826145ba90b42d5d860.46800099\`
+
+## Summary
+- **Successfully Created**: 2 keys
+- **Errors**: 0
+- **Total Requested**: 2
+
+## ✅ Successfully Created Keys
+
+| Key ID | Key Name | Platforms |
+|---|---|---|
+| 378217831 | \`welcome_web_new\` | web |
+| 378217832 | \`welcome_ios_new\` | ios |
+
+
+---
+*Keys creation completed at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`KeysFormatter formatCreateKeysResult should handle creation errors 1`] = `
+"# Keys Creation Results
+
+**Project ID:** \`803826145ba90b42d5d860.46800099\`
+
+## Summary
+- **Successfully Created**: 2 keys
+- **Errors**: 1
+- **Total Requested**: 3
+
+## ✅ Successfully Created Keys
+
+| Key ID | Key Name | Platforms |
+|---|---|---|
+| 378217831 | \`welcome_web_new\` | web |
+| 378217832 | \`welcome_ios_new\` | ios |
+
+## ❌ Errors
+
+### Error 1
+
+- **Message**: Key already exists
+- **Code**: \`400\`
+
+---
+*Keys creation completed at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`KeysFormatter formatCreateKeysResult should show next steps 1`] = `
+"# Keys Creation Results
+
+**Project ID:** \`803826145ba90b42d5d860.46800099\`
+
+## Summary
+- **Successfully Created**: 2 keys
+- **Errors**: 0
+- **Total Requested**: 2
+
+## ✅ Successfully Created Keys
+
+| Key ID | Key Name | Platforms |
+|---|---|---|
+| 378217831 | \`welcome_web_new\` | web |
+| 378217832 | \`welcome_ios_new\` | ios |
+
+
+---
+*Keys creation completed at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`KeysFormatter formatDeleteKeyResult should format key deletion result 1`] = `
+"# Key Deletion Successful
+
+**Key with ID 12345 has been successfully deleted from project \`803826145ba90b42d5d860.46800099\`.**
+
+## Details
+- **Deleted Key ID**: 12345
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Deletion Time**: 2024-01-15 10:30:00 UTC
+- **Status**: ✅ Confirmed removed
+
+> **Note:** This action cannot be undone. All translations associated with this key have also been deleted.
+
+---
+*Key deleted at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`KeysFormatter formatDeleteKeyResult should handle locked keys 1`] = `
+"# Key Deletion Successful
+
+**Key with ID 12345 has been successfully deleted from project \`803826145ba90b42d5d860.46800099\`.**
+
+## Details
+- **Deleted Key ID**: 12345
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Deletion Time**: 2024-01-15 10:30:00 UTC
+- **Status**: Processing
+
+> **Note:** This action cannot be undone. All translations associated with this key have also been deleted.
+
+---
+*Key deleted at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`KeysFormatter formatKeyDetails should format detailed key information 1`] = `
+"# Translation Key Details
+
+## Core Identification
+- **Key ID**: 74189435
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Description**: *No description provided*
+- **Context**: *No context specified*
+
+## Platform-Specific Key Names
+
+- **IOS:** \`callback\`
+- **ANDROID:** \`callback\`
+- **WEB:** \`callback\`
+- **OTHER:** \`callback\`
+
+## Platform-Specific Filenames
+
+No platform-specific values set
+
+## Platform Assignments
+
+**Assigned Platforms:** 1
+
+- **WEB** - Active on this platform
+
+## Tags and Organization
+
+*No tags assigned - consider adding tags for better organization*
+
+## Content Specifications
+- **Character Limit**: No limit set
+- **Base Word Count**: 5 words
+- **Supports Pluralization**: No
+- **Plural Form Name**: Not set
+
+## Status and Visibility
+- **Visibility**: 👁️ Visible to translators
+- **Archive Status**: ✅ Active
+
+## Timeline Information
+- **Created**: 2021-01-29 17:34:16 (Etc/UTC) (1/29/2021)
+- **Last Modified**: 2023-09-19 13:26:15 (Etc/UTC) (9/19/2023)
+- **Translations Last Modified**: 2021-07-27 10:42:09 (Etc/UTC) (7/27/2021)
+
+## Translation Status
+
+**Total Languages:** 1
+
+### Translation Statistics
+- **Reviewed**: 0/1 (0%)
+- **Unverified**: 1/1 (100%)
+- **Empty/Missing**: 1/1 (100%)
+
+### Translation Details
+
+| Language | Translation | Status | Word Count | Last Modified |
+|---|---|---|---|---|
+| ru | *Empty* | ❌ Empty | 0 | 1/29/2021 |
+
+## Comments and Collaboration
+
+**Total Comments:** 1
+
+**Comment 1** (9/19/2023): Single
+
+## Visual Context
+
+*No screenshots attached - consider adding visual context for better translations*
+
+## Summary for Analysis
+**Key Characteristics:**
+- 1 platform(s) targeted
+- 1 language(s) configured
+- 0 organizational tag(s)
+- 1 collaboration comment(s)
+- 0 visual context item(s)
+- Content status: Active (Visible)
+- Translation completion: 0%
+
+---
+*Key details retrieved at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`KeysFormatter formatKeyDetails should format key with translations 1`] = `
+"# Translation Key Details
+
+## Core Identification
+- **Key ID**: 74189435
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Description**: *No description provided*
+- **Context**: *No context specified*
+
+## Platform-Specific Key Names
+
+- **IOS:** \`callback\`
+- **ANDROID:** \`callback\`
+- **WEB:** \`callback\`
+- **OTHER:** \`callback\`
+
+## Platform-Specific Filenames
+
+No platform-specific values set
+
+## Platform Assignments
+
+**Assigned Platforms:** 1
+
+- **WEB** - Active on this platform
+
+## Tags and Organization
+
+*No tags assigned - consider adding tags for better organization*
+
+## Content Specifications
+- **Character Limit**: No limit set
+- **Base Word Count**: 5 words
+- **Supports Pluralization**: No
+- **Plural Form Name**: Not set
+
+## Status and Visibility
+- **Visibility**: 👁️ Visible to translators
+- **Archive Status**: ✅ Active
+
+## Timeline Information
+- **Created**: 2021-01-29 17:34:16 (Etc/UTC) (1/29/2021)
+- **Last Modified**: 2023-09-19 13:26:15 (Etc/UTC) (9/19/2023)
+- **Translations Last Modified**: 2021-07-27 10:42:09 (Etc/UTC) (7/27/2021)
+
+## Translation Status
+
+**Total Languages:** 1
+
+### Translation Statistics
+- **Reviewed**: 1/1 (100%)
+- **Unverified**: 0/1 (0%)
+- **Empty/Missing**: 0/1 (0%)
+
+### Translation Details
+
+| Language | Translation | Status | Word Count | Last Modified |
+|---|---|---|---|---|
+| en | Test translation | ✅ Reviewed | 2 | 1/1/2023 |
+
+## Comments and Collaboration
+
+**Total Comments:** 1
+
+**Comment 1** (9/19/2023): Single
+
+## Visual Context
+
+*No screenshots attached - consider adding visual context for better translations*
+
+## Summary for Analysis
+**Key Characteristics:**
+- 1 platform(s) targeted
+- 1 language(s) configured
+- 0 organizational tag(s)
+- 1 collaboration comment(s)
+- 0 visual context item(s)
+- Content status: Active (Visible)
+- Translation completion: 100%
+
+---
+*Key details retrieved at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`KeysFormatter formatKeyDetails should handle comments 1`] = `
+"# Translation Key Details
+
+## Core Identification
+- **Key ID**: 74189435
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Description**: *No description provided*
+- **Context**: *No context specified*
+
+## Platform-Specific Key Names
+
+- **IOS:** \`callback\`
+- **ANDROID:** \`callback\`
+- **WEB:** \`callback\`
+- **OTHER:** \`callback\`
+
+## Platform-Specific Filenames
+
+No platform-specific values set
+
+## Platform Assignments
+
+**Assigned Platforms:** 1
+
+- **WEB** - Active on this platform
+
+## Tags and Organization
+
+*No tags assigned - consider adding tags for better organization*
+
+## Content Specifications
+- **Character Limit**: No limit set
+- **Base Word Count**: 5 words
+- **Supports Pluralization**: No
+- **Plural Form Name**: Not set
+
+## Status and Visibility
+- **Visibility**: 👁️ Visible to translators
+- **Archive Status**: ✅ Active
+
+## Timeline Information
+- **Created**: 2021-01-29 17:34:16 (Etc/UTC) (1/29/2021)
+- **Last Modified**: 2023-09-19 13:26:15 (Etc/UTC) (9/19/2023)
+- **Translations Last Modified**: 2021-07-27 10:42:09 (Etc/UTC) (7/27/2021)
+
+## Translation Status
+
+**Total Languages:** 1
+
+### Translation Statistics
+- **Reviewed**: 0/1 (0%)
+- **Unverified**: 1/1 (100%)
+- **Empty/Missing**: 1/1 (100%)
+
+### Translation Details
+
+| Language | Translation | Status | Word Count | Last Modified |
+|---|---|---|---|---|
+| ru | *Empty* | ❌ Empty | 0 | 1/29/2021 |
+
+## Comments and Collaboration
+
+**Total Comments:** 1
+
+**Comment 1** (1/1/2023): This needs review
+
+## Visual Context
+
+*No screenshots attached - consider adding visual context for better translations*
+
+## Summary for Analysis
+**Key Characteristics:**
+- 1 platform(s) targeted
+- 1 language(s) configured
+- 0 organizational tag(s)
+- 1 collaboration comment(s)
+- 0 visual context item(s)
+- Content status: Active (Visible)
+- Translation completion: 0%
+
+---
+*Key details retrieved at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`KeysFormatter formatKeyDetails should handle screenshots 1`] = `
+"# Translation Key Details
+
+## Core Identification
+- **Key ID**: 74189435
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Description**: *No description provided*
+- **Context**: *No context specified*
+
+## Platform-Specific Key Names
+
+- **IOS:** \`callback\`
+- **ANDROID:** \`callback\`
+- **WEB:** \`callback\`
+- **OTHER:** \`callback\`
+
+## Platform-Specific Filenames
+
+No platform-specific values set
+
+## Platform Assignments
+
+**Assigned Platforms:** 1
+
+- **WEB** - Active on this platform
+
+## Tags and Organization
+
+*No tags assigned - consider adding tags for better organization*
+
+## Content Specifications
+- **Character Limit**: No limit set
+- **Base Word Count**: 5 words
+- **Supports Pluralization**: No
+- **Plural Form Name**: Not set
+
+## Status and Visibility
+- **Visibility**: 👁️ Visible to translators
+- **Archive Status**: ✅ Active
+
+## Timeline Information
+- **Created**: 2021-01-29 17:34:16 (Etc/UTC) (1/29/2021)
+- **Last Modified**: 2023-09-19 13:26:15 (Etc/UTC) (9/19/2023)
+- **Translations Last Modified**: 2021-07-27 10:42:09 (Etc/UTC) (7/27/2021)
+
+## Translation Status
+
+**Total Languages:** 1
+
+### Translation Statistics
+- **Reviewed**: 0/1 (0%)
+- **Unverified**: 1/1 (100%)
+- **Empty/Missing**: 1/1 (100%)
+
+### Translation Details
+
+| Language | Translation | Status | Word Count | Last Modified |
+|---|---|---|---|---|
+| ru | *Empty* | ❌ Empty | 0 | 1/29/2021 |
+
+## Comments and Collaboration
+
+**Total Comments:** 1
+
+**Comment 1** (9/19/2023): Single
+
+## Visual Context
+
+**Total Screenshots:** 1
+
+**Homepage Screenshot:** Shows the key on homepage
+
+## Summary for Analysis
+**Key Characteristics:**
+- 1 platform(s) targeted
+- 1 language(s) configured
+- 0 organizational tag(s)
+- 1 collaboration comment(s)
+- 1 visual context item(s)
+- Content status: Active (Visible)
+- Translation completion: 0%
+
+---
+*Key details retrieved at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`KeysFormatter formatKeysList should format a list of keys with standard pagination 1`] = `
+"# Translation Keys Analysis
+
+## Project: 803826145ba90b42d5d860.46800099
+
+## Executive Summary
+
+**2 translation keys** found in this project.
+
+### Key Distribution
+
+- **IOS Platform:** 1 keys (50%)
+- **ANDROID Platform:** 0 keys (0%)
+- **WEB Platform:** 1 keys (50%)
+- **OTHER Platform:** 0 keys (0%)
+
+### Content Quality Indicators
+
+- **Keys with Descriptions:** 1/2 (50%)
+- **Keys with Tags:** 0/2 (0%)
+- **Keys with Comments:** 0/2 (0%)
+- **Keys with Screenshots:** 0/2 (0%)
+
+### Status Overview
+
+- **Hidden Keys:** 0 (0%)
+- **Archived Keys:** 0 (0%)
+- **Plural Keys:** 0 (0%)
+
+
+## Detailed Keys Inventory
+
+| ID | Key Name | Description | Platforms | Tags | Status | Context |
+|---|---|---|---|---|---|---|
+| 15519786 | \`another_k\` | *No description* | ios | None | ✅Standard | None |
+| 15571975 | \`rspec k\` | My description | web | None | ✅Standard | None |
+
+## Advanced Insights
+
+### Recommendations for Improvement
+
+- **1 keys without descriptions** - consider adding descriptions for better translator context
+- **2 keys without tags** - tags help with organization and filtering
+
+### Platform-Specific Analysis
+
+- **iOS:** 1 keys (50%) - Limited coverage ⚠️
+- **Android:** 0 keys (0%) - No keys assigned ❌
+- **Web:** 1 keys (50%) - Limited coverage ⚠️
+- **Other:** 0 keys (0%) - No keys assigned ❌
+
+## Summary for Analysis
+
+**Project 803826145ba90b42d5d860.46800099 contains 2 translation keys** with the following characteristics:
+
+- **Most used platform: web**
+- **Content maturity: 50% of keys have descriptions**
+- **Organization level: 0% of keys are tagged**
+- **Collaboration activity: 0 keys have comments**
+- **Visual context: 0 keys have screenshots**
+
+---
+*Analysis completed at 2024-01-15 10:30:00 UTC* Showing 2 keys from project \`803826145ba90b42d5d860.46800099\`"
+`;
+
+exports[`KeysFormatter formatKeysList should format a list with cursor pagination 1`] = `
+"# Translation Keys Analysis
+
+## Project: 803826145ba90b42d5d860.46800099
+
+## Executive Summary
+
+**2 translation keys** found in this project.
+
+### Key Distribution
+
+- **IOS Platform:** 1 keys (50%)
+- **ANDROID Platform:** 0 keys (0%)
+- **WEB Platform:** 1 keys (50%)
+- **OTHER Platform:** 0 keys (0%)
+
+### Content Quality Indicators
+
+- **Keys with Descriptions:** 1/2 (50%)
+- **Keys with Tags:** 0/2 (0%)
+- **Keys with Comments:** 0/2 (0%)
+- **Keys with Screenshots:** 0/2 (0%)
+
+### Status Overview
+
+- **Hidden Keys:** 0 (0%)
+- **Archived Keys:** 0 (0%)
+- **Plural Keys:** 0 (0%)
+
+## Pagination Information
+
+⚠️ **This is a paginated result** - showing 2 items out of potentially more.
+
+- **Next Cursor:** \`eyIxIjo1MjcyNjU2MTd9\`
+- **Has More Data:** Yes
+- **Recommendation:** Use the cursor to fetch additional items for complete analysis
+
+## Detailed Keys Inventory
+
+| ID | Key Name | Description | Platforms | Tags | Status | Context |
+|---|---|---|---|---|---|---|
+| 15519786 | \`another_k\` | *No description* | ios | None | ✅Standard | None |
+| 15571975 | \`rspec k\` | My description | web | None | ✅Standard | None |
+
+## Advanced Insights
+
+### Recommendations for Improvement
+
+- **1 keys without descriptions** - consider adding descriptions for better translator context
+- **2 keys without tags** - tags help with organization and filtering
+
+### Platform-Specific Analysis
+
+- **iOS:** 1 keys (50%) - Limited coverage ⚠️
+- **Android:** 0 keys (0%) - No keys assigned ❌
+- **Web:** 1 keys (50%) - Limited coverage ⚠️
+- **Other:** 0 keys (0%) - No keys assigned ❌
+
+## Summary for Analysis
+
+**Project 803826145ba90b42d5d860.46800099 contains 2 translation keys** with the following characteristics:
+
+- **Most used platform: web**
+- **Content maturity: 50% of keys have descriptions**
+- **Organization level: 0% of keys are tagged**
+- **Collaboration activity: 0 keys have comments**
+- **Visual context: 0 keys have screenshots**
+
+---
+*Analysis completed at 2024-01-15 10:30:00 UTC* Additional keys available - use cursor pagination to fetch more"
+`;
+
+exports[`KeysFormatter formatKeysList should format keys with translations 1`] = `
+"# Translation Keys Analysis
+
+## Project: 803826145ba90b42d5d860.46800099
+
+## Executive Summary
+
+**1 translation keys** found in this project.
+
+### Key Distribution
+
+- **IOS Platform:** 1 keys (100%)
+- **ANDROID Platform:** 0 keys (0%)
+- **WEB Platform:** 0 keys (0%)
+- **OTHER Platform:** 0 keys (0%)
+
+### Content Quality Indicators
+
+- **Keys with Descriptions:** 0/1 (0%)
+- **Keys with Tags:** 0/1 (0%)
+- **Keys with Comments:** 0/1 (0%)
+- **Keys with Screenshots:** 0/1 (0%)
+
+### Status Overview
+
+- **Hidden Keys:** 0 (0%)
+- **Archived Keys:** 0 (0%)
+- **Plural Keys:** 0 (0%)
+
+### Translation Status
+
+- **Keys with Translation Data:** 1/1
+- **Total Translations:** 2
+- **Average Translations per Key:** 2
+
+
+## Detailed Keys Inventory
+
+| ID | Key Name | Description | Platforms | Tags | Status | Context |
+|---|---|---|---|---|---|---|
+| 15519786 | \`another_k\` | *No description* | ios | None | ✅Standard | None |
+
+## Advanced Insights
+
+### Recommendations for Improvement
+
+- **1 keys without descriptions** - consider adding descriptions for better translator context
+- **1 keys without tags** - tags help with organization and filtering
+
+### Platform-Specific Analysis
+
+- **iOS:** 1 keys (100%) - Universal coverage ✅
+- **Android:** 0 keys (0%) - No keys assigned ❌
+- **Web:** 0 keys (0%) - No keys assigned ❌
+- **Other:** 0 keys (0%) - No keys assigned ❌
+
+## Summary for Analysis
+
+**Project 803826145ba90b42d5d860.46800099 contains 1 translation keys** with the following characteristics:
+
+- **Most used platform: ios**
+- **Content maturity: 0% of keys have descriptions**
+- **Organization level: 0% of keys are tagged**
+- **Collaboration activity: 0 keys have comments**
+- **Visual context: 0 keys have screenshots**
+
+---
+*Analysis completed at 2024-01-15 10:30:00 UTC* Showing 1 keys from project \`803826145ba90b42d5d860.46800099\`"
+`;
+
+exports[`KeysFormatter formatKeysList should format platform-specific key names 1`] = `
+"# Translation Keys Analysis
+
+## Project: 803826145ba90b42d5d860.46800099
+
+## Executive Summary
+
+**1 translation keys** found in this project.
+
+### Key Distribution
+
+- **IOS Platform:** 1 keys (100%)
+- **ANDROID Platform:** 1 keys (100%)
+- **WEB Platform:** 1 keys (100%)
+- **OTHER Platform:** 0 keys (0%)
+
+### Content Quality Indicators
+
+- **Keys with Descriptions:** 0/1 (0%)
+- **Keys with Tags:** 0/1 (0%)
+- **Keys with Comments:** 0/1 (0%)
+- **Keys with Screenshots:** 0/1 (0%)
+
+### Status Overview
+
+- **Hidden Keys:** 0 (0%)
+- **Archived Keys:** 0 (0%)
+- **Plural Keys:** 0 (0%)
+
+
+## Detailed Keys Inventory
+
+| ID | Key Name | Description | Platforms | Tags | Status | Context |
+|---|---|---|---|---|---|---|
+| 15519786 | \`web.specific.key\` | *No description* | ios, android, web | None | ✅Standard | None |
+
+## Advanced Insights
+
+### Recommendations for Improvement
+
+- **1 keys without descriptions** - consider adding descriptions for better translator context
+- **1 keys without tags** - tags help with organization and filtering
+
+### Platform-Specific Analysis
+
+- **iOS:** 1 keys (100%) - Universal coverage ✅
+- **Android:** 1 keys (100%) - Universal coverage ✅
+- **Web:** 1 keys (100%) - Universal coverage ✅
+- **Other:** 0 keys (0%) - No keys assigned ❌
+
+## Summary for Analysis
+
+**Project 803826145ba90b42d5d860.46800099 contains 1 translation keys** with the following characteristics:
+
+- **Most used platform: web**
+- **Content maturity: 0% of keys have descriptions**
+- **Organization level: 0% of keys are tagged**
+- **Collaboration activity: 0 keys have comments**
+- **Visual context: 0 keys have screenshots**
+
+---
+*Analysis completed at 2024-01-15 10:30:00 UTC* Showing 1 keys from project \`803826145ba90b42d5d860.46800099\`"
+`;
+
+exports[`KeysFormatter formatKeysList should handle empty key list 1`] = `
+"# Translation Keys Analysis
+
+## Project: 803826145ba90b42d5d860.46800099
+
+**No keys found in this project.**
+
+This could mean:
+- The project is newly created
+- All keys have been deleted
+- Filter criteria excluded all keys
+- You may not have permission to view keys
+
+---
+*Analysis completed at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`KeysFormatter formatKeysList should handle keys with tags 1`] = `
+"# Translation Keys Analysis
+
+## Project: 803826145ba90b42d5d860.46800099
+
+## Executive Summary
+
+**1 translation keys** found in this project.
+
+### Key Distribution
+
+- **IOS Platform:** 1 keys (100%)
+- **ANDROID Platform:** 0 keys (0%)
+- **WEB Platform:** 0 keys (0%)
+- **OTHER Platform:** 0 keys (0%)
+
+### Content Quality Indicators
+
+- **Keys with Descriptions:** 0/1 (0%)
+- **Keys with Tags:** 1/1 (100%)
+- **Keys with Comments:** 0/1 (0%)
+- **Keys with Screenshots:** 0/1 (0%)
+
+### Status Overview
+
+- **Hidden Keys:** 0 (0%)
+- **Archived Keys:** 0 (0%)
+- **Plural Keys:** 0 (0%)
+
+
+## Detailed Keys Inventory
+
+| ID | Key Name | Description | Platforms | Tags | Status | Context |
+|---|---|---|---|---|---|---|
+| 15519786 | \`another_k\` | *No description* | ios | urgent, homepage+1 | ✅Standard | None |
+
+## Advanced Insights
+
+### Recommendations for Improvement
+
+- **1 keys without descriptions** - consider adding descriptions for better translator context
+
+### Platform-Specific Analysis
+
+- **iOS:** 1 keys (100%) - Universal coverage ✅
+- **Android:** 0 keys (0%) - No keys assigned ❌
+- **Web:** 0 keys (0%) - No keys assigned ❌
+- **Other:** 0 keys (0%) - No keys assigned ❌
+
+## Summary for Analysis
+
+**Project 803826145ba90b42d5d860.46800099 contains 1 translation keys** with the following characteristics:
+
+- **Most used platform: ios**
+- **Content maturity: 0% of keys have descriptions**
+- **Organization level: 100% of keys are tagged**
+- **Collaboration activity: 0 keys have comments**
+- **Visual context: 0 keys have screenshots**
+
+---
+*Analysis completed at 2024-01-15 10:30:00 UTC* Showing 1 keys from project \`803826145ba90b42d5d860.46800099\`"
+`;
+
+exports[`KeysFormatter formatUpdateKeyResult should format key update result 1`] = `
+"# Key Update Successful
+
+**Key \`[object Object]\` (ID: 378217831) has been updated successfully.**
+
+## Updated Key Details
+- **Key ID**: 378217831
+- **Key Name**: \`[object Object]\`
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Description**: Updated description for welcome key
+
+### Platforms
+- web
+- ios
+
+### Tags
+- \`updated\`
+- \`welcome\`
+
+---
+*Key updated at 2024-01-15 10:30:00 UTC*"
+`;
