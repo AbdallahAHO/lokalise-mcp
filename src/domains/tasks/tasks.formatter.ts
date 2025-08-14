@@ -659,7 +659,7 @@ function formatTaskSnapshot(task: Task): string {
 		lines.push("**Languages:**");
 		for (const language of task.languages) {
 			lines.push(
-				`- ${language.language_iso.toUpperCase()} • status: ${language.status || "Unknown"} • progress: ${typeof language.progress === "number" ? `${language.progress}%` : "N/A"} • keys: ${language.keys_count ?? 0} • words: ${language.words_count ?? 0}`,
+				`- ${language.language_iso?.toUpperCase() || "Unknown"} • status: ${language.status || "Unknown"} • progress: ${typeof language.progress === "number" ? `${language.progress}%` : "N/A"} • keys: ${language.keys_count ?? 0} • words: ${language.words_count ?? 0}`,
 			);
 		}
 		lines.push("");

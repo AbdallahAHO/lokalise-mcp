@@ -1,0 +1,1282 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`TasksFormatter Edge Cases should escape markdown special characters 1`] = `
+"# Task Details
+
+## Core Information
+- **Task ID**: 21659
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Title**: Task with **markdown** and _underscores_
+- **Description**: Contains | pipes | and [links](http://example.com)
+- **Type**: translation
+- **Status**: completed
+- **Can Be Parent**: No
+- **Parent Task ID**: None
+- **Closing Tags**: None
+- **Lock Translations**: No
+- **Custom Status IDs**: None
+
+## Schedule Information
+- **Due Date**: No deadline set
+- **Status**: ⚠️ **NO DEADLINE** - consider setting a due date
+
+- **Created**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+
+## Language Assignments
+**Target Languages:** 1
+
+### FR
+
+- **Status**: completed
+- **Progress**: 100%
+- **Keys Count**: 1
+- **Words Count**: 2
+- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC)
+- **Completed At (ts)**: 1569928144
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+
+Initial TM Leverage:
+- 0%+: 0%
+- 60%+: 0%
+- 75%+: 0%
+- 95%+: 0%
+- 100%: 100%
+
+TM Leverage Status: completed
+- 0%+: 0%
+- 50%+: 31%
+- 75%+: 31%
+- 85%+: 31%
+- 95%+: 31%
+- 100%: 100%
+
+*No specific users or groups assigned to this language*
+
+## Configuration & Metrics
+- **Source Language**: en
+- **Auto-close Languages**: Yes
+- **Auto-close Task**: Yes
+- **Auto-close Items**: Yes
+- **Total Keys**: 1
+- **Total Words**: 2
+- **Overall Progress**: 0%
+
+## Audit
+- **Created By**: 20181
+- **Created By Email**: bodrovis@protonmail.com
+- **Created At**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created At (ts)**: 1564589760
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC) (10/1/2019)
+- **Completed At (ts)**: 1569928144
+
+## Task Summary
+**Task Characteristics:**
+- 1 language(s) targeted
+- ⚠️ No deadline set
+- Current status: completed
+- Task type: translation
+
+---
+*Task details retrieved at 2024-01-15 10:30:00 UTC* Task \`21659\` from project \`803826145ba90b42d5d860.46800099\`"
+`;
+
+exports[`TasksFormatter Edge Cases should handle invalid date formats 1`] = `
+"# Task Details
+
+## Core Information
+- **Task ID**: 21659
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Title**: demo task
+- **Description**: *No description provided*
+- **Type**: translation
+- **Status**: completed
+- **Can Be Parent**: No
+- **Parent Task ID**: None
+- **Closing Tags**: None
+- **Lock Translations**: No
+- **Custom Status IDs**: None
+
+## Schedule Information
+- **Due Date**: Invalid Date at Invalid Date
+- **Status**: ✅ **ON SCHEDULE** (in NaN days)
+
+- **Created**: not-a-date (Invalid Date)
+
+## Language Assignments
+**Target Languages:** 1
+
+### FR
+
+- **Status**: completed
+- **Progress**: 100%
+- **Keys Count**: 1
+- **Words Count**: 2
+- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC)
+- **Completed At (ts)**: 1569928144
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+
+Initial TM Leverage:
+- 0%+: 0%
+- 60%+: 0%
+- 75%+: 0%
+- 95%+: 0%
+- 100%: 100%
+
+TM Leverage Status: completed
+- 0%+: 0%
+- 50%+: 31%
+- 75%+: 31%
+- 85%+: 31%
+- 95%+: 31%
+- 100%: 100%
+
+*No specific users or groups assigned to this language*
+
+## Configuration & Metrics
+- **Source Language**: en
+- **Auto-close Languages**: Yes
+- **Auto-close Task**: Yes
+- **Auto-close Items**: Yes
+- **Total Keys**: 1
+- **Total Words**: 2
+- **Overall Progress**: 0%
+
+## Audit
+- **Created By**: 20181
+- **Created By Email**: bodrovis@protonmail.com
+- **Created At**: not-a-date (Invalid Date)
+- **Created At (ts)**: 1564589760
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC) (10/1/2019)
+- **Completed At (ts)**: 1569928144
+
+## Task Summary
+**Task Characteristics:**
+- 1 language(s) targeted
+- ✅ On schedule deadline: Invalid Date
+- Current status: completed
+- Task type: translation
+
+---
+*Task details retrieved at 2024-01-15 10:30:00 UTC* Task \`21659\` from project \`803826145ba90b42d5d860.46800099\`"
+`;
+
+exports[`TasksFormatter Edge Cases should handle null and undefined values gracefully 1`] = `
+"# Task Details
+
+## Core Information
+- **Task ID**: 123
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Title**: Null Test Task
+- **Description**: *No description provided*
+- **Type**: translation
+- **Status**: completed
+- **Can Be Parent**: No
+- **Parent Task ID**: None
+- **Closing Tags**: None
+- **Lock Translations**: No
+- **Custom Status IDs**: None
+
+## Schedule Information
+- **Due Date**: No deadline set
+- **Status**: ⚠️ **NO DEADLINE** - consider setting a due date
+
+- **Created**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+
+## Language Assignments
+**Target Languages:** 1
+
+### FR
+
+- **Status**: completed
+- **Progress**: 100%
+- **Keys Count**: 1
+- **Words Count**: 2
+- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC)
+- **Completed At (ts)**: 1569928144
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+
+Initial TM Leverage:
+- 0%+: 0%
+- 60%+: 0%
+- 75%+: 0%
+- 95%+: 0%
+- 100%: 100%
+
+TM Leverage Status: completed
+- 0%+: 0%
+- 50%+: 31%
+- 75%+: 31%
+- 85%+: 31%
+- 95%+: 31%
+- 100%: 100%
+
+*No specific users or groups assigned to this language*
+
+## Configuration & Metrics
+- **Source Language**: en
+- **Auto-close Languages**: Yes
+- **Auto-close Task**: Yes
+- **Auto-close Items**: Yes
+- **Total Keys**: 1
+- **Total Words**: 2
+- **Overall Progress**: 0%
+
+## Audit
+- **Created By**: 20181
+- **Created By Email**: bodrovis@protonmail.com
+- **Created At**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created At (ts)**: 1564589760
+- **Completed By**: N/A
+- **Completed By Email**: N/A
+- **Completed At**: N/A
+- **Completed At (ts)**: N/A
+
+## Task Summary
+**Task Characteristics:**
+- 1 language(s) targeted
+- ⚠️ No deadline set
+- Current status: completed
+- Task type: translation
+
+---
+*Task details retrieved at 2024-01-15 10:30:00 UTC* Task \`123\` from project \`803826145ba90b42d5d860.46800099\`"
+`;
+
+exports[`TasksFormatter Edge Cases should handle very long content appropriately 1`] = `
+"# Tasks Analysis
+
+## Project: 803826145ba90b42d5d860.46800099
+
+## Executive Summary
+
+**1 tasks** found in this project.
+
+
+## Task Inventory
+
+| ID | Title | Status | Type | Progress | Keys | Words | Due Date | Created |
+|---|---|---|---|---|---|---|---|---|
+| 21659 | AAAAAAAAAAAAAAAAAAAAAAAAAAA... | completed | translation | 0% | 1 | 2 | No deadline | 7/31/2019 |
+
+## Detailed Task Snapshots
+
+### Task #21659 – AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+- **Status**: completed
+- **Type**: translation
+- **Progress**: 0%
+- **Due Date**: No deadline
+- **Due Date (ts)**: N/A
+- **Created At**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created At (ts)**: 1564589760
+- **Created By**: 20181
+- **Created By Email**: bodrovis@protonmail.com
+- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC) (10/1/2019)
+- **Completed At (ts)**: 1569928144
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+- **Can Be Parent**: No
+- **Parent Task ID**: None
+- **Closing Tags**: None
+- **Lock Translations**: No
+- **Custom Status IDs**: None
+- **Source Language**: en
+- **Auto-close Languages**: Yes
+- **Auto-close Task**: Yes
+- **Auto-close Items**: Yes
+- **Total Keys**: 1
+- **Total Words**: 2
+- **Target Languages**: 1
+
+**Languages:**
+- FR • status: completed • progress: 100% • keys: 1 • words: 2
+
+
+## Summary
+
+**Project 803826145ba90b42d5d860.46800099 has 1 tasks** in this view.
+
+---
+*Analysis completed at 2024-01-15 10:30:00 UTC* Showing 1 tasks from project \`803826145ba90b42d5d860.46800099\`"
+`;
+
+exports[`TasksFormatter formatCreateTaskResult should format task creation result 1`] = `
+"# Task Created Successfully
+
+## Created Task Information
+- **Task ID**: 1927993
+- **Project**: \`803826145ba90b42d5d860.46800099\`
+- **Title**: New Translation Task
+- **Type**: translation
+- **Status**: created
+- **Created**: 2024-01-15 10:00:00 (Etc/UTC) (1/15/2024)
+- **Due Date**: 12/31/2024 at 11:59:59 PM
+
+## Language Coverage
+**1 language(s) configured:**
+
+- **DE:** 1 user(s), 0 group(s)
+
+## Next Steps
+✅ **Task created successfully**
+
+**Recommended actions:**
+- Notify assigned team members about the new task
+- Review task details and assignments
+- Monitor progress as work begins
+
+---
+*Task created at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`TasksFormatter formatCreateTaskResult should handle language coverage in created task 1`] = `
+"# Task Created Successfully
+
+## Created Task Information
+- **Task ID**: 1927993
+- **Project**: \`803826145ba90b42d5d860.46800099\`
+- **Title**: New Translation Task
+- **Type**: translation
+- **Status**: created
+- **Created**: 2024-01-15 10:00:00 (Etc/UTC) (1/15/2024)
+- **Due Date**: 12/31/2024 at 11:59:59 PM
+
+## Language Coverage
+**1 language(s) configured:**
+
+- **DE:** 1 user(s), 0 group(s)
+
+## Next Steps
+✅ **Task created successfully**
+
+**Recommended actions:**
+- Notify assigned team members about the new task
+- Review task details and assignments
+- Monitor progress as work begins
+
+---
+*Task created at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`TasksFormatter formatCreateTaskResult should suggest setting due date if not provided 1`] = `
+"# Task Created Successfully
+
+## Created Task Information
+- **Task ID**: 1927993
+- **Project**: \`803826145ba90b42d5d860.46800099\`
+- **Title**: New Translation Task
+- **Type**: translation
+- **Status**: created
+- **Created**: 2024-01-15 10:00:00 (Etc/UTC) (1/15/2024)
+
+## Language Coverage
+**1 language(s) configured:**
+
+- **DE:** 1 user(s), 0 group(s)
+
+## Next Steps
+✅ **Task created successfully**
+
+**Recommended actions:**
+- Notify assigned team members about the new task
+- Review task details and assignments
+- Monitor progress as work begins
+- Consider setting a due date for better project management
+
+---
+*Task created at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`TasksFormatter formatCreateTaskResult should warn about approaching deadlines 1`] = `
+"# Task Created Successfully
+
+## Created Task Information
+- **Task ID**: 1927993
+- **Project**: \`803826145ba90b42d5d860.46800099\`
+- **Title**: New Translation Task
+- **Type**: translation
+- **Status**: created
+- **Created**: 2024-01-15 10:00:00 (Etc/UTC) (1/15/2024)
+- **Due Date**: 1/16/2024 at 11:30:00 AM
+
+## Language Coverage
+**1 language(s) configured:**
+
+- **DE:** 1 user(s), 0 group(s)
+
+## Next Steps
+✅ **Task created successfully**
+
+**Recommended actions:**
+- Notify assigned team members about the new task
+- Review task details and assignments
+- Monitor progress as work begins
+- ⚠️ **Due date is approaching** - ensure team is aware of the deadline
+
+---
+*Task created at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`TasksFormatter formatDeleteTaskResult should format task deletion result 1`] = `
+"# Task Deleted Successfully
+
+## Deletion Confirmation
+- **Task ID**: 1927993
+- **Project**: \`803826145ba90b42d5d860.46800099\`
+- **Status**: ✅ **DELETED**
+- **Deleted**: Yes
+- **Timestamp**: 2024-01-15 10:30:00 UTC
+
+## Important Notes
+⚠️ **This action is permanent** - the task and all its associated data have been permanently removed.
+
+**What was deleted:**
+- Task metadata (title, description, settings)
+- All task assignments
+- Language-specific assignments
+- Task history and progress tracking
+
+**What was NOT affected:**
+- Translation keys and their content remain unchanged
+- Project settings and other tasks are unaffected
+- User accounts and permissions remain as they were
+
+## Cleanup Complete
+🗑️ **Task removal successful** - the task has been permanently deleted from your project.
+
+---
+*Task deleted at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`TasksFormatter formatDeleteTaskResult should handle false deletion result 1`] = `
+"# Task Deleted Successfully
+
+## Deletion Confirmation
+- **Task ID**: 1927993
+- **Project**: \`803826145ba90b42d5d860.46800099\`
+- **Status**: ✅ **DELETED**
+- **Deleted**: No
+- **Timestamp**: 2024-01-15 10:30:00 UTC
+
+## Important Notes
+⚠️ **This action is permanent** - the task and all its associated data have been permanently removed.
+
+**What was deleted:**
+- Task metadata (title, description, settings)
+- All task assignments
+- Language-specific assignments
+- Task history and progress tracking
+
+**What was NOT affected:**
+- Translation keys and their content remain unchanged
+- Project settings and other tasks are unaffected
+- User accounts and permissions remain as they were
+
+## Cleanup Complete
+🗑️ **Task removal successful** - the task has been permanently deleted from your project.
+
+---
+*Task deleted at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`TasksFormatter formatTaskDetails should format detailed task information 1`] = `
+"# Task Details
+
+## Core Information
+- **Task ID**: 21659
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Title**: demo task
+- **Description**: *No description provided*
+- **Type**: translation
+- **Status**: completed
+- **Can Be Parent**: No
+- **Parent Task ID**: None
+- **Closing Tags**: None
+- **Lock Translations**: No
+- **Custom Status IDs**: None
+
+## Schedule Information
+- **Due Date**: No deadline set
+- **Status**: ⚠️ **NO DEADLINE** - consider setting a due date
+
+- **Created**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+
+## Language Assignments
+**Target Languages:** 1
+
+### FR
+
+- **Status**: completed
+- **Progress**: 100%
+- **Keys Count**: 1
+- **Words Count**: 2
+- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC)
+- **Completed At (ts)**: 1569928144
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+
+Initial TM Leverage:
+- 0%+: 0%
+- 60%+: 0%
+- 75%+: 0%
+- 95%+: 0%
+- 100%: 100%
+
+TM Leverage Status: completed
+- 0%+: 0%
+- 50%+: 31%
+- 75%+: 31%
+- 85%+: 31%
+- 95%+: 31%
+- 100%: 100%
+
+*No specific users or groups assigned to this language*
+
+## Configuration & Metrics
+- **Source Language**: en
+- **Auto-close Languages**: Yes
+- **Auto-close Task**: Yes
+- **Auto-close Items**: Yes
+- **Total Keys**: 1
+- **Total Words**: 2
+- **Overall Progress**: 0%
+
+## Audit
+- **Created By**: 20181
+- **Created By Email**: bodrovis@protonmail.com
+- **Created At**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created At (ts)**: 1564589760
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC) (10/1/2019)
+- **Completed At (ts)**: 1569928144
+
+## Task Summary
+**Task Characteristics:**
+- 1 language(s) targeted
+- ⚠️ No deadline set
+- Current status: completed
+- Task type: translation
+
+---
+*Task details retrieved at 2024-01-15 10:30:00 UTC* Task \`21659\` from project \`803826145ba90b42d5d860.46800099\`"
+`;
+
+exports[`TasksFormatter formatTaskDetails should format schedule information correctly 1`] = `
+"# Task Details
+
+## Core Information
+- **Task ID**: 21659
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Title**: demo task
+- **Description**: *No description provided*
+- **Type**: translation
+- **Status**: completed
+- **Can Be Parent**: No
+- **Parent Task ID**: None
+- **Closing Tags**: None
+- **Lock Translations**: No
+- **Custom Status IDs**: None
+
+## Schedule Information
+- **Due Date**: No deadline set
+- **Status**: ⚠️ **NO DEADLINE** - consider setting a due date
+
+- **Created**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+
+## Language Assignments
+**Target Languages:** 1
+
+### FR
+
+- **Status**: completed
+- **Progress**: 100%
+- **Keys Count**: 1
+- **Words Count**: 2
+- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC)
+- **Completed At (ts)**: 1569928144
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+
+Initial TM Leverage:
+- 0%+: 0%
+- 60%+: 0%
+- 75%+: 0%
+- 95%+: 0%
+- 100%: 100%
+
+TM Leverage Status: completed
+- 0%+: 0%
+- 50%+: 31%
+- 75%+: 31%
+- 85%+: 31%
+- 95%+: 31%
+- 100%: 100%
+
+*No specific users or groups assigned to this language*
+
+## Configuration & Metrics
+- **Source Language**: en
+- **Auto-close Languages**: Yes
+- **Auto-close Task**: Yes
+- **Auto-close Items**: Yes
+- **Total Keys**: 1
+- **Total Words**: 2
+- **Overall Progress**: 0%
+
+## Audit
+- **Created By**: 20181
+- **Created By Email**: bodrovis@protonmail.com
+- **Created At**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created At (ts)**: 1564589760
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC) (10/1/2019)
+- **Completed At (ts)**: 1569928144
+
+## Task Summary
+**Task Characteristics:**
+- 1 language(s) targeted
+- ⚠️ No deadline set
+- Current status: completed
+- Task type: translation
+
+---
+*Task details retrieved at 2024-01-15 10:30:00 UTC* Task \`21659\` from project \`803826145ba90b42d5d860.46800099\`"
+`;
+
+exports[`TasksFormatter formatTaskDetails should handle overdue tasks 1`] = `
+"# Task Details
+
+## Core Information
+- **Task ID**: 21659
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Title**: demo task
+- **Description**: *No description provided*
+- **Type**: translation
+- **Status**: completed
+- **Can Be Parent**: No
+- **Parent Task ID**: None
+- **Closing Tags**: None
+- **Lock Translations**: No
+- **Custom Status IDs**: None
+
+## Schedule Information
+- **Due Date**: 4/29/2019 at 10:00:00 PM
+- **Status**: 🔴 **OVERDUE** by 1721 days
+
+- **Created**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+
+## Language Assignments
+**Target Languages:** 1
+
+### FR
+
+- **Status**: completed
+- **Progress**: 100%
+- **Keys Count**: 1
+- **Words Count**: 2
+- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC)
+- **Completed At (ts)**: 1569928144
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+
+Initial TM Leverage:
+- 0%+: 0%
+- 60%+: 0%
+- 75%+: 0%
+- 95%+: 0%
+- 100%: 100%
+
+TM Leverage Status: completed
+- 0%+: 0%
+- 50%+: 31%
+- 75%+: 31%
+- 85%+: 31%
+- 95%+: 31%
+- 100%: 100%
+
+*No specific users or groups assigned to this language*
+
+## Configuration & Metrics
+- **Source Language**: en
+- **Auto-close Languages**: Yes
+- **Auto-close Task**: Yes
+- **Auto-close Items**: Yes
+- **Total Keys**: 1
+- **Total Words**: 2
+- **Overall Progress**: 0%
+
+## Audit
+- **Created By**: 20181
+- **Created By Email**: bodrovis@protonmail.com
+- **Created At**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created At (ts)**: 1564589760
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC) (10/1/2019)
+- **Completed At (ts)**: 1569928144
+
+## Task Summary
+**Task Characteristics:**
+- 1 language(s) targeted
+- ⚠️ OVERDUE deadline: 4/29/2019
+- Current status: completed
+- Task type: translation
+
+---
+*Task details retrieved at 2024-01-15 10:30:00 UTC* Task \`21659\` from project \`803826145ba90b42d5d860.46800099\`"
+`;
+
+exports[`TasksFormatter formatTaskDetails should handle tasks with TM leverage data 1`] = `
+"# Task Details
+
+## Core Information
+- **Task ID**: 21659
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Title**: demo task
+- **Description**: *No description provided*
+- **Type**: translation
+- **Status**: completed
+- **Can Be Parent**: No
+- **Parent Task ID**: None
+- **Closing Tags**: None
+- **Lock Translations**: No
+- **Custom Status IDs**: None
+
+## Schedule Information
+- **Due Date**: No deadline set
+- **Status**: ⚠️ **NO DEADLINE** - consider setting a due date
+
+- **Created**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+
+## Language Assignments
+**Target Languages:** 1
+
+### FR
+
+- **Status**: completed
+- **Progress**: 100%
+- **Keys Count**: 1
+- **Words Count**: 2
+- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC)
+- **Completed At (ts)**: 1569928144
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+
+Initial TM Leverage:
+- 0%+: 0%
+- 60%+: 0%
+- 75%+: 0%
+- 95%+: 0%
+- 100%: 100%
+
+TM Leverage Status: completed
+- 0%+: 0%
+- 50%+: 31%
+- 75%+: 31%
+- 85%+: 31%
+- 95%+: 31%
+- 100%: 100%
+
+*No specific users or groups assigned to this language*
+
+## Configuration & Metrics
+- **Source Language**: en
+- **Auto-close Languages**: Yes
+- **Auto-close Task**: Yes
+- **Auto-close Items**: Yes
+- **Total Keys**: 1
+- **Total Words**: 2
+- **Overall Progress**: 0%
+
+## Audit
+- **Created By**: 20181
+- **Created By Email**: bodrovis@protonmail.com
+- **Created At**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created At (ts)**: 1564589760
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC) (10/1/2019)
+- **Completed At (ts)**: 1569928144
+
+## Task Summary
+**Task Characteristics:**
+- 1 language(s) targeted
+- ⚠️ No deadline set
+- Current status: completed
+- Task type: translation
+
+---
+*Task details retrieved at 2024-01-15 10:30:00 UTC* Task \`21659\` from project \`803826145ba90b42d5d860.46800099\`"
+`;
+
+exports[`TasksFormatter formatTaskDetails should handle tasks without languages 1`] = `
+"# Task Details
+
+## Core Information
+- **Task ID**: 21659
+- **Project ID**: \`803826145ba90b42d5d860.46800099\`
+- **Title**: demo task
+- **Description**: *No description provided*
+- **Type**: translation
+- **Status**: completed
+- **Can Be Parent**: No
+- **Parent Task ID**: None
+- **Closing Tags**: None
+- **Lock Translations**: No
+- **Custom Status IDs**: None
+
+## Schedule Information
+- **Due Date**: No deadline set
+- **Status**: ⚠️ **NO DEADLINE** - consider setting a due date
+
+- **Created**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+
+## Language Assignments
+*No languages assigned to this task*
+
+## Configuration & Metrics
+- **Source Language**: en
+- **Auto-close Languages**: Yes
+- **Auto-close Task**: Yes
+- **Auto-close Items**: Yes
+- **Total Keys**: 1
+- **Total Words**: 2
+- **Overall Progress**: 0%
+
+## Audit
+- **Created By**: 20181
+- **Created By Email**: bodrovis@protonmail.com
+- **Created At**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created At (ts)**: 1564589760
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC) (10/1/2019)
+- **Completed At (ts)**: 1569928144
+
+## Task Summary
+**Task Characteristics:**
+- 0 language(s) targeted
+- ⚠️ No deadline set
+- Current status: completed
+- Task type: translation
+
+---
+*Task details retrieved at 2024-01-15 10:30:00 UTC* Task \`21659\` from project \`803826145ba90b42d5d860.46800099\`"
+`;
+
+exports[`TasksFormatter formatTasksList should format a list of tasks with rich metadata 1`] = `
+"# Tasks Analysis
+
+## Project: 803826145ba90b42d5d860.46800099
+
+## Executive Summary
+
+**3 tasks** found in this project.
+
+
+## Task Inventory
+
+| ID | Title | Status | Type | Progress | Keys | Words | Due Date | Created |
+|---|---|---|---|---|---|---|---|---|
+| 21659 | demo task | completed | translation | 0% | 1 | 2 | No deadline | 7/31/2019 |
+| 11925 | node updated | completed | review | 0% | 16 | 275 | No deadline | 5/13/2019 |
+| 10001 | My new task | completed | translation | 0% | 2 | 16 | 🔴 4/29/2019 | 4/17/2019 |
+
+## Detailed Task Snapshots
+
+### Task #21659 – demo task
+- **Status**: completed
+- **Type**: translation
+- **Progress**: 0%
+- **Due Date**: No deadline
+- **Due Date (ts)**: N/A
+- **Created At**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+- **Created At (ts)**: 1564589760
+- **Created By**: 20181
+- **Created By Email**: bodrovis@protonmail.com
+- **Completed At**: 2019-10-01 11:09:04 (Etc/UTC) (10/1/2019)
+- **Completed At (ts)**: 1569928144
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+- **Can Be Parent**: No
+- **Parent Task ID**: None
+- **Closing Tags**: None
+- **Lock Translations**: No
+- **Custom Status IDs**: None
+- **Source Language**: en
+- **Auto-close Languages**: Yes
+- **Auto-close Task**: Yes
+- **Auto-close Items**: Yes
+- **Total Keys**: 1
+- **Total Words**: 2
+- **Target Languages**: 1
+
+**Languages:**
+- Unknown • status: created • progress: 0% • keys: 1 • words: 2
+
+
+### Task #11925 – node updated
+- **Status**: completed
+- **Type**: review
+- **Progress**: 0%
+- **Due Date**: No deadline
+- **Due Date (ts)**: N/A
+- **Created At**: 2019-05-13 16:15:26 (Etc/UTC) (5/13/2019)
+- **Created At (ts)**: 1557764126
+- **Created By**: 20181
+- **Created By Email**: bodrovis@protonmail.com
+- **Completed At**: 2019-10-01 11:09:12 (Etc/UTC) (10/1/2019)
+- **Completed At (ts)**: 1569928152
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+- **Can Be Parent**: No
+- **Parent Task ID**: None
+- **Closing Tags**: None
+- **Lock Translations**: No
+- **Custom Status IDs**: None
+- **Source Language**: en
+- **Auto-close Languages**: Yes
+- **Auto-close Task**: Yes
+- **Auto-close Items**: Yes
+- **Total Keys**: 16
+- **Total Words**: 275
+- **Target Languages**: 2
+
+**Languages:**
+- SQ • status: created • progress: 0% • keys: 16 • words: 37
+- AR_001 • status: created • progress: 0% • keys: 15 • words: 36
+
+
+### Task #10001 – My new task
+- **Status**: completed
+- **Type**: translation
+- **Progress**: 0%
+- **Due Date**: 4/29/2019 at 10:00:00 PM
+- **Due Date (ts)**: 1556575200
+- **Created At**: 2019-04-17 13:44:00 (Etc/UTC) (4/17/2019)
+- **Created At (ts)**: 1555508640
+- **Created By**: 20181
+- **Created By Email**: bodrovis@protonmail.com
+- **Completed At**: 2019-10-01 11:14:10 (Etc/UTC) (10/1/2019)
+- **Completed At (ts)**: 1569928450
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+- **Can Be Parent**: No
+- **Parent Task ID**: None
+- **Closing Tags**: finalized
+- **Lock Translations**: No
+- **Custom Status IDs**: None
+- **Source Language**: en
+- **Auto-close Languages**: Yes
+- **Auto-close Task**: Yes
+- **Auto-close Items**: Yes
+- **Total Keys**: 2
+- **Total Words**: 16
+- **Target Languages**: 2
+
+**Languages:**
+- FR • status: created • progress: 0% • keys: 2 • words: 5
+- Unknown • status: created • progress: 0% • keys: 2 • words: 8
+
+
+## Summary
+
+**Project 803826145ba90b42d5d860.46800099 has 3 tasks** in this view.
+
+---
+*Analysis completed at 2024-01-15 10:30:00 UTC* Showing 3 tasks from project \`803826145ba90b42d5d860.46800099\`"
+`;
+
+exports[`TasksFormatter formatTasksList should format task with language assignments correctly 1`] = `
+"# Tasks Analysis
+
+## Project: 803826145ba90b42d5d860.46800099
+
+## Executive Summary
+
+**1 tasks** found in this project.
+
+
+## Task Inventory
+
+| ID | Title | Status | Type | Progress | Keys | Words | Due Date | Created |
+|---|---|---|---|---|---|---|---|---|
+| 10001 | My new task | completed | translation | 0% | 2 | 16 | 🔴 4/29/2019 | 4/17/2019 |
+
+## Detailed Task Snapshots
+
+### Task #10001 – My new task
+- **Status**: completed
+- **Type**: translation
+- **Progress**: 0%
+- **Due Date**: 4/29/2019 at 10:00:00 PM
+- **Due Date (ts)**: 1556575200
+- **Created At**: 2019-04-17 13:44:00 (Etc/UTC) (4/17/2019)
+- **Created At (ts)**: 1555508640
+- **Created By**: 20181
+- **Created By Email**: bodrovis@protonmail.com
+- **Completed At**: 2019-10-01 11:14:10 (Etc/UTC) (10/1/2019)
+- **Completed At (ts)**: 1569928450
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+- **Can Be Parent**: No
+- **Parent Task ID**: None
+- **Closing Tags**: finalized
+- **Lock Translations**: No
+- **Custom Status IDs**: None
+- **Source Language**: en
+- **Auto-close Languages**: Yes
+- **Auto-close Task**: Yes
+- **Auto-close Items**: Yes
+- **Total Keys**: 2
+- **Total Words**: 16
+- **Target Languages**: 2
+
+**Languages:**
+- FR • status: created • progress: 0% • keys: 2 • words: 5
+- Unknown • status: created • progress: 0% • keys: 2 • words: 8
+
+
+## Summary
+
+**Project 803826145ba90b42d5d860.46800099 has 1 tasks** in this view.
+
+---
+*Analysis completed at 2024-01-15 10:30:00 UTC* Showing 1 tasks from project \`803826145ba90b42d5d860.46800099\`"
+`;
+
+exports[`TasksFormatter formatTasksList should handle due dates and overdue status 1`] = `
+"# Tasks Analysis
+
+## Project: 803826145ba90b42d5d860.46800099
+
+## Executive Summary
+
+**1 tasks** found in this project.
+
+
+## Task Inventory
+
+| ID | Title | Status | Type | Progress | Keys | Words | Due Date | Created |
+|---|---|---|---|---|---|---|---|---|
+| 10001 | My new task | completed | translation | 0% | 2 | 16 | 🔴 4/29/2019 | 4/17/2019 |
+
+## Detailed Task Snapshots
+
+### Task #10001 – My new task
+- **Status**: completed
+- **Type**: translation
+- **Progress**: 0%
+- **Due Date**: 4/29/2019 at 10:00:00 PM
+- **Due Date (ts)**: 1556575200
+- **Created At**: 2019-04-17 13:44:00 (Etc/UTC) (4/17/2019)
+- **Created At (ts)**: 1555508640
+- **Created By**: 20181
+- **Created By Email**: bodrovis@protonmail.com
+- **Completed At**: 2019-10-01 11:14:10 (Etc/UTC) (10/1/2019)
+- **Completed At (ts)**: 1569928450
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+- **Can Be Parent**: No
+- **Parent Task ID**: None
+- **Closing Tags**: finalized
+- **Lock Translations**: No
+- **Custom Status IDs**: None
+- **Source Language**: en
+- **Auto-close Languages**: Yes
+- **Auto-close Task**: Yes
+- **Auto-close Items**: Yes
+- **Total Keys**: 2
+- **Total Words**: 16
+- **Target Languages**: 2
+
+**Languages:**
+- FR • status: created • progress: 0% • keys: 2 • words: 5
+- Unknown • status: created • progress: 0% • keys: 2 • words: 8
+
+
+## Summary
+
+**Project 803826145ba90b42d5d860.46800099 has 1 tasks** in this view.
+
+---
+*Analysis completed at 2024-01-15 10:30:00 UTC* Showing 1 tasks from project \`803826145ba90b42d5d860.46800099\`"
+`;
+
+exports[`TasksFormatter formatTasksList should handle empty task list 1`] = `
+"# Tasks Analysis
+
+## Project: 803826145ba90b42d5d860.46800099
+
+**No tasks found in this project.**
+
+This could mean:
+- The project has no tasks created yet
+- All tasks have been deleted
+- Filter criteria excluded all tasks
+- You may not have permission to view tasks
+
+---
+*Analysis completed at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`TasksFormatter formatTasksList should handle pagination information 1`] = `
+"# Tasks Analysis
+
+## Project: 803826145ba90b42d5d860.46800099
+
+## Executive Summary
+
+**1 tasks** found in this project.
+
+## Pagination Information
+
+⚠️ **This is a paginated result** - showing 1 items out of potentially more.
+
+- **Next Cursor:** \`3\`
+- **Has More Data:** Yes
+- **Recommendation:** Use the cursor to fetch additional items for complete analysis
+
+## Task Inventory
+
+| ID | Title | Status | Type | Progress | Keys | Words | Due Date | Created |
+|---|---|---|---|---|---|---|---|---|
+| 10001 | My new task | completed | translation | 0% | 2 | 16 | 🔴 4/29/2019 | 4/17/2019 |
+
+## Detailed Task Snapshots
+
+### Task #10001 – My new task
+- **Status**: completed
+- **Type**: translation
+- **Progress**: 0%
+- **Due Date**: 4/29/2019 at 10:00:00 PM
+- **Due Date (ts)**: 1556575200
+- **Created At**: 2019-04-17 13:44:00 (Etc/UTC) (4/17/2019)
+- **Created At (ts)**: 1555508640
+- **Created By**: 20181
+- **Created By Email**: bodrovis@protonmail.com
+- **Completed At**: 2019-10-01 11:14:10 (Etc/UTC) (10/1/2019)
+- **Completed At (ts)**: 1569928450
+- **Completed By**: 20181
+- **Completed By Email**: bodrovis@protonmail.com
+- **Can Be Parent**: No
+- **Parent Task ID**: None
+- **Closing Tags**: finalized
+- **Lock Translations**: No
+- **Custom Status IDs**: None
+- **Source Language**: en
+- **Auto-close Languages**: Yes
+- **Auto-close Task**: Yes
+- **Auto-close Items**: Yes
+- **Total Keys**: 2
+- **Total Words**: 16
+- **Target Languages**: 2
+
+**Languages:**
+- FR • status: created • progress: 0% • keys: 2 • words: 5
+- Unknown • status: created • progress: 0% • keys: 2 • words: 8
+
+
+## Summary
+
+**Project 803826145ba90b42d5d860.46800099 has 1 tasks** in this view.
+
+---
+*Analysis completed at 2024-01-15 10:30:00 UTC* Showing 1 tasks from project \`803826145ba90b42d5d860.46800099\`
+*Additional tasks available - use cursor pagination to fetch more*"
+`;
+
+exports[`TasksFormatter formatUpdateTaskResult should format task update result 1`] = `
+"# Task Updated Successfully
+
+## Updated Task Information
+- **Task ID**: 21659
+- **Project**: \`803826145ba90b42d5d860.46800099\`
+- **Title**: demo task
+- **Status**: completed
+- **Last Modified**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+
+## Language Assignments
+**1 language(s) configured:**
+
+- **FR:** 0 user(s), 0 group(s)
+
+## Update Confirmation
+✅ **Task updated successfully**
+
+**Changes have been applied to:**
+- Task metadata and configuration
+- Assignment and language settings
+- Due date and priority settings
+
+✅ **Task marked as completed** - ready for final review
+
+---
+*Task updated at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`TasksFormatter formatUpdateTaskResult should handle closed status 1`] = `
+"# Task Updated Successfully
+
+## Updated Task Information
+- **Task ID**: 21659
+- **Project**: \`803826145ba90b42d5d860.46800099\`
+- **Title**: demo task
+- **Status**: closed
+- **Last Modified**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+
+## Language Assignments
+**1 language(s) configured:**
+
+- **FR:** 0 user(s), 0 group(s)
+
+## Update Confirmation
+✅ **Task updated successfully**
+
+**Changes have been applied to:**
+- Task metadata and configuration
+- Assignment and language settings
+- Due date and priority settings
+
+🎉 **Task has been closed** - work is complete!
+
+---
+*Task updated at 2024-01-15 10:30:00 UTC*"
+`;
+
+exports[`TasksFormatter formatUpdateTaskResult should handle completed status 1`] = `
+"# Task Updated Successfully
+
+## Updated Task Information
+- **Task ID**: 21659
+- **Project**: \`803826145ba90b42d5d860.46800099\`
+- **Title**: demo task
+- **Status**: completed
+- **Last Modified**: 2019-07-31 16:16:00 (Etc/UTC) (7/31/2019)
+
+## Language Assignments
+**1 language(s) configured:**
+
+- **FR:** 0 user(s), 0 group(s)
+
+## Update Confirmation
+✅ **Task updated successfully**
+
+**Changes have been applied to:**
+- Task metadata and configuration
+- Assignment and language settings
+- Due date and priority settings
+
+✅ **Task marked as completed** - ready for final review
+
+---
+*Task updated at 2024-01-15 10:30:00 UTC*"
+`;
