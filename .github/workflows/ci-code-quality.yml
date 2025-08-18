@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0 # Full history for better analysis
 
@@ -87,7 +87,7 @@ jobs:
     needs: quality # Only run if quality checks pass
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 📦 Setup Node.js
         uses: actions/setup-node@v4
@@ -134,7 +134,7 @@ jobs:
         node-version: [18, 20, 22] # Test on multiple Node versions
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 📦 Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
