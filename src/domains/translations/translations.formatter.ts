@@ -34,7 +34,7 @@ export function formatTranslationsList(
 
 	if (!translationsData.items || translationsData.items.length === 0) {
 		const suggestions = [
-			"Check if the project has any keys with translations",
+			"Check if the project has unknown keys with translations",
 			"Verify your filter parameters (language, review status, etc.)",
 			"Ensure you have permission to view translations",
 		];

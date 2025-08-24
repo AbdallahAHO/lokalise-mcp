@@ -21,7 +21,7 @@ import {
  * @returns Formatted Markdown string
  */
 export function format{{domainNamePascal}}List(
-	{{domainName}}Data: any,
+	{{domainName}}Data: unknown,
 	projectId: string,
 ): string {
 	const lines: string[] = [];
@@ -56,9 +56,9 @@ export function format{{domainNamePascal}}List(
 
 	// Add {{domainName}} table
 	lines.push(formatHeading("{{domainNamePascal}}", 2));
-	
+
 	// TODO: Customize table columns based on actual {{domainName}} properties
-	const tableData = {{domainName}}Data.items.map((item: any) => ({
+	const tableData = {{domainName}}Data.items.map((item: unknown) => ({
 		id: item.id || item.{{domainName}}_id || "N/A",
 		name: item.name || item.title || "Unnamed",
 		description: item.description || "-",
@@ -106,7 +106,7 @@ export function format{{domainNamePascal}}List(
  * @returns Formatted Markdown string
  */
 export function format{{domainNamePascal}}Details(
-	{{domainName}}: any,
+	{{domainName}}: unknown,
 	projectId: string,
 ): string {
 	const lines: string[] = [];
@@ -118,7 +118,7 @@ export function format{{domainNamePascal}}Details(
 
 	// Add basic information section
 	lines.push(formatHeading("Basic Information", 2));
-	
+
 	// TODO: Customize fields based on actual {{domainName}} properties
 	const basicInfo: Record<string, unknown> = {
 		"{{domainNamePascal}} ID": {{domainName}}.id || {{domainName}}.{{domainName}}_id,
@@ -158,7 +158,7 @@ export function format{{domainNamePascal}}Details(
  * @returns Formatted Markdown string
  */
 export function formatCreate{{domainNamePascal}}Result(
-	{{domainName}}: any,
+	{{domainName}}: unknown,
 	projectId: string,
 ): string {
 	const lines: string[] = [];
@@ -180,13 +180,13 @@ export function formatCreate{{domainNamePascal}}Result(
 
 	// Add created {{domainName}} details
 	lines.push(formatHeading("{{domainNamePascal}} Details", 2));
-	
+
 	// TODO: Customize based on actual {{domainName}} properties
 	const details: Record<string, unknown> = {
 		"Description": {{domainName}}.description || "No description provided",
 		// Add more domain-specific fields here
 	};
-	
+
 	lines.push(formatBulletList(details));
 	lines.push("");
 
@@ -226,7 +226,7 @@ export function formatCreate{{domainNamePascal}}Result(
  * @returns Formatted Markdown string
  */
 export function formatUpdate{{domainNamePascal}}Result(
-	{{domainName}}: any,
+	{{domainName}}: unknown,
 	projectId: string,
 ): string {
 	const lines: string[] = [];
@@ -248,14 +248,14 @@ export function formatUpdate{{domainNamePascal}}Result(
 
 	// Add updated fields
 	lines.push(formatHeading("Updated Information", 2));
-	
+
 	// TODO: Show which fields were actually updated
 	const updatedInfo: Record<string, unknown> = {
 		"Description": {{domainName}}.description || "No description",
 		"Last Modified": {{domainName}}.updated_at ? formatDate(new Date({{domainName}}.updated_at)) : "Just now",
 		// Add more domain-specific fields here
 	};
-	
+
 	lines.push(formatBulletList(updatedInfo));
 	lines.push("");
 
@@ -328,7 +328,7 @@ export function formatDelete{{domainNamePascal}}Result(
  * @returns Formatted Markdown string
  */
 export function formatBulkCreate{{domainNamePascal}}Result(
-	result: any,
+	result: unknown,
 	projectId: string,
 ): string {
 	const lines: string[] = [];
@@ -356,8 +356,8 @@ export function formatBulkCreate{{domainNamePascal}}Result(
 	// Show created {{domainName}}s if any
 	if (successCount > 0) {
 		lines.push(formatHeading(`Created {{domainNamePascal}} (${successCount})`, 2));
-		
-		const tableData = result.items.slice(0, 10).map((item: any) => ({
+
+		const tableData = result.items.slice(0, 10).map((item: unknown) => ({
 			id: item.id || item.{{domainName}}_id,
 			name: item.name || item.title || "Unnamed",
 			status: "✅ Created",
@@ -370,7 +370,7 @@ export function formatBulkCreate{{domainNamePascal}}Result(
 		]);
 
 		lines.push(table);
-		
+
 		if (successCount > 10) {
 			lines.push(`\n... and ${successCount - 10} more {{domainName}}s created successfully.`);
 		}
@@ -380,8 +380,8 @@ export function formatBulkCreate{{domainNamePascal}}Result(
 	// Show errors if any
 	if (errorCount > 0) {
 		lines.push(formatHeading(`Failed Operations (${errorCount})`, 2));
-		
-		result.errors.slice(0, 5).forEach((error: any) => {
+
+		result.errors.slice(0, 5).forEach((error: unknown) => {
 			lines.push(`- **Error**: ${error.message || "Unknown error"}`);
 			if (error.key || error.name) {
 				lines.push(`  - Item: ${error.key || error.name}`);
@@ -390,7 +390,7 @@ export function formatBulkCreate{{domainNamePascal}}Result(
 				lines.push(`  - Code: ${error.code}`);
 			}
 		});
-		
+
 		if (errorCount > 5) {
 			lines.push(`\n... and ${errorCount - 5} more errors.`);
 		}
@@ -415,7 +415,7 @@ export function formatBulkCreate{{domainNamePascal}}Result(
  * @returns Formatted Markdown string
  */
 export function formatBulkUpdate{{domainNamePascal}}Result(
-	result: any,
+	result: unknown,
 	projectId: string,
 ): string {
 	const lines: string[] = [];
@@ -443,8 +443,8 @@ export function formatBulkUpdate{{domainNamePascal}}Result(
 	// Show updated {{domainName}}s if any
 	if (successCount > 0) {
 		lines.push(formatHeading(`Updated {{domainNamePascal}} (${successCount})`, 2));
-		
-		const tableData = result.items.slice(0, 10).map((item: any) => ({
+
+		const tableData = result.items.slice(0, 10).map((item: unknown) => ({
 			id: item.id || item.{{domainName}}_id,
 			name: item.name || item.title || "Unnamed",
 			status: "✅ Updated",
@@ -457,7 +457,7 @@ export function formatBulkUpdate{{domainNamePascal}}Result(
 		]);
 
 		lines.push(table);
-		
+
 		if (successCount > 10) {
 			lines.push(`\n... and ${successCount - 10} more {{domainName}}s updated successfully.`);
 		}
@@ -467,8 +467,8 @@ export function formatBulkUpdate{{domainNamePascal}}Result(
 	// Show errors if any
 	if (errorCount > 0) {
 		lines.push(formatHeading(`Failed Operations (${errorCount})`, 2));
-		
-		result.errors.slice(0, 5).forEach((error: any) => {
+
+		result.errors.slice(0, 5).forEach((error: unknown) => {
 			lines.push(`- **Error**: ${error.message || "Unknown error"}`);
 			if (error.{{domainName}}_id) {
 				lines.push(`  - {{domainNamePascal}} ID: ${error.{{domainName}}_id}`);
@@ -477,7 +477,7 @@ export function formatBulkUpdate{{domainNamePascal}}Result(
 				lines.push(`  - Code: ${error.code}`);
 			}
 		});
-		
+
 		if (errorCount > 5) {
 			lines.push(`\n... and ${errorCount - 5} more errors.`);
 		}
@@ -502,7 +502,7 @@ export function formatBulkUpdate{{domainNamePascal}}Result(
  * @returns Formatted Markdown string
  */
 export function formatBulkDelete{{domainNamePascal}}Result(
-	result: any,
+	result: unknown,
 	projectId: string,
 ): string {
 	const lines: string[] = [];
@@ -544,7 +544,7 @@ export function formatBulkDelete{{domainNamePascal}}Result(
 
 /**
  * TODO: Add more formatting functions as needed
- * 
+ *
  * Consider adding:
  * - Error formatting helpers
  * - Status badge formatters

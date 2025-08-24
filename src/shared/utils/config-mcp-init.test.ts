@@ -4,16 +4,17 @@ import { config } from "./config.util.js";
 describe("ConfigLoader MCP Initialization", () => {
 	beforeEach(() => {
 		// Reset the config instance for each test
-		// biome-ignore lint/suspicious/noExplicitAny: Needed for testing private properties
-		(config as any).configLoaded = false;
-		// biome-ignore lint/suspicious/noExplicitAny: Needed for testing private properties
-		(config as any).mcpInitConfig = {};
-		// biome-ignore lint/suspicious/noExplicitAny: Needed for testing private properties
-		(config as any).httpQueryConfig = {};
-		// biome-ignore lint/suspicious/noExplicitAny: Needed for testing private properties
-		(config as any).smitheryConfig = null;
-		// biome-ignore lint/suspicious/noExplicitAny: Needed for testing private properties
-		(config as any).mergedConfig = {};
+		(config as unknown as { configLoaded: boolean }).configLoaded = false;
+		(
+			config as unknown as { mcpInitConfig: Record<string, unknown> }
+		).mcpInitConfig = {};
+		(
+			config as unknown as { httpQueryConfig: Record<string, unknown> }
+		).httpQueryConfig = {};
+		(config as unknown as { smitheryConfig: unknown }).smitheryConfig = null;
+		(
+			config as unknown as { mergedConfig: Record<string, unknown> }
+		).mergedConfig = {};
 
 		// Clear any environment variables that might interfere
 		delete process.env.TEST_KEY;
