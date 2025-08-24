@@ -25,8 +25,8 @@ src/domains/[domain]/
 
 ### 1. Service Layer Tests
 
-**Purpose**: Test direct API interactions with mocked Lokalise SDK  
-**Coverage Target**: 95%  
+**Purpose**: Test direct API interactions with mocked Lokalise SDK
+**Coverage Target**: 95%
 **Focus**: API calls, error handling, data transformation
 
 #### Template Structure
@@ -37,10 +37,10 @@ import { describe, it, expect, beforeEach, afterEach, jest } from "@jest/globals
 import { ProjectsService } from "./projects.service";
 import { McpError } from "../../shared/utils/error.util";
 import { createMockLokaliseApi } from "../../test-utils/mock-factory";
-import { 
+import {
   createProjectsListFixture,
   createProjectFixture,
-  createErrorResponse 
+  createErrorResponse
 } from "./__fixtures__/projects.fixtures";
 
 describe("ProjectsService", () => {
@@ -50,15 +50,15 @@ describe("ProjectsService", () => {
   beforeEach(() => {
     // Clear any module cache
     jest.clearAllMocks();
-    
+
     // Create mock API
     mockApi = createMockLokaliseApi();
-    
+
     // Create service instance
     service = new ProjectsService();
-    
+
     // Inject mock API
-    (service as any).getLokaliseApi = () => mockApi;
+    (service as unknown).getLokaliseApi = () => mockApi;
   });
 
   afterEach(() => {
@@ -184,9 +184,9 @@ describe("ProjectsService", () => {
       // Arrange
       const projectId = "test_project_123";
       const updates = { name: "Updated Name" };
-      const mockResponse = createProjectFixture({ 
-        project_id: projectId, 
-        ...updates 
+      const mockResponse = createProjectFixture({
+        project_id: projectId,
+        ...updates
       });
       mockApi.projects().update.mockResolvedValue(mockResponse);
 
@@ -206,8 +206,8 @@ describe("ProjectsService", () => {
     it("should delete a project", async () => {
       // Arrange
       const projectId = "test_project_123";
-      mockApi.projects().delete.mockResolvedValue({ 
-        project_deleted: true 
+      mockApi.projects().delete.mockResolvedValue({
+        project_deleted: true
       });
 
       // Act
@@ -234,8 +234,8 @@ describe("ProjectsService", () => {
     it("should empty all keys and translations", async () => {
       // Arrange
       const projectId = "test_project_123";
-      mockApi.projects().empty.mockResolvedValue({ 
-        keys_deleted: true 
+      mockApi.projects().empty.mockResolvedValue({
+        keys_deleted: true
       });
 
       // Act
@@ -251,8 +251,8 @@ describe("ProjectsService", () => {
 
 ### 2. Controller Layer Tests
 
-**Purpose**: Test business logic, validation, and orchestration  
-**Coverage Target**: 90%  
+**Purpose**: Test business logic, validation, and orchestration
+**Coverage Target**: 90%
 **Focus**: Input validation, error transformation, response formatting
 
 #### Template Structure
@@ -263,9 +263,9 @@ import { describe, it, expect, beforeEach, jest } from "@jest/globals";
 import { projectsController } from "./projects.controller";
 import * as projectsService from "./projects.service";
 import { McpError } from "../../shared/utils/error.util";
-import { 
+import {
   createProjectsListFixture,
-  createProjectFixture 
+  createProjectFixture
 } from "./__fixtures__/projects.fixtures";
 
 // Mock the service module
@@ -470,8 +470,8 @@ describe("ProjectsController", () => {
 
     it("should delete with confirmation", async () => {
       // Arrange
-      mockService.deleteProject.mockResolvedValue({ 
-        project_deleted: true 
+      mockService.deleteProject.mockResolvedValue({
+        project_deleted: true
       });
 
       // Act
@@ -489,8 +489,8 @@ describe("ProjectsController", () => {
 
 ### 3. Tool Layer Tests
 
-**Purpose**: Test MCP tool integration  
-**Coverage Target**: 85%  
+**Purpose**: Test MCP tool integration
+**Coverage Target**: 85%
 **Focus**: Schema validation, tool execution, error handling
 
 #### Template Structure
@@ -525,7 +525,7 @@ describe("ProjectsTool", () => {
       // Assert tool is registered
       const tools = server.getTools();
       const listTool = tools.find(t => t.name === "lokalise_list_projects");
-      
+
       expect(listTool).toBeDefined();
       expect(listTool?.description).toContain("List all projects");
       expect(listTool?.inputSchema).toBeDefined();
@@ -623,7 +623,7 @@ describe("ProjectsTool", () => {
         description: "Test",
         base_language_iso: "en"
       };
-      
+
       mockController.createProject.mockResolvedValue({
         content: "Created successfully",
         data: { ...projectData, project_id: "new_123" }
@@ -644,8 +644,8 @@ describe("ProjectsTool", () => {
   describe("Tool Discovery", () => {
     it("should auto-register all domain tools", () => {
       const tools = server.getTools();
-      const projectTools = tools.filter(t => 
-        t.name.startsWith("lokalise_") && 
+      const projectTools = tools.filter(t =>
+        t.name.startsWith("lokalise_") &&
         t.name.includes("project")
       );
 
@@ -665,8 +665,8 @@ describe("ProjectsTool", () => {
 
 ### 4. Resource Layer Tests
 
-**Purpose**: Test MCP resource handling  
-**Coverage Target**: 85%  
+**Purpose**: Test MCP resource handling
+**Coverage Target**: 85%
 **Focus**: URI parsing, query parameters, resource generation
 
 #### Template Structure
@@ -800,8 +800,8 @@ describe("ProjectsResource", () => {
 
 ### 5. CLI Layer Tests
 
-**Purpose**: Test CLI command integration  
-**Coverage Target**: 80%  
+**Purpose**: Test CLI command integration
+**Coverage Target**: 80%
 **Focus**: Command registration, argument parsing, output formatting
 
 #### Template Structure
@@ -826,7 +826,7 @@ describe("ProjectsCLI", () => {
     program.exitOverride(); // Prevent process.exit in tests
     projectsCli.register(program);
     jest.clearAllMocks();
-    
+
     // Mock console methods
     jest.spyOn(console, "log").mockImplementation();
     jest.spyOn(console, "error").mockImplementation();
@@ -839,7 +839,7 @@ describe("ProjectsCLI", () => {
   describe("list-projects command", () => {
     it("should register command with options", () => {
       const cmd = program.commands.find(c => c.name() === "list-projects");
-      
+
       expect(cmd).toBeDefined();
       expect(cmd?.description()).toContain("List all projects");
       expect(cmd?.options).toHaveLength(3); // page, limit, stats
@@ -901,7 +901,7 @@ describe("ProjectsCLI", () => {
       await expect(
         program.parseAsync(["node", "test", "list-projects"])
       ).rejects.toThrow("API Error");
-      
+
       expect(console.error).toHaveBeenCalledWith(
         expect.stringContaining("Error")
       );
@@ -945,8 +945,8 @@ describe("ProjectsCLI", () => {
         name: "New Project",
         description: "Test project"
       });
-      
-      (program as any).prompt = mockPrompt;
+
+      (program as unknown).prompt = mockPrompt;
 
       mockController.createProject.mockResolvedValue({
         content: "Created",
@@ -994,7 +994,7 @@ describe("ProjectsCLI", () => {
     it("should require confirmation", async () => {
       // Mock confirmation prompt
       const mockConfirm = jest.fn().mockResolvedValue(false);
-      (program as any).confirm = mockConfirm;
+      (program as unknown).confirm = mockConfirm;
 
       // Act
       await program.parseAsync([
@@ -1012,7 +1012,7 @@ describe("ProjectsCLI", () => {
     it("should delete with confirmation", async () => {
       // Mock confirmation prompt
       const mockConfirm = jest.fn().mockResolvedValue(true);
-      (program as any).confirm = mockConfirm;
+      (program as unknown).confirm = mockConfirm;
 
       mockController.deleteProject.mockResolvedValue({
         content: "Deleted",
@@ -1119,7 +1119,7 @@ describe("error handling", () => {
     mockApi.method.mockRejectedValue(
       createErrorResponse(code, message)
     );
-    
+
     await expect(service.method()).rejects.toThrow(message);
   });
 });
@@ -1143,10 +1143,10 @@ if (!apiKey) {
 ```typescript
 describe("Performance", () => {
   it("should handle 1000 items efficiently", async () => {
-    const largeDataset = Array.from({ length: 1000 }, (_, i) => 
+    const largeDataset = Array.from({ length: 1000 }, (_, i) =>
       createProjectFixture({ project_id: `proj_${i}` })
     );
-    
+
     mockApi.projects().list.mockResolvedValue({
       items: largeDataset,
       totalResults: 1000
@@ -1168,18 +1168,18 @@ describe("Performance", () => {
 describe("Memory Usage", () => {
   it("should not leak memory in bulk operations", async () => {
     const initialMemory = process.memoryUsage().heapUsed;
-    
+
     // Perform bulk operation
     for (let i = 0; i < 100; i++) {
       await service.bulkCreate(generateLargeDataset());
     }
-    
+
     // Force garbage collection (requires --expose-gc flag)
     if (global.gc) global.gc();
-    
+
     const finalMemory = process.memoryUsage().heapUsed;
     const memoryIncrease = finalMemory - initialMemory;
-    
+
     // Memory increase should be minimal
     expect(memoryIncrease).toBeLessThan(50 * 1024 * 1024); // < 50MB
   });
@@ -1198,22 +1198,22 @@ describe("E2E: Project Workflow", () => {
       name: "E2E Test Project"
     });
     expect(created.data.project_id).toBeDefined();
-    
+
     const projectId = created.data.project_id;
-    
+
     // 2. Add languages
     await controller.addLanguages(projectId, ["en", "fr", "de"]);
-    
+
     // 3. Add keys
     await controller.createKeys(projectId, [
       { key_name: "app.title", translations: { en: "App Title" } }
     ]);
-    
+
     // 4. Verify project state
     const project = await controller.getProject(projectId);
     expect(project.data.statistics.keys_total).toBe(1);
     expect(project.data.statistics.languages.length).toBe(3);
-    
+
     // 5. Clean up
     await controller.deleteProject(projectId, { confirm: true });
   });
@@ -1250,6 +1250,6 @@ module.exports = {
 
 ---
 
-**Document Version**: 1.0.0  
-**Last Updated**: 2025-08-24  
+**Document Version**: 1.0.0
+**Last Updated**: 2025-08-24
 **Related**: API_MOCKING_GUIDE.md, TEST_FIXTURES_SPECIFICATION.md, MOCK_IMPLEMENTATION_EXAMPLES.md

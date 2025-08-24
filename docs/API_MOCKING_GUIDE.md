@@ -28,15 +28,15 @@ We mock at the **module level** using Jest to mock the `@lokalise/node-api` pack
 ```typescript
 // src/test-utils/mock-factory.ts
 import { LokaliseApi } from "@lokalise/node-api";
-import type { 
-  PaginatedResult, 
-  Project, 
-  Key, 
+import type {
+  PaginatedResult,
+  Project,
+  Key,
   Language,
   Task,
   Comment,
   Translation,
-  Contributor 
+  Contributor
 } from "@lokalise/node-api";
 
 export interface MockLokaliseApiOptions {
@@ -242,7 +242,7 @@ export function createCursorPaginatedResponse<T>(
 export class ApiErrorSimulator {
   static unauthorized(): Error {
     const error = new Error("Unauthorized");
-    (error as any).response = {
+    (error as unknown).response = {
       status: 401,
       data: { error: { message: "Invalid API token" } }
     };
@@ -251,7 +251,7 @@ export class ApiErrorSimulator {
 
   static forbidden(): Error {
     const error = new Error("Forbidden");
-    (error as any).response = {
+    (error as unknown).response = {
       status: 403,
       data: { error: { message: "Access denied" } }
     };
@@ -260,7 +260,7 @@ export class ApiErrorSimulator {
 
   static notFound(resource: string): Error {
     const error = new Error("Not Found");
-    (error as any).response = {
+    (error as unknown).response = {
       status: 404,
       data: { error: { message: `${resource} not found` } }
     };
@@ -269,7 +269,7 @@ export class ApiErrorSimulator {
 
   static rateLimited(): Error {
     const error = new Error("Too Many Requests");
-    (error as any).response = {
+    (error as unknown).response = {
       status: 429,
       data: { error: { message: "Rate limit exceeded" } },
       headers: {
@@ -283,7 +283,7 @@ export class ApiErrorSimulator {
 
   static serverError(): Error {
     const error = new Error("Internal Server Error");
-    (error as any).response = {
+    (error as unknown).response = {
       status: 500,
       data: { error: { message: "An unexpected error occurred" } }
     };
@@ -306,14 +306,14 @@ export class RateLimiterMock {
     response: T
   ): Promise<T> {
     this.requestCount++;
-    
+
     if (this.requestCount > this.limit) {
       throw ApiErrorSimulator.rateLimited();
     }
 
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 10));
-    
+
     return response;
   }
 
@@ -336,7 +336,7 @@ export function mockAuthentication(isValid: boolean = true) {
   if (!isValid) {
     return jest.fn().mockRejectedValue(ApiErrorSimulator.unauthorized());
   }
-  
+
   return jest.fn().mockImplementation((config) => {
     // Verify API key is present
     if (!config.apiKey) {
@@ -363,22 +363,22 @@ describe("ProjectsService", () => {
   beforeEach(() => {
     mockApi = createMockLokaliseApi();
     service = new ProjectsService();
-    
+
     // Replace the real API with mock
-    (service as any).lokaliseApi = mockApi;
+    (service as unknown).lokaliseApi = mockApi;
   });
 
   describe("listProjects", () => {
     it("should successfully list projects with pagination", async () => {
       // Arrange
       const mockResponse = new ProjectsMockBuilder()
-        .withProject({ 
-          project_id: "proj_1", 
-          name: "Project 1" 
+        .withProject({
+          project_id: "proj_1",
+          name: "Project 1"
         })
-        .withProject({ 
-          project_id: "proj_2", 
-          name: "Project 2" 
+        .withProject({
+          project_id: "proj_2",
+          name: "Project 2"
         })
         .withPagination(1, 10)
         .build();
@@ -391,9 +391,9 @@ describe("ProjectsService", () => {
       // Assert
       expect(result.items).toHaveLength(2);
       expect(result.items[0].name).toBe("Project 1");
-      expect(mockApi.projects().list).toHaveBeenCalledWith({ 
-        page: 1, 
-        limit: 10 
+      expect(mockApi.projects().list).toHaveBeenCalledWith({
+        page: 1,
+        limit: 10
       });
     });
 
@@ -406,7 +406,7 @@ describe("ProjectsService", () => {
       // Act & Assert
       await expect(service.listProjects({}))
         .rejects.toThrow("Rate limit exceeded");
-      
+
       // Verify retry logic would work after delay
       await new Promise(resolve => setTimeout(resolve, 1000));
       const result = await service.listProjects({});
@@ -498,7 +498,7 @@ Use actual API response structures from the SDK fixtures as reference.
 it("should handle different workspaces", async () => {
   const workspace1Api = createMockLokaliseApi();
   const workspace2Api = createMockLokaliseApi();
-  
+
   // Set different responses for different workspaces
   workspace1Api.projects().list.mockResolvedValue(workspace1Projects);
   workspace2Api.projects().list.mockResolvedValue(workspace2Projects);
@@ -532,6 +532,6 @@ mockApi.keys().list
 
 ---
 
-**Document Version**: 1.0.0  
-**Last Updated**: 2025-08-24  
+**Document Version**: 1.0.0
+**Last Updated**: 2025-08-24
 **Related**: TEST_IMPLEMENTATION_GUIDE.md, MOCK_IMPLEMENTATION_EXAMPLES.md

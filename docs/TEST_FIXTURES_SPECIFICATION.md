@@ -155,10 +155,10 @@ export function createProjectsListFixture(
   } = {}
 ): PaginatedResult<Project> {
   const { count = 2, page = 1, limit = 100, projects = [] } = options;
-  
+
   const items = projects.length > 0
     ? projects.map(p => createProjectFixture(p))
-    : Array.from({ length: count }, (_, i) => 
+    : Array.from({ length: count }, (_, i) =>
         createProjectFixture({
           project_id: `project_${i + 1}`,
           name: `Project ${i + 1}`
@@ -487,10 +487,10 @@ export const errorFixtures = {
 export function createErrorResponse(
   code: number,
   message: string,
-  details?: any
+  details?: unknown
 ): Error {
   const error = new Error(message);
-  (error as any).response = {
+  (error as unknown).response = {
     status: code,
     data: {
       error: {
@@ -668,9 +668,9 @@ export const generators = {
 ### 1. Import Fixtures
 
 ```typescript
-import { 
+import {
   createProjectFixture,
-  createProjectsListFixture 
+  createProjectsListFixture
 } from "./__fixtures__/projects.fixtures";
 ```
 
@@ -715,6 +715,6 @@ const project = new ProjectFixtureBuilder()
 
 ---
 
-**Document Version**: 1.0.0  
-**Last Updated**: 2025-08-24  
+**Document Version**: 1.0.0
+**Last Updated**: 2025-08-24
 **Related**: API_MOCKING_GUIDE.md, TEST_IMPLEMENTATION_GUIDE.md

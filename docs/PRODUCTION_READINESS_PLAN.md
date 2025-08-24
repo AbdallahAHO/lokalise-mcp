@@ -1,9 +1,9 @@
 # Lokalise MCP Production Readiness Plan
 
-**Version**: 1.0.0  
-**Date**: 2025-08-24  
-**Status**: ACTIVE  
-**Target Completion**: 8 weeks  
+**Version**: 1.0.0
+**Date**: 2025-08-24
+**Status**: ACTIVE
+**Target Completion**: 8 weeks
 **Document Purpose**: Single source of truth for transforming Lokalise MCP from prototype to production-ready enterprise system
 
 ---
@@ -129,11 +129,11 @@ Dependencies: [Other task codes or "None"]
 
 ### SEC-001: Fix Session Management [P0-Critical]
 
-**Priority**: P0-Critical  
-**Effort**: 2 hours  
-**Dependencies**: None  
-**Owner**: Any agent/engineer  
-**Risk Level**: Low (simple fix)  
+**Priority**: P0-Critical
+**Effort**: 2 hours
+**Dependencies**: None
+**Owner**: Any agent/engineer
+**Risk Level**: Low (simple fix)
 
 #### Problem Statement
 The HTTP transport has `sessionIdGenerator: undefined` at line 180 of `src/server/transports/http.transport.ts`, which breaks per-connection session isolation. This causes all clients to share the same state, creating critical security and functionality issues.
@@ -194,7 +194,7 @@ The HTTP transport has `sessionIdGenerator: undefined` at line 180 of `src/serve
    setInterval(() => {
        const now = Date.now();
        const timeout = 30 * 60 * 1000; // 30 minutes
-       
+
        for (const [sessionId, session] of activeSessions.entries()) {
            if (now - session.lastActivity.getTime() > timeout) {
                activeSessions.delete(sessionId);
@@ -271,7 +271,7 @@ The HTTP transport has `sessionIdGenerator: undefined` at line 180 of `src/serve
                    resolve(sessionId);
                });
            });
-           
+
            req.write(JSON.stringify({
                jsonrpc: '2.0',
                method: 'initialize',
@@ -288,7 +288,7 @@ The HTTP transport has `sessionIdGenerator: undefined` at line 180 of `src/serve
            testSession(2),
            testSession(3)
        ]);
-       
+
        const unique = new Set(sessions);
        console.log(`\nUnique sessions: ${unique.size}/${sessions.length}`);
        console.log(unique.size === sessions.length ? '✅ PASS' : '❌ FAIL');
@@ -328,11 +328,11 @@ After deployment, monitor:
 
 ### SEC-002: Move API Keys from Query Parameters to Headers [P0-Critical]
 
-**Priority**: P0-Critical  
-**Effort**: 4 hours  
-**Dependencies**: None  
-**Owner**: Any agent/engineer  
-**Risk Level**: Medium (API contract change)  
+**Priority**: P0-Critical
+**Effort**: 4 hours
+**Dependencies**: None
+**Owner**: Any agent/engineer
+**Risk Level**: Medium (API contract change)
 
 #### Problem Statement
 API keys are passed via query parameters in URLs, which are logged by proxies, cached by CDNs, and visible in browser history. This is a critical security vulnerability.
@@ -356,41 +356,41 @@ API keys are passed via query parameters in URLs, which are logged by proxies, c
    // Add header extraction support (line 150)
    export function extractApiKeyFromRequest(req: Request): string | undefined {
        // Priority order: Header > Body > Query (deprecated)
-       
+
        // 1. Check Authorization header (preferred)
        const authHeader = req.headers.authorization;
        if (authHeader?.startsWith('Bearer ')) {
            return authHeader.substring(7);
        }
-       
+
        // 2. Check custom header
        const customHeader = req.headers['x-lokalise-api-key'];
        if (customHeader) {
            return customHeader as string;
        }
-       
+
        // 3. Check request body (for POST requests)
        if (req.body?.apiKey) {
            return req.body.apiKey;
        }
-       
+
        // 4. Query parameter (deprecated, log warning)
        if (req.query?.apiKey) {
            logger.warn('API key in query parameter is deprecated and insecure', {
                ip: req.ip,
                path: req.path
            });
-           
+
            if (!config.get('ALLOW_INSECURE_API_KEY')) {
                throw new McpError(
                    'SECURITY_ERROR',
                    'API keys in query parameters are not allowed. Use Authorization header instead.'
                );
            }
-           
+
            return req.query.apiKey as string;
        }
-       
+
        return undefined;
    }
    ```
@@ -402,12 +402,12 @@ API keys are passed via query parameters in URLs, which are logged by proxies, c
        try {
            // Extract API key from secure location
            const apiKey = extractApiKeyFromRequest(req);
-           
+
            if (apiKey) {
                // Store in request context, not in config
                req.context = { ...req.context, apiKey };
            }
-           
+
            next();
        } catch (error) {
            res.status(400).json({
@@ -424,9 +424,9 @@ API keys are passed via query parameters in URLs, which are logged by proxies, c
 3. **Add request sanitization for logging**:
    ```typescript
    // Add to logger utility (src/shared/utils/logger.util.ts)
-   export function sanitizeRequest(req: any): any {
+   export function sanitizeRequest(req: unknown): unknown {
        const sanitized = { ...req };
-       
+
        // Remove sensitive headers
        if (sanitized.headers) {
            const headers = { ...sanitized.headers };
@@ -438,17 +438,17 @@ API keys are passed via query parameters in URLs, which are logged by proxies, c
            }
            sanitized.headers = headers;
        }
-       
+
        // Remove from query parameters
        if (sanitized.query?.apiKey) {
            sanitized.query.apiKey = '[REDACTED]';
        }
-       
+
        // Remove from body
        if (sanitized.body?.apiKey) {
            sanitized.body.apiKey = '[REDACTED]';
        }
-       
+
        return sanitized;
    }
    ```
@@ -516,11 +516,11 @@ API keys are passed via query parameters in URLs, which are logged by proxies, c
 
 ### SEC-003: Implement Input Validation Middleware [P0-Critical]
 
-**Priority**: P0-Critical  
-**Effort**: 6 hours  
-**Dependencies**: None  
-**Owner**: Security-focused engineer  
-**Risk Level**: Low  
+**Priority**: P0-Critical
+**Effort**: 6 hours
+**Dependencies**: None
+**Owner**: Security-focused engineer
+**Risk Level**: Low
 
 #### Problem Statement
 No centralized input validation for MCP requests, allowing potential injection attacks and malformed data.
@@ -575,7 +575,7 @@ No centralized input validation for MCP requests, allowing potential injection a
 
                // Check for injection attempts
                const stringValues = extractStringValues(validated);
-               
+
                for (const value of stringValues) {
                    // Check SQL injection
                    for (const pattern of SQL_INJECTION_PATTERNS) {
@@ -586,7 +586,7 @@ No centralized input validation for MCP requests, allowing potential injection a
                            );
                        }
                    }
-                   
+
                    // Check XSS
                    for (const pattern of XSS_PATTERNS) {
                        if (pattern.test(value)) {
@@ -618,10 +618,10 @@ No centralized input validation for MCP requests, allowing potential injection a
        };
    }
 
-   function extractStringValues(obj: any): string[] {
+   function extractStringValues(obj: unknown): string[] {
        const values: string[] = [];
-       
-       function traverse(current: any) {
+
+       function traverse(current: unknown) {
            if (typeof current === 'string') {
                values.push(current);
            } else if (Array.isArray(current)) {
@@ -630,7 +630,7 @@ No centralized input validation for MCP requests, allowing potential injection a
                Object.values(current).forEach(traverse);
            }
        }
-       
+
        traverse(obj);
        return values;
    }
@@ -638,18 +638,18 @@ No centralized input validation for MCP requests, allowing potential injection a
    // Rate limiting decorator
    export function rateLimit(limit: number, window: number) {
        const requests = new Map<string, number[]>();
-       
+
        return (req: Request, res: Response, next: NextFunction) => {
            const key = req.ip || 'unknown';
            const now = Date.now();
            const windowStart = now - window;
-           
+
            // Get existing requests for this IP
            const userRequests = requests.get(key) || [];
-           
+
            // Filter out old requests
            const recentRequests = userRequests.filter(time => time > windowStart);
-           
+
            if (recentRequests.length >= limit) {
                res.status(429).json({
                    jsonrpc: '2.0',
@@ -665,11 +665,11 @@ No centralized input validation for MCP requests, allowing potential injection a
                });
                return;
            }
-           
+
            // Add current request
            recentRequests.push(now);
            requests.set(key, recentRequests);
-           
+
            next();
        };
    }
@@ -720,11 +720,11 @@ No centralized input validation for MCP requests, allowing potential injection a
 
 ### SEC-004: Implement OAuth 2.1 with Resource Indicators [P1-High]
 
-**Priority**: P1-High  
-**Effort**: 2 weeks  
-**Dependencies**: SEC-001, SEC-002  
-**Owner**: Senior engineer with OAuth experience  
-**Risk Level**: High (complex implementation)  
+**Priority**: P1-High
+**Effort**: 2 weeks
+**Dependencies**: SEC-001, SEC-002
+**Owner**: Senior engineer with OAuth experience
+**Risk Level**: High (complex implementation)
 
 #### Problem Statement
 No OAuth 2.1 support with Resource Indicators as required by MCP 2025-06-18 specification.
@@ -765,7 +765,7 @@ No OAuth 2.1 support with Resource Indicators as required by MCP 2025-06-18 spec
        refreshTokenExpiresAt?: Date;
        scope?: string[];
        client: OAuthClient;
-       user: any;
+       user: unknown;
        resource?: string;
    }
 
@@ -778,21 +778,21 @@ No OAuth 2.1 support with Resource Indicators as required by MCP 2025-06-18 spec
        async getClient(clientId: string, clientSecret?: string): Promise<OAuthClient | null> {
            const client = this.clients.get(clientId);
            if (!client) return null;
-           
+
            if (clientSecret && client.secret !== clientSecret) {
                return null;
            }
-           
+
            return client;
        }
 
-       async saveToken(token: OAuthToken, client: OAuthClient, user: any): Promise<OAuthToken> {
+       async saveToken(token: OAuthToken, client: OAuthClient, user: unknown): Promise<OAuthToken> {
            const tokenData = {
                ...token,
                client,
                user
            };
-           
+
            this.tokens.set(token.accessToken, tokenData);
            return tokenData;
        }
@@ -814,12 +814,12 @@ No OAuth 2.1 support with Resource Indicators as required by MCP 2025-06-18 spec
        async validatePKCE(authorizationCode: string, verifier: string): Promise<boolean> {
            const savedVerifier = this.pkceVerifiers.get(authorizationCode);
            if (!savedVerifier) return false;
-           
+
            const challenge = crypto
                .createHash('sha256')
                .update(verifier)
                .digest('base64url');
-           
+
            return challenge === savedVerifier;
        }
 
@@ -852,11 +852,11 @@ No OAuth 2.1 support with Resource Indicators as required by MCP 2025-06-18 spec
            try {
                // Extract resource indicator
                const resource = req.body.resource || req.query.resource;
-               
+
                // Validate PKCE
                const codeChallenge = req.body.code_challenge;
                const codeChallengeMethod = req.body.code_challenge_method;
-               
+
                if (!codeChallenge || codeChallengeMethod !== 'S256') {
                    throw new Error('PKCE required with S256 method');
                }
@@ -899,12 +899,12 @@ No OAuth 2.1 support with Resource Indicators as required by MCP 2025-06-18 spec
                    if (!codeVerifier) {
                        throw new Error('code_verifier required');
                    }
-                   
+
                    const valid = await this.model.validatePKCE(
                        req.body.code,
                        codeVerifier
                    );
-                   
+
                    if (!valid) {
                        throw new Error('Invalid PKCE verifier');
                    }
@@ -1050,11 +1050,11 @@ No OAuth 2.1 support with Resource Indicators as required by MCP 2025-06-18 spec
 
 ### SEC-005: Implement Rate Limiting [P1-High]
 
-**Priority**: P1-High  
-**Effort**: 4 hours  
-**Dependencies**: SEC-003  
-**Owner**: Any engineer  
-**Risk Level**: Low  
+**Priority**: P1-High
+**Effort**: 4 hours
+**Dependencies**: SEC-003
+**Owner**: Any engineer
+**Risk Level**: Low
 
 #### Implementation Steps
 
@@ -1156,10 +1156,10 @@ No OAuth 2.1 support with Resource Indicators as required by MCP 2025-06-18 spec
                return req.user?.id || req.ip;
            },
            handler: (req, res) => {
-               const retryAfter = req.rateLimit.resetTime 
+               const retryAfter = req.rateLimit.resetTime
                    ? Math.round((req.rateLimit.resetTime - Date.now()) / 1000)
                    : 60;
-               
+
                res.status(429).json({
                    jsonrpc: '2.0',
                    error: {
@@ -1195,11 +1195,11 @@ No OAuth 2.1 support with Resource Indicators as required by MCP 2025-06-18 spec
 
 ### PERF-001: Implement Async Logging [P0-Critical]
 
-**Priority**: P0-Critical  
-**Effort**: 4 hours  
-**Dependencies**: None  
-**Owner**: Any engineer  
-**Risk Level**: Low  
+**Priority**: P0-Critical
+**Effort**: 4 hours
+**Dependencies**: None
+**Owner**: Any engineer
+**Risk Level**: Low
 
 #### Problem Statement
 Synchronous file I/O in logger blocks the event loop, causing performance degradation under load.
@@ -1218,7 +1218,7 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
        level: string;
        context: string;
        message: string;
-       metadata?: any;
+       metadata?: unknown;
    }
 
    class AsyncLogger extends EventEmitter {
@@ -1264,7 +1264,7 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
            });
        }
 
-       log(level: string, context: string, message: string, metadata?: any) {
+       log(level: string, context: string, message: string, metadata?: unknown) {
            const entry: LogEntry = {
                timestamp: new Date(),
                level,
@@ -1302,7 +1302,7 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
                });
 
                const chunk = lines.join('');
-               
+
                await new Promise<void>((resolve, reject) => {
                    if (!this.writeStream) {
                        reject(new Error('Write stream not initialized'));
@@ -1310,7 +1310,7 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
                    }
 
                    const canWrite = this.writeStream.write(chunk);
-                   
+
                    if (!canWrite) {
                        // Wait for drain event if buffer is full
                        this.writeStream.once('drain', resolve);
@@ -1323,7 +1323,7 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
            } catch (error) {
                console.error('Failed to flush logs:', error);
                this.emit('error', error);
-               
+
                // Re-queue failed entries (at the front)
                this.queue.unshift(...batch);
            } finally {
@@ -1334,7 +1334,7 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
        async close() {
            clearInterval(this.flushInterval);
            await this.flush();
-           
+
            return new Promise<void>((resolve) => {
                if (this.writeStream) {
                    this.writeStream.end(resolve);
@@ -1361,16 +1361,16 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
 
    // Convenience methods
    export const asyncLogger = {
-       info: (context: string, message: string, metadata?: any) => {
+       info: (context: string, message: string, metadata?: unknown) => {
            getAsyncLogger().log('INFO', context, message, metadata);
        },
-       error: (context: string, message: string, metadata?: any) => {
+       error: (context: string, message: string, metadata?: unknown) => {
            getAsyncLogger().log('ERROR', context, message, metadata);
        },
-       warn: (context: string, message: string, metadata?: any) => {
+       warn: (context: string, message: string, metadata?: unknown) => {
            getAsyncLogger().log('WARN', context, message, metadata);
        },
-       debug: (context: string, message: string, metadata?: any) => {
+       debug: (context: string, message: string, metadata?: unknown) => {
            if (process.env.DEBUG) {
                getAsyncLogger().log('DEBUG', context, message, metadata);
            }
@@ -1403,7 +1403,7 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
        async rotate() {
            try {
                const stats = await stat(this.logPath);
-               
+
                if (stats.size < this.maxSize) {
                    return; // No rotation needed
                }
@@ -1423,7 +1423,7 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
        private async cleanup() {
            const pattern = `${this.logPath}.*`;
            const files = await glob(pattern);
-           
+
            if (files.length <= this.maxFiles) {
                return;
            }
@@ -1454,16 +1454,16 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
 
    async function benchmark() {
        console.time('async-logging');
-       
+
        for (let i = 0; i < 100000; i++) {
            asyncLogger.info('benchmark', `Log entry ${i}`, {
                index: i,
                timestamp: Date.now()
            });
        }
-       
+
        console.timeEnd('async-logging');
-       
+
        // Wait for flush
        await new Promise(resolve => setTimeout(resolve, 1000));
    }
@@ -1475,11 +1475,11 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
 
 ### PERF-002: Implement Connection Pooling [P1-High]
 
-**Priority**: P1-High  
-**Effort**: 6 hours  
-**Dependencies**: None  
-**Owner**: Backend engineer  
-**Risk Level**: Medium  
+**Priority**: P1-High
+**Effort**: 6 hours
+**Dependencies**: None
+**Owner**: Backend engineer
+**Risk Level**: Medium
 
 #### Implementation Steps
 
@@ -1504,7 +1504,7 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
 
        constructor() {
            super();
-           
+
            // Periodic cleanup of idle connections
            this.cleanupInterval = setInterval(() => {
                this.cleanup();
@@ -1513,15 +1513,15 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
 
        async acquire(apiKey: string): Promise<LokaliseApi> {
            const pool = this.connections.get(apiKey) || [];
-           
+
            // Find available connection
            const available = pool.find(conn => !conn.inUse);
-           
+
            if (available) {
                available.inUse = true;
                available.lastUsed = new Date();
                available.requestCount++;
-               
+
                this.emit('connection:reused', { apiKey, requestCount: available.requestCount });
                return available.api;
            }
@@ -1543,7 +1543,7 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
 
                pool.push(connection);
                this.connections.set(apiKey, pool);
-               
+
                this.emit('connection:created', { apiKey, poolSize: pool.length });
                return api;
            }
@@ -1571,7 +1571,7 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
            if (connection) {
                connection.inUse = false;
                connection.lastUsed = new Date();
-               
+
                this.emit('connection:released', { apiKey });
            }
        }
@@ -1582,7 +1582,7 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
            for (const [apiKey, pool] of this.connections.entries()) {
                const activeConnections = pool.filter(conn => {
                    if (conn.inUse) return true;
-                   
+
                    const idleTime = now - conn.lastUsed.getTime();
                    return idleTime < this.maxIdleTime;
                });
@@ -1633,7 +1633,7 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
        operation: (api: LokaliseApi) => Promise<T>
    ): Promise<T> {
        const api = await connectionPool.acquire(apiKey);
-       
+
        try {
            return await operation(api);
        } finally {
@@ -1662,11 +1662,11 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
 
 ### PERF-003: Implement Redis Caching Layer [P1-High]
 
-**Priority**: P1-High  
-**Effort**: 8 hours  
-**Dependencies**: PERF-002  
-**Owner**: Backend engineer  
-**Risk Level**: Medium  
+**Priority**: P1-High
+**Effort**: 8 hours
+**Dependencies**: PERF-002
+**Owner**: Backend engineer
+**Risk Level**: Medium
 
 #### Implementation Steps
 
@@ -1694,30 +1694,30 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
            });
        }
 
-       private generateKey(namespace: string, params: any): string {
+       private generateKey(namespace: string, params: unknown): string {
            const hash = createHash('sha256')
                .update(JSON.stringify(params))
                .digest('hex')
                .substring(0, 16);
-           
+
            return `${namespace}:${hash}`;
        }
 
-       async get<T>(namespace: string, params: any): Promise<T | null> {
+       async get<T>(namespace: string, params: unknown): Promise<T | null> {
            try {
                const key = this.generateKey(namespace, params);
                const cached = await this.redis.get(key);
-               
+
                if (!cached) return null;
-               
+
                const data = JSON.parse(cached);
-               
+
                // Check if expired
                if (data.expiresAt && Date.now() > data.expiresAt) {
                    await this.redis.del(key);
                    return null;
                }
-               
+
                return data.value as T;
            } catch (error) {
                console.error('Cache get error:', error);
@@ -1727,7 +1727,7 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
 
        async set<T>(
            namespace: string,
-           params: any,
+           params: unknown,
            value: T,
            ttl: number = this.defaultTTL
        ): Promise<void> {
@@ -1738,14 +1738,14 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
                    cachedAt: Date.now(),
                    expiresAt: Date.now() + (ttl * 1000)
                };
-               
+
                await this.redis.setex(key, ttl, JSON.stringify(data));
            } catch (error) {
                console.error('Cache set error:', error);
            }
        }
 
-       async invalidate(namespace: string, params?: any): Promise<void> {
+       async invalidate(namespace: string, params?: unknown): Promise<void> {
            try {
                if (params) {
                    const key = this.generateKey(namespace, params);
@@ -1754,7 +1754,7 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
                    // Invalidate entire namespace
                    const pattern = `${namespace}:*`;
                    const keys = await this.redis.keys(pattern);
-                   
+
                    if (keys.length > 0) {
                        await this.redis.del(...keys);
                    }
@@ -1766,7 +1766,7 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
 
        async withCache<T>(
            namespace: string,
-           params: any,
+           params: unknown,
            fetcher: () => Promise<T>,
            ttl?: number
        ): Promise<T> {
@@ -1778,17 +1778,17 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
 
            // Fetch fresh data
            const fresh = await fetcher();
-           
+
            // Cache for next time
            await this.set(namespace, params, fresh, ttl);
-           
+
            return fresh;
        }
 
        async getStats() {
            const info = await this.redis.info('stats');
            const dbSize = await this.redis.dbsize();
-           
+
            return {
                dbSize,
                info
@@ -1820,13 +1820,13 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
 
 3. **Add cache invalidation**:
    ```typescript
-   export async function updateProject(projectId: string, updates: any) {
+   export async function updateProject(projectId: string, updates: unknown) {
        const result = await projectsService.updateProject(projectId, updates);
-       
+
        // Invalidate related caches
        await cacheService.invalidate('projects:list');
        await cacheService.invalidate('projects:get', { projectId });
-       
+
        return result;
    }
    ```
@@ -1837,11 +1837,11 @@ Synchronous file I/O in logger blocks the event loop, causing performance degrad
 
 ### MCP-001: Implement Tool Output Schemas [P0-Critical]
 
-**Priority**: P0-Critical  
-**Effort**: 2 days  
-**Dependencies**: None  
-**Owner**: MCP specialist  
-**Risk Level**: Low  
+**Priority**: P0-Critical
+**Effort**: 2 days
+**Dependencies**: None
+**Owner**: MCP specialist
+**Risk Level**: Low
 
 #### Problem Statement
 MCP 2025-06-18 requires tool output schemas for structured responses, but current implementation only returns untyped text.
@@ -1962,12 +1962,12 @@ MCP 2025-06-18 requires tool output schemas for structured responses, but curren
                ListProjectsToolArgs.shape,
                async (args) => {
                    const result = await projectsController.listProjects(args);
-                   
+
                    // Return both text and structured content
                    return {
-                       content: [{ 
-                           type: 'text' as const, 
-                           text: result.content 
+                       content: [{
+                           type: 'text' as const,
+                           text: result.content
                        }],
                        structuredContent: result.data,
                        isError: false
@@ -1985,11 +1985,11 @@ MCP 2025-06-18 requires tool output schemas for structured responses, but curren
                CreateProjectToolArgs.shape,
                async (args) => {
                    const result = await projectsController.createProject(args);
-                   
+
                    return {
-                       content: [{ 
-                           type: 'text' as const, 
-                           text: result.content 
+                       content: [{
+                           type: 'text' as const,
+                           text: result.content
                        }],
                        structuredContent: result.data,
                        isError: false
@@ -2032,7 +2032,7 @@ MCP 2025-06-18 requires tool output schemas for structured responses, but curren
 
    export async function listProjects(args: ListProjectsArgs): Promise<ControllerResponse> {
        const response = await projectsService.listProjects(args);
-       
+
        return {
            content: formatProjectsList(response), // Markdown for display
            data: {                                // Structured for programmatic use
@@ -2102,11 +2102,11 @@ MCP 2025-06-18 requires tool output schemas for structured responses, but curren
 
 ### MCP-002: Implement Elicitation Support [P1-High]
 
-**Priority**: P1-High  
-**Effort**: 1 week  
-**Dependencies**: MCP-001  
-**Owner**: MCP specialist  
-**Risk Level**: Medium  
+**Priority**: P1-High
+**Effort**: 1 week
+**Dependencies**: MCP-001
+**Owner**: MCP specialist
+**Risk Level**: Medium
 
 #### Problem Statement
 MCP 2025 requires elicitation support for handling incomplete requests interactively.
@@ -2121,14 +2121,14 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
    interface ElicitationRequest {
        id: string;
        message: string;
-       schema: any; // JSON Schema
-       context?: any;
+       schema: unknown; // JSON Schema
+       context?: unknown;
        timeout?: number;
    }
 
    interface ElicitationResponse {
        id: string;
-       value: any;
+       value: unknown;
        cancelled?: boolean;
    }
 
@@ -2174,7 +2174,7 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
            });
        }
 
-       handleResponse(id: string, value: any): void {
+       handleResponse(id: string, value: unknown): void {
            if (this.pendingElicitations.has(id)) {
                this.emit(`response:${id}`, { id, value });
            }
@@ -2192,7 +2192,7 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
 2. **Integrate with tools**:
    ```typescript
    // Example in keys tool
-   async function handleCreateKeys(args: any, server: McpServer) {
+   async function handleCreateKeys(args: unknown, server: McpServer) {
        // Check for missing required fields
        if (!args.projectId) {
            const response = await server.elicitation.create({
@@ -2248,11 +2248,11 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
 
 ### MCP-003: Add Protocol Version Headers [P1-High]
 
-**Priority**: P1-High  
-**Effort**: 2 hours  
-**Dependencies**: None  
-**Owner**: Any engineer  
-**Risk Level**: Low  
+**Priority**: P1-High
+**Effort**: 2 hours
+**Dependencies**: None
+**Owner**: Any engineer
+**Risk Level**: Low
 
 #### Implementation Steps
 
@@ -2264,7 +2264,7 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
    export function versionMiddleware(req: Request, res: Response, next: NextFunction) {
        // Get requested version
        const requestedVersion = req.headers['mcp-protocol-version'] as string;
-       
+
        // Set response version
        res.setHeader('MCP-Protocol-Version', CURRENT_MCP_VERSION);
        res.setHeader('MCP-Supported-Versions', SUPPORTED_VERSIONS.join(', '));
@@ -2334,11 +2334,11 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
 
 ### QA-001: Achieve 80% Test Coverage [P1-High]
 
-**Priority**: P1-High  
-**Effort**: 2 weeks  
-**Dependencies**: None  
-**Owner**: QA engineer  
-**Risk Level**: Low  
+**Priority**: P1-High
+**Effort**: 2 weeks
+**Dependencies**: None
+**Owner**: QA engineer
+**Risk Level**: Low
 
 #### Implementation Plan
 
@@ -2411,7 +2411,7 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
    }
 
    export function createMockResponse() {
-       const res: any = {
+       const res: unknown = {
            status: jest.fn().mockReturnThis(),
            json: jest.fn().mockReturnThis(),
            setHeader: jest.fn().mockReturnThis(),
@@ -2498,7 +2498,7 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
    import request from 'supertest';
 
    describe('Projects Integration', () => {
-       let server: any;
+       let server: unknown;
 
        beforeAll(async () => {
            server = await createServer({ test: true });
@@ -2535,11 +2535,11 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
 
 ### QA-002: Setup CI/CD Pipeline [P1-High]
 
-**Priority**: P1-High  
-**Effort**: 1 day  
-**Dependencies**: QA-001  
-**Owner**: DevOps engineer  
-**Risk Level**: Low  
+**Priority**: P1-High
+**Effort**: 1 day
+**Dependencies**: QA-001
+**Owner**: DevOps engineer
+**Risk Level**: Low
 
 #### Implementation Steps
 
@@ -2555,26 +2555,26 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
 
    env:
      NODE_VERSION: '18'
-     
+
    jobs:
      lint:
        name: Lint & Format
        runs-on: ubuntu-latest
        steps:
          - uses: actions/checkout@v4
-         
+
          - name: Setup Node.js
            uses: actions/setup-node@v4
            with:
              node-version: ${{ env.NODE_VERSION }}
              cache: 'npm'
-         
+
          - name: Install dependencies
            run: npm ci
-         
+
          - name: Run linter
            run: npm run lint
-         
+
          - name: Check formatting
            run: npm run format:check
 
@@ -2582,7 +2582,7 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
        name: Test & Coverage
        runs-on: ubuntu-latest
        needs: lint
-       
+
        services:
          redis:
            image: redis:7-alpine
@@ -2593,31 +2593,31 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
              --health-interval 10s
              --health-timeout 5s
              --health-retries 5
-       
+
        steps:
          - uses: actions/checkout@v4
-         
+
          - name: Setup Node.js
            uses: actions/setup-node@v4
            with:
              node-version: ${{ env.NODE_VERSION }}
              cache: 'npm'
-         
+
          - name: Install dependencies
            run: npm ci
-         
+
          - name: Run tests with coverage
            run: npm run test:coverage:ci
            env:
              REDIS_HOST: localhost
              REDIS_PORT: 6379
-         
+
          - name: Upload coverage to Codecov
            uses: codecov/codecov-action@v3
            with:
              file: ./coverage/lcov.info
              fail_ci_if_error: true
-         
+
          - name: Check coverage thresholds
            run: |
              coverage=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')
@@ -2632,19 +2632,19 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
        needs: lint
        steps:
          - uses: actions/checkout@v4
-         
+
          - name: Setup Node.js
            uses: actions/setup-node@v4
            with:
              node-version: ${{ env.NODE_VERSION }}
              cache: 'npm'
-         
+
          - name: Install dependencies
            run: npm ci
-         
+
          - name: Build project
            run: npm run build
-         
+
          - name: Upload build artifacts
            uses: actions/upload-artifact@v3
            with:
@@ -2656,10 +2656,10 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
        runs-on: ubuntu-latest
        steps:
          - uses: actions/checkout@v4
-         
+
          - name: Run npm audit
            run: npm audit --audit-level=high
-         
+
          - name: Run Snyk security scan
            uses: snyk/actions/node@master
            env:
@@ -2672,29 +2672,29 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
        runs-on: ubuntu-latest
        needs: [test, build, security]
        if: github.ref == 'refs/heads/main'
-       
+
        steps:
          - uses: actions/checkout@v4
-         
+
          - name: Setup Node.js
            uses: actions/setup-node@v4
            with:
              node-version: ${{ env.NODE_VERSION }}
              cache: 'npm'
-         
+
          - name: Download build artifacts
            uses: actions/download-artifact@v3
            with:
              name: dist
              path: dist/
-         
+
          - name: Deploy to production
            run: |
              echo "Deploying to production..."
              # Add actual deployment commands here
            env:
              DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-         
+
          - name: Notify deployment
            uses: 8398a7/action-slack@v3
            with:
@@ -2725,11 +2725,11 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
 
 ### INFRA-001: Setup Monitoring Stack [P1-High]
 
-**Priority**: P1-High  
-**Effort**: 1 week  
-**Dependencies**: None  
-**Owner**: DevOps engineer  
-**Risk Level**: Medium  
+**Priority**: P1-High
+**Effort**: 1 week
+**Dependencies**: None
+**Owner**: DevOps engineer
+**Risk Level**: Medium
 
 #### Implementation Plan
 
@@ -2850,11 +2850,11 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
 
 ### ENT-001: Implement Multi-Tenancy [P2-Medium]
 
-**Priority**: P2-Medium  
-**Effort**: 2 weeks  
-**Dependencies**: SEC-004  
-**Owner**: Senior architect  
-**Risk Level**: High  
+**Priority**: P2-Medium
+**Effort**: 2 weeks
+**Dependencies**: SEC-004
+**Owner**: Senior architect
+**Risk Level**: High
 
 #### Implementation Blueprint
 
@@ -2896,7 +2896,7 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
 2. **Implement data isolation**:
    ```typescript
    // All queries must include tenant ID
-   export async function listProjects(tenantId: string, args: any) {
+   export async function listProjects(tenantId: string, args: unknown) {
        return db.query('SELECT * FROM projects WHERE tenant_id = ?', [tenantId]);
    }
    ```
@@ -2907,11 +2907,11 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
 
 ### ARCH-001: Refactor to Hexagonal Architecture [P3-Low]
 
-**Priority**: P3-Low  
-**Effort**: 3 weeks  
-**Dependencies**: None  
-**Owner**: Senior architect  
-**Risk Level**: High  
+**Priority**: P3-Low
+**Effort**: 3 weeks
+**Dependencies**: None
+**Owner**: Senior architect
+**Risk Level**: High
 
 #### Implementation Plan
 
@@ -2939,11 +2939,11 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
 
 ### DOC-001: Generate API Documentation [P2-Medium]
 
-**Priority**: P2-Medium  
-**Effort**: 1 day  
-**Dependencies**: None  
-**Owner**: Any engineer  
-**Risk Level**: Low  
+**Priority**: P2-Medium
+**Effort**: 1 day
+**Dependencies**: None
+**Owner**: Any engineer
+**Risk Level**: Low
 
 #### Implementation Steps
 
@@ -3062,7 +3062,7 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
    ```bash
    # Revert last deployment
    kubectl rollout undo deployment/lokalise-mcp
-   
+
    # Or via Git
    git revert HEAD
    git push origin main --force-with-lease
@@ -3072,7 +3072,7 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
    ```bash
    # Run down migrations
    npm run migrate:down
-   
+
    # Restore backup
    pg_restore -d lokalise_mcp backup.sql
    ```
@@ -3160,6 +3160,6 @@ This comprehensive production readiness plan provides:
 
 ---
 
-*Document Version: 1.0.0*  
-*Last Updated: 2025-08-24*  
+*Document Version: 1.0.0*
+*Last Updated: 2025-08-24*
 *Next Review: Weekly during implementation*
