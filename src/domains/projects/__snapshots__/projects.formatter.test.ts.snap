@@ -273,7 +273,7 @@ exports[`ProjectsFormatter formatDeleteProjectResult should format project delet
 "# Project Deleted Successfully
 
 ## Deletion Details
-- **Deleted Project ID**: [object Object]
+- **Deleted Project ID**: test-project-id
 - **Deletion Time**: 2024-01-15 10:30:00 UTC
 - **Status**: Permanently deleted
 
@@ -291,7 +291,7 @@ exports[`ProjectsFormatter formatDeleteProjectResult should handle failed deleti
 "# Project Deleted Successfully
 
 ## Deletion Details
-- **Deleted Project ID**: [object Object]
+- **Deleted Project ID**: test-project
 - **Deletion Time**: 2024-01-15 10:30:00 UTC
 - **Status**: Permanently deleted
 
@@ -309,7 +309,7 @@ exports[`ProjectsFormatter formatEmptyProjectResult should format project empty 
 "# Project Emptied Successfully
 
 ## Operation Details
-- **Project ID**: [object Object]
+- **Project ID**: test-project-id
 - **Operation Time**: 2024-01-15 10:30:00 UTC
 - **Keys Deleted**: All translation keys removed
 - **Project Status**: Empty project retained
@@ -321,7 +321,7 @@ exports[`ProjectsFormatter formatEmptyProjectResult should format project empty 
 - Configure project settings as required
 
 ## Dashboard
-[View Project in Lokalise Dashboard](https://app.api.lokalise.com/project/[object Object]/?view=multi)
+[View Project in Lokalise Dashboard](https://app.api.lokalise.com/project/test-project-id/?view=multi)
 
 ---
 *Project emptied at 2024-01-15 10:30:00 UTC*"
@@ -331,7 +331,7 @@ exports[`ProjectsFormatter formatEmptyProjectResult should handle large number o
 "# Project Emptied Successfully
 
 ## Operation Details
-- **Project ID**: [object Object]
+- **Project ID**: test-project
 - **Operation Time**: 2024-01-15 10:30:00 UTC
 - **Keys Deleted**: All translation keys removed
 - **Project Status**: Empty project retained
@@ -343,7 +343,7 @@ exports[`ProjectsFormatter formatEmptyProjectResult should handle large number o
 - Configure project settings as required
 
 ## Dashboard
-[View Project in Lokalise Dashboard](https://app.api.lokalise.com/project/[object Object]/?view=multi)
+[View Project in Lokalise Dashboard](https://app.api.lokalise.com/project/test-project/?view=multi)
 
 ---
 *Project emptied at 2024-01-15 10:30:00 UTC*"
