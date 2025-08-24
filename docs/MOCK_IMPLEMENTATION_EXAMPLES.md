@@ -68,8 +68,8 @@ expect.extend({
     const pass = uuidRegex.test(received);
     return {
       pass,
-      message: () => 
-        pass 
+      message: () =>
+        pass
           ? `Expected ${received} not to be a valid UUID`
           : `Expected ${received} to be a valid UUID`
     };
@@ -111,7 +111,7 @@ describe("ProjectsService", () => {
     // Create mock API instance
     mockApi = {
       projects: jest.fn(() => mockProjects)
-    } as any;
+    } as unknown;
 
     // Mock the constructor
     (LokaliseApi as jest.MockedClass<typeof LokaliseApi>).mockImplementation(
@@ -224,8 +224,8 @@ describe("ProjectsService", () => {
       mockProjects.list.mockResolvedValue(mockResponse);
 
       // Act
-      const result = await service.listProjects({ 
-        page: 2, 
+      const result = await service.listProjects({
+        page: 2,
         limit: 10,
         include_statistics: 1
       });
@@ -243,7 +243,7 @@ describe("ProjectsService", () => {
     it("should handle API errors", async () => {
       // Arrange
       const apiError = new Error("API Error");
-      (apiError as any).response = {
+      (apiError as unknown).response = {
         status: 404,
         data: { error: { message: "Projects not found" } }
       };
@@ -253,7 +253,7 @@ describe("ProjectsService", () => {
       await expect(service.listProjects({}))
         .rejects
         .toThrow(McpError);
-      
+
       try {
         await service.listProjects({});
       } catch (error) {
@@ -265,7 +265,7 @@ describe("ProjectsService", () => {
     it("should handle rate limiting", async () => {
       // Arrange
       const rateLimitError = new Error("Too Many Requests");
-      (rateLimitError as any).response = {
+      (rateLimitError as unknown).response = {
         status: 429,
         data: { error: { message: "Rate limit exceeded" } },
         headers: {
@@ -302,8 +302,8 @@ describe("ProjectsService", () => {
         team_id: 100,
         base_language_id: 640,
         project_type: "localization_files",
-        settings: {} as any,
-        statistics: {} as any
+        settings: {} as unknown,
+        statistics: {} as unknown
       };
 
       mockProjects.create.mockResolvedValue(createdProject);
@@ -321,16 +321,16 @@ describe("ProjectsService", () => {
       // Arrange
       const invalidProject = { name: "" }; // Missing required fields
       const validationError = new Error("Validation Error");
-      (validationError as any).response = {
+      (validationError as unknown).response = {
         status: 400,
-        data: { 
-          error: { 
+        data: {
+          error: {
             message: "Validation failed",
             errors: [
               { field: "name", message: "Name cannot be empty" },
               { field: "base_language_iso", message: "Base language is required" }
             ]
-          } 
+          }
         }
       };
       mockProjects.create.mockRejectedValue(validationError);
@@ -346,7 +346,7 @@ describe("ProjectsService", () => {
     it("should handle bulk project operations", async () => {
       // Arrange
       const projectIds = ["proj_1", "proj_2", "proj_3"];
-      const deletePromises = projectIds.map(id => 
+      const deletePromises = projectIds.map(id =>
         Promise.resolve({ project_deleted: true })
       );
 
@@ -398,7 +398,7 @@ describe("KeysService", () => {
 
     mockApi = {
       keys: jest.fn(() => mockKeys)
-    } as any;
+    } as unknown;
 
     (LokaliseApi as jest.MockedClass<typeof LokaliseApi>).mockImplementation(
       () => mockApi
@@ -410,8 +410,8 @@ describe("KeysService", () => {
   describe("listKeys with cursor pagination", () => {
     it("should handle cursor pagination", async () => {
       // Arrange
-      const mockResponse: PaginatedResult<Key> & { 
-        nextCursor: string | null; 
+      const mockResponse: PaginatedResult<Key> & {
+        nextCursor: string | null;
         hasNextCursor: () => boolean;
         responseTooBig: boolean;
       } = {
@@ -507,8 +507,8 @@ describe("KeysService", () => {
       };
 
       mockKeys.list
-        .mockResolvedValueOnce(firstPageResponse as any)
-        .mockResolvedValueOnce(secondPageResponse as any);
+        .mockResolvedValueOnce(firstPageResponse as unknown)
+        .mockResolvedValueOnce(secondPageResponse as unknown);
 
       // Act - First request
       const firstResult = await service.listKeys({
@@ -541,7 +541,7 @@ describe("KeysService", () => {
         responseTooBig: true // Response was truncated
       };
 
-      mockKeys.list.mockResolvedValue(mockResponse as any);
+      mockKeys.list.mockResolvedValue(mockResponse as unknown);
 
       // Act
       const result = await service.listKeys({
@@ -586,7 +586,7 @@ describe("KeysService", () => {
         ]
       };
 
-      mockKeys.create.mockResolvedValue(mockResponse as any);
+      mockKeys.create.mockResolvedValue(mockResponse as unknown);
 
       // Act
       const result = await service.createKeys(
@@ -639,7 +639,7 @@ describe("KeysService", () => {
         errors: []
       };
 
-      mockKeys.bulk_update.mockResolvedValue(mockResponse as any);
+      mockKeys.bulk_update.mockResolvedValue(mockResponse as unknown);
 
       // Act
       const result = await service.bulkUpdateKeys(
@@ -675,7 +675,7 @@ describe("Error Handling Examples", () => {
   it("should handle 401 Unauthorized", async () => {
     // Arrange
     const error = new Error("Unauthorized");
-    (error as any).response = {
+    (error as unknown).response = {
       status: 401,
       data: { error: { message: "Invalid API token", code: 401 } }
     };
@@ -683,7 +683,7 @@ describe("Error Handling Examples", () => {
     const mockProjects = {
       list: jest.fn().mockRejectedValue(error)
     };
-    mockApi.projects = jest.fn(() => mockProjects) as any;
+    mockApi.projects = jest.fn(() => mockProjects) as unknown;
 
     // Act & Assert
     await expect(mockApi.projects().list())
@@ -702,20 +702,20 @@ describe("Error Handling Examples", () => {
   it("should handle 403 Forbidden", async () => {
     // Arrange
     const error = new Error("Forbidden");
-    (error as any).response = {
+    (error as unknown).response = {
       status: 403,
-      data: { 
-        error: { 
+      data: {
+        error: {
           message: "You don't have permission to perform this action",
-          code: 403 
-        } 
+          code: 403
+        }
       }
     };
 
     const mockProjects = {
       delete: jest.fn().mockRejectedValue(error)
     };
-    mockApi.projects = jest.fn(() => mockProjects) as any;
+    mockApi.projects = jest.fn(() => mockProjects) as unknown;
 
     // Act & Assert
     await expect(mockApi.projects().delete("protected_project"))
@@ -726,7 +726,7 @@ describe("Error Handling Examples", () => {
   it("should handle 404 Not Found", async () => {
     // Arrange
     const error = new Error("Not Found");
-    (error as any).response = {
+    (error as unknown).response = {
       status: 404,
       data: { error: { message: "Project not found", code: 404 } }
     };
@@ -734,7 +734,7 @@ describe("Error Handling Examples", () => {
     const mockProjects = {
       get: jest.fn().mockRejectedValue(error)
     };
-    mockApi.projects = jest.fn(() => mockProjects) as any;
+    mockApi.projects = jest.fn(() => mockProjects) as unknown;
 
     // Act & Assert
     await expect(mockApi.projects().get("non_existent"))
@@ -745,7 +745,7 @@ describe("Error Handling Examples", () => {
   it("should handle 429 Rate Limiting with retry", async () => {
     // Arrange
     const rateLimitError = new Error("Too Many Requests");
-    (rateLimitError as any).response = {
+    (rateLimitError as unknown).response = {
       status: 429,
       data: { error: { message: "Rate limit exceeded", code: 429 } },
       headers: {
@@ -760,7 +760,7 @@ describe("Error Handling Examples", () => {
         .mockRejectedValueOnce(rateLimitError) // First call fails
         .mockResolvedValueOnce({ items: [] })  // Retry succeeds
     };
-    mockApi.projects = jest.fn(() => mockProjects) as any;
+    mockApi.projects = jest.fn(() => mockProjects) as unknown;
 
     // Act - First attempt fails
     await expect(mockApi.projects().list())
@@ -776,7 +776,7 @@ describe("Error Handling Examples", () => {
   it("should handle 500 Server Error", async () => {
     // Arrange
     const serverError = new Error("Internal Server Error");
-    (serverError as any).response = {
+    (serverError as unknown).response = {
       status: 500,
       data: { error: { message: "An unexpected error occurred", code: 500 } }
     };
@@ -784,7 +784,7 @@ describe("Error Handling Examples", () => {
     const mockProjects = {
       create: jest.fn().mockRejectedValue(serverError)
     };
-    mockApi.projects = jest.fn(() => mockProjects) as any;
+    mockApi.projects = jest.fn(() => mockProjects) as unknown;
 
     // Act & Assert
     await expect(mockApi.projects().create({ name: "Test" }))
@@ -795,10 +795,10 @@ describe("Error Handling Examples", () => {
   it("should handle validation errors with details", async () => {
     // Arrange
     const validationError = new Error("Bad Request");
-    (validationError as any).response = {
+    (validationError as unknown).response = {
       status: 400,
-      data: { 
-        error: { 
+      data: {
+        error: {
           message: "Validation failed",
           code: 400,
           errors: [
@@ -806,19 +806,19 @@ describe("Error Handling Examples", () => {
             { field: "base_language_iso", message: "Invalid language code" },
             { field: "description", message: "Description too long (max 1000 chars)" }
           ]
-        } 
+        }
       }
     };
 
     const mockProjects = {
       create: jest.fn().mockRejectedValue(validationError)
     };
-    mockApi.projects = jest.fn(() => mockProjects) as any;
+    mockApi.projects = jest.fn(() => mockProjects) as unknown;
 
     // Act & Assert
     try {
       await mockApi.projects().create({});
-    } catch (err: any) {
+    } catch (err: unknown) {
       expect(err.response.status).toBe(400);
       expect(err.response.data.error.errors).toHaveLength(3);
       expect(err.response.data.error.errors[0].field).toBe("name");
@@ -846,7 +846,7 @@ class RateLimitedApiMock {
 
     if (this.requestCount > this.limit) {
       const error = new Error("Rate limit exceeded");
-      (error as any).response = {
+      (error as unknown).response = {
         status: 429,
         headers: {
           "x-rate-limit-limit": String(this.limit),
@@ -859,7 +859,7 @@ class RateLimitedApiMock {
 
     // Simulate network delay
     await new Promise(resolve => setTimeout(resolve, 10));
-    
+
     return successResponse;
   }
 
@@ -948,7 +948,7 @@ describe("Bulk Key Operations", () => {
 
     const mockApi = {
       keys: jest.fn(() => mockKeys)
-    } as any;
+    } as unknown;
 
     (LokaliseApi as jest.MockedClass<typeof LokaliseApi>).mockImplementation(
       () => mockApi
@@ -981,13 +981,13 @@ describe("Bulk Key Operations", () => {
     }));
 
     batchResponses.forEach(response => {
-      mockKeys.create.mockResolvedValueOnce(response as any);
+      mockKeys.create.mockResolvedValueOnce(response as unknown);
     });
 
     // Act - Process in batches
     const results = [];
     const batchSize = 100;
-    
+
     for (let i = 0; i < keysToCreate.length; i += batchSize) {
       const batch = keysToCreate.slice(i, i + batchSize);
       const result = await service.createKeys("test_project", batch);
@@ -997,9 +997,9 @@ describe("Bulk Key Operations", () => {
     // Assert
     expect(results).toHaveLength(10);
     expect(mockKeys.create).toHaveBeenCalledTimes(10);
-    
+
     const totalCreated = results.reduce(
-      (sum, r) => sum + r.items.length, 
+      (sum, r) => sum + r.items.length,
       0
     );
     expect(totalCreated).toBe(1000);
@@ -1020,14 +1020,14 @@ describe("Bulk Key Operations", () => {
       })),
       errors: keysToUpdate.slice(90).map(k => ({
         key_id: k.key_id,
-        error: { 
+        error: {
           message: "Key is locked and cannot be updated",
           code: "KEY_LOCKED"
         }
       }))
     };
 
-    mockKeys.bulk_update.mockResolvedValue(mockResponse as any);
+    mockKeys.bulk_update.mockResolvedValue(mockResponse as unknown);
 
     // Act
     const result = await service.bulkUpdateKeys(
@@ -1044,7 +1044,7 @@ describe("Bulk Key Operations", () => {
   it("should handle bulk deletion with locked keys", async () => {
     // Arrange
     const keyIds = Array.from({ length: 500 }, (_, i) => i + 1);
-    
+
     const mockResponse = {
       keys_removed: true,
       keys_locked: 25 // Some keys were locked and not deleted
@@ -1079,7 +1079,7 @@ describe("Performance Testing", () => {
     const largeDataset = Array.from({ length: 10000 }, (_, i) => ({
       id: i + 1,
       name: `Item ${i + 1}`,
-      data: { 
+      data: {
         value: Math.random(),
         timestamp: Date.now()
       }
@@ -1095,24 +1095,24 @@ describe("Performance Testing", () => {
 
     // Act - Measure performance
     const startTime = performance.now();
-    
+
     // Process in chunks for better performance
     const chunkSize = 1000;
     const results = [];
-    
+
     for (let i = 0; i < largeDataset.length; i += chunkSize) {
       const chunk = largeDataset.slice(i, i + chunkSize);
       const result = await mockApi.process(chunk);
       results.push(result);
     }
-    
+
     const endTime = performance.now();
     const duration = endTime - startTime;
 
     // Assert
     expect(results).toHaveLength(10);
     expect(duration).toBeLessThan(1000); // Should complete in < 1 second
-    
+
     // Memory check
     const memoryUsage = process.memoryUsage();
     expect(memoryUsage.heapUsed).toBeLessThan(200 * 1024 * 1024); // < 200MB
@@ -1129,13 +1129,13 @@ describe("Performance Testing", () => {
 
     // Act - Make 100 concurrent requests
     const startTime = performance.now();
-    
+
     const promises = Array.from({ length: 100 }, (_, i) =>
       mockApi.fetch(i + 1)
     );
-    
+
     const results = await Promise.all(promises);
-    
+
     const endTime = performance.now();
     const duration = endTime - startTime;
 
@@ -1162,6 +1162,6 @@ describe("Performance Testing", () => {
 
 ---
 
-**Document Version**: 1.0.0  
-**Last Updated**: 2025-08-24  
+**Document Version**: 1.0.0
+**Last Updated**: 2025-08-24
 **Related**: API_MOCKING_GUIDE.md, TEST_FIXTURES_SPECIFICATION.md, DOMAIN_TEST_SPECIFICATIONS.md
