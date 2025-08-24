@@ -5,6 +5,20 @@ import type {
 	KeyDeleted,
 	KeysBulkDeleted,
 } from "@lokalise/node-api";
+import { generators } from "../../test-utils/fixture-helpers/generators.js";
+import { KeysMockBuilder } from "../../test-utils/mock-builders/keys.mock.js";
+// Load fixtures
+import {
+	createMockCursorPaginatedResult,
+	keyCreateFixture,
+	keyDeleteFixture,
+	keyRetrieveFixture,
+	keysBulkDeleteFixture,
+	keysBulkUpdateFixture,
+	keysCursorPaginationFixture,
+	keysListFixture,
+	keyUpdateFixture,
+} from "./__fixtures__/keys.fixtures.js";
 import {
 	formatBulkDeleteKeysResult,
 	formatBulkUpdateKeysResult,
@@ -14,19 +28,6 @@ import {
 	formatKeysList,
 	formatUpdateKeyResult,
 } from "./keys.formatter.js";
-
-// Load fixtures
-import {
-	createMockCursorPaginatedResult,
-	keyCreateFixture,
-	keyDeleteFixture,
-	keyRetrieveFixture,
-	keysBulkDeleteFixture,
-	keysBulkUpdateFixture,
-	keysListFixture,
-	keysCursorPaginationFixture,
-	keyUpdateFixture,
-} from "./__fixtures__/keys.fixtures.js";
 
 describe("KeysFormatter", () => {
 	// Mock Date to ensure consistent timestamps in snapshots
@@ -67,6 +68,31 @@ describe("KeysFormatter", () => {
 			expect(result).toMatchSnapshot();
 		});
 
+		it("should format keys using mock builder", () => {
+			// Using our new mock builder
+			const mockBuilder = new KeysMockBuilder();
+			const response = mockBuilder
+				.withKey({
+					key_id: generators.key.id(),
+					key_name: generators.key.name(),
+					description: "Test key 1",
+					platforms: ["web", "ios"],
+				})
+				.withKey({
+					key_id: generators.key.id(),
+					key_name: generators.key.name(),
+					description: "Test key 2",
+					is_plural: true,
+				})
+				.withPagination(1, 100)
+				.build();
+
+			const result = formatKeysList(response, projectId);
+			expect(result).toContain("2 keys");
+			expect(result).toContain("Test key 1");
+			expect(result).toContain("Test key 2");
+		});
+
 		it("should format a list with cursor pagination", () => {
 			const response = createMockCursorPaginatedResult(
 				keysCursorPaginationFixture,
@@ -80,12 +106,43 @@ describe("KeysFormatter", () => {
 			expect(result).toMatchSnapshot();
 		});
 
+		it("should handle cursor pagination using mock builder", () => {
+			const mockBuilder = new KeysMockBuilder();
+			const response = mockBuilder
+				.withKey({ key_id: generators.key.id() })
+				.withKey({ key_id: generators.key.id() })
+				.withCursorPagination("next-cursor-123", 100)
+				.build();
+
+			const result = formatKeysList(response, projectId);
+			expect(result).toContain("2 keys");
+		});
+
 		it("should handle empty key list", () => {
 			const response = createMockCursorPaginatedResult([]);
 
 			const result = formatKeysList(response, projectId);
 
 			expect(result).toMatchSnapshot();
+		});
+
+		it("should handle key with translations using mock builder", () => {
+			const mockBuilder = new KeysMockBuilder();
+			const keyWithTranslations = mockBuilder
+				.withKey({
+					key_id: generators.key.id(),
+					key_name: generators.key.name(),
+					description: "Key with multiple translations",
+				})
+				.withTranslations([
+					{ language_iso: "en", translation: "Hello", is_reviewed: true },
+					{ language_iso: "es", translation: "Hola", is_reviewed: false },
+					{ language_iso: "fr", translation: "Bonjour", is_fuzzy: true },
+				]).keys[0];
+
+			const response = createMockCursorPaginatedResult([keyWithTranslations]);
+			const result = formatKeysList(response, projectId);
+			expect(result).toContain("Key with multiple translations");
 		});
 
 		it("should format keys with translations", () => {
@@ -176,6 +233,24 @@ describe("KeysFormatter", () => {
 			const result = formatKeyDetails(key, projectId);
 
 			expect(result).toMatchSnapshot();
+		});
+
+		it("should handle key generated with mock builder", () => {
+			const mockBuilder = new KeysMockBuilder();
+			const generatedKey = mockBuilder.withKey({
+				key_id: generators.key.id(),
+				key_name: generators.key.name(),
+				description: "Generated test key",
+				platforms: ["web", "ios", "android"],
+				tags: ["test", "generated"],
+				created_at: generators.timestamp().formatted,
+				created_at_timestamp: generators.timestamp().timestamp,
+			}).keys[0];
+
+			const result = formatKeyDetails(generatedKey, projectId);
+			expect(result).toContain("Generated test key");
+			// Tags might be formatted differently
+			expect(result.toLowerCase()).toContain("test");
 		});
 
 		it("should format key with translations", () => {

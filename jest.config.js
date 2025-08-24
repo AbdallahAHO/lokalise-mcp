@@ -3,6 +3,7 @@ export default {
 	testEnvironment: "node",
 	testMatch: ["**/src/**/*.test.ts"],
 	collectCoverageFrom: ["src/**/*.ts", "!src/**/*.test.ts"],
+	setupFilesAfterEnv: ["<rootDir>/src/test-utils/setup.ts"],
 	transform: {
 		"^.+\\.tsx?$": [
 			"ts-jest",
@@ -16,4 +17,6 @@ export default {
 	},
 	extensionsToTreatAsEsm: [".ts"],
 	transformIgnorePatterns: ["node_modules/(?!(@lokalise/node-api)/)"],
+	clearMocks: true,
+	restoreMocks: true,
 };
