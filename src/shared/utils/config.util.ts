@@ -475,10 +475,7 @@ class ConfigLoader implements IConfigLoader {
 	 * Check if running in test environment
 	 */
 	isTestEnvironment(): boolean {
-		return (
-			this.get("NODE_ENV") === "test" ||
-			this.get("JEST_WORKER_ID") !== undefined
-		);
+		return this.get("NODE_ENV") === "test";
 	}
 
 	/**
