@@ -1,8 +1,8 @@
 import type {
+	PaginatedResult,
 	Project,
 	ProjectDeleted,
 	ProjectEmptied,
-	PaginatedResult,
 } from "@lokalise/node-api";
 
 /**
@@ -11,59 +11,60 @@ import type {
  */
 
 // Helper to create a base project object with default values
-const createBaseProject = (overrides: Partial<Project> = {}): Project => ({
-	project_id: "",
-	project_type: "localization_files",
-	name: "",
-	description: "",
-	created_at: "",
-	created_at_timestamp: 0,
-	created_by: 0,
-	created_by_email: "",
-	team_id: 0,
-	base_language_id: 640,
-	base_language_iso: "en",
-	settings: {
-		per_platform_key_names: false,
-		reviewing: true,
-		auto_toggle_unverified: true,
-		offline_translation: true,
-		key_editing: true,
-		inline_machine_translations: true,
-		branching: true,
-		segmentation: false,
-		contributor_preview_download_enabled: false,
-		custom_translation_statuses: false,
-		custom_translation_statuses_allow_multiple: false,
-	},
-	statistics: {
-		progress_total: 0,
-		keys_total: 0,
-		team: 0,
-		base_words: 0,
-		qa_issues_total: 0,
-		qa_issues: {
-			not_reviewed: 0,
-			unverified: 0,
-			spelling_grammar: 0,
-			inconsistent_placeholders: 0,
-			inconsistent_html: 0,
-			different_number_of_urls: 0,
-			different_urls: 0,
-			leading_whitespace: 0,
-			trailing_whitespace: 0,
-			different_number_of_email_address: 0,
-			different_email_address: 0,
-			different_brackets: 0,
-			different_numbers: 0,
-			double_space: 0,
-			special_placeholder: 0,
-			unbalanced_brackets: 0,
+const createBaseProject = (overrides: Partial<Project> = {}): Project => {
+	return {
+		project_id: "",
+		project_type: "localization_files",
+		name: "",
+		description: "",
+		created_at: "",
+		created_at_timestamp: 0,
+		created_by: 0,
+		created_by_email: "",
+		team_id: 0,
+		base_language_id: 640,
+		base_language_iso: "en",
+		settings: {
+			per_platform_key_names: false,
+			reviewing: true,
+			auto_toggle_unverified: true,
+			offline_translation: true,
+			key_editing: true,
+			inline_machine_translations: true,
+			branching: true,
+			segmentation: false,
+			custom_translation_statuses: false,
+			custom_translation_statuses_allow_multiple: false,
 		},
-		languages: [],
-	},
-	...overrides,
-});
+		statistics: {
+			progress_total: 0,
+			keys_total: 0,
+			team: 0,
+			base_words: 0,
+			qa_issues_total: 0,
+			qa_issues: {
+				not_reviewed: 0,
+				unverified: 0,
+				spelling_grammar: 0,
+				inconsistent_placeholders: 0,
+				inconsistent_html: 0,
+				different_number_of_urls: 0,
+				different_urls: 0,
+				leading_whitespace: 0,
+				trailing_whitespace: 0,
+				different_number_of_email_address: 0,
+				different_email_address: 0,
+				different_brackets: 0,
+				different_numbers: 0,
+				double_space: 0,
+				special_placeholder: 0,
+				unbalanced_brackets: 0,
+			},
+			languages: [],
+		},
+		...overrides,
+	} as Project;
+};
 
 // List fixture - multiple projects (from list.json)
 export const projectsListFixture: Project[] = [
@@ -335,7 +336,7 @@ export const projectRetrieveFixture: Project = createBaseProject({
 			},
 		],
 	},
-});
+} as Project);
 
 // Create fixture - Project for creation (from create.json)
 export const projectCreateFixture: Project = createBaseProject({
@@ -396,7 +397,7 @@ export const projectCreateFixture: Project = createBaseProject({
 			},
 		],
 	},
-});
+} as unknown as Project);
 
 // Update fixture - Project for update operations (based on create fixture with modifications)
 export const projectUpdateFixture: Project = createBaseProject({
@@ -457,7 +458,7 @@ export const projectUpdateFixture: Project = createBaseProject({
 			},
 		],
 	},
-});
+} as unknown as Project);
 
 // Delete fixture - ProjectDeleted (based on the project deletion)
 export const projectDeleteFixture: ProjectDeleted = {
@@ -468,7 +469,6 @@ export const projectDeleteFixture: ProjectDeleted = {
 // Empty fixture - ProjectEmptied (from empty.json)
 export const projectEmptyFixture: ProjectEmptied = {
 	project_id: "43820238650c56462a27f0.61419394",
-	project_emptied: true,
 	keys_deleted: true,
 };
 
@@ -502,5 +502,8 @@ export const createMockPaginatedResult = <T>(
 		hasPrevPage: () => currentPage > 1,
 		nextPage: () => Math.min(currentPage + 1, totalPages),
 		prevPage: () => Math.max(currentPage - 1, 1),
-	};
+		responseTooBig: false,
+		isLastPage: currentPage === totalPages,
+		isFirstPage: currentPage === 1,
+	} as unknown as PaginatedResult<T>;
 };

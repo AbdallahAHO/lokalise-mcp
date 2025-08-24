@@ -63,10 +63,10 @@ describe("TasksFormatter", () => {
 		// Mock Date constructor and static methods
 		global.Date = class extends originalDate {
 			constructor(...args: ConstructorParameters<DateConstructor>) {
-				if (args.length === 0) {
-					super(mockDate.getTime());
-				} else {
+				if (args.length) {
 					super(...args);
+				} else {
+					super(mockDate.getTime());
 				}
 			}
 			static now() {
@@ -221,8 +221,6 @@ describe("TasksFormatter", () => {
 		it("should suggest setting due date if not provided", () => {
 			const taskNoDueDate: Task = {
 				...createdTask,
-				due_date: undefined,
-				due_date_timestamp: undefined,
 			};
 
 			const result = formatCreateTaskResult(taskNoDueDate, projectId);
@@ -313,7 +311,7 @@ describe("TasksFormatter", () => {
 				completed_at_timestamp: null,
 				completed_by: null,
 				completed_by_email: null,
-			} as Task;
+			} as unknown as Task;
 
 			const result = formatTaskDetails(taskWithNulls, projectId);
 
