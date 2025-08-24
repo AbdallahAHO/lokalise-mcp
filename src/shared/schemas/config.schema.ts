@@ -116,11 +116,6 @@ export const RuntimeConfigSchema = z.object({
 		.boolean()
 		.default(false)
 		.describe("Indicates if running as MCP server (vs CLI mode)"),
-
-	JEST_WORKER_ID: z
-		.string()
-		.optional()
-		.describe("Jest worker ID (present when running tests)"),
 });
 
 /**

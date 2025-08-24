@@ -321,10 +321,7 @@ class Logger {
 			}
 		}
 
-		if (
-			process.env.NODE_ENV === "test" ||
-			process.env.JEST_WORKER_ID !== undefined
-		) {
+		if (process.env.NODE_ENV === "test") {
 			console[level](logMessage);
 		} else {
 			console.error(logMessage);
