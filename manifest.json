@@ -51,8 +51,8 @@
 			"type": "boolean",
 			"title": "Enable Debug Mode",
 			"description": "Enable debug mode to see detailed logging output",
-			"default": true,
-			"required": true
+			"default": false,
+			"required": false
 		}
 	},
 	"tools": [
