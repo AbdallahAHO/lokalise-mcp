@@ -374,6 +374,7 @@ exports[`TasksFormatter formatCreateTaskResult should suggest setting due date i
 - **Type**: translation
 - **Status**: created
 - **Created**: Invalid date
+- **Due Date**: 12/31/2024 at 11:59:59 PM
 
 ## Language Coverage
 **1 language(s) configured:**
@@ -387,7 +388,6 @@ exports[`TasksFormatter formatCreateTaskResult should suggest setting due date i
 - Notify assigned team members about the new task
 - Review task details and assignments
 - Monitor progress as work begins
-- Consider setting a due date for better project management
 
 ---
 *Task created at 2024-01-15 10:30:00 UTC*"

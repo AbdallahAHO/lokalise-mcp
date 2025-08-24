@@ -12,8 +12,8 @@ const createBaseTask = (overrides: Partial<Task> = {}): Task => ({
 	description: "",
 	status: "created",
 	progress: 0,
-	due_date: undefined,
-	due_date_timestamp: undefined,
+	due_date: "",
+	due_date_timestamp: 0,
 	keys_count: 0,
 	words_count: 0,
 	created_at: "",
@@ -22,17 +22,17 @@ const createBaseTask = (overrides: Partial<Task> = {}): Task => ({
 	created_by_email: "",
 	can_be_parent: false,
 	task_type: "translation",
-	parent_task_id: undefined,
+	parent_task_id: 0,
 	closing_tags: [],
 	source_language_iso: "en",
 	languages: [],
 	auto_close_items: true,
 	auto_close_languages: true,
 	auto_close_task: true,
-	completed_at: undefined,
-	completed_at_timestamp: undefined,
-	completed_by: undefined,
-	completed_by_email: undefined,
+	completed_at: "",
+	completed_at_timestamp: 0,
+	completed_by: 0,
+	completed_by_email: "",
 	do_lock_translations: false,
 	custom_translation_status_ids: [],
 	...overrides,
@@ -61,7 +61,7 @@ export const tasksListFixture: Task[] = [
 		source_language_iso: "en",
 		languages: [
 			{
-				language_iso: null, // API can return null
+				language_iso: null as unknown as string, // API can return null
 				users: [
 					{
 						user_id: 20181,
@@ -92,10 +92,21 @@ export const tasksListFixture: Task[] = [
 				},
 				keys_count: 1,
 				words_count: 2,
-				completed_at: undefined,
-				completed_at_timestamp: undefined,
-				completed_by: undefined,
-				completed_by_email: undefined,
+				completed_at: undefined as unknown as string,
+				completed_at_timestamp: undefined as unknown as number,
+				completed_by: undefined as unknown as number,
+				completed_by_email: undefined as unknown as string,
+				tm_leverage: undefined as unknown as {
+					status: string;
+					value: {
+						"0%+": number;
+						"50%+": number;
+						"75%+": number;
+						"85%+": number;
+						"95%+": number;
+						"100%": number;
+					};
+				},
 			},
 		],
 		auto_close_items: true,
@@ -150,10 +161,21 @@ export const tasksListFixture: Task[] = [
 				},
 				keys_count: 16,
 				words_count: 37,
-				completed_at: undefined,
-				completed_at_timestamp: undefined,
-				completed_by: undefined,
-				completed_by_email: undefined,
+				completed_at: undefined as unknown as string,
+				completed_at_timestamp: undefined as unknown as number,
+				completed_by: undefined as unknown as number,
+				completed_by_email: undefined as unknown as string,
+				tm_leverage: undefined as unknown as {
+					status: string;
+					value: {
+						"0%+": number;
+						"50%+": number;
+						"75%+": number;
+						"85%+": number;
+						"95%+": number;
+						"100%": number;
+					};
+				},
 			},
 			{
 				language_iso: "ar_001",
@@ -177,10 +199,21 @@ export const tasksListFixture: Task[] = [
 				},
 				keys_count: 15,
 				words_count: 36,
-				completed_at: undefined,
-				completed_at_timestamp: undefined,
-				completed_by: undefined,
-				completed_by_email: undefined,
+				completed_at: undefined as unknown as string,
+				completed_at_timestamp: undefined as unknown as number,
+				completed_by: undefined as unknown as number,
+				completed_by_email: undefined as unknown as string,
+				tm_leverage: undefined as unknown as {
+					status: string;
+					value: {
+						"0%+": number;
+						"50%+": number;
+						"75%+": number;
+						"85%+": number;
+						"95%+": number;
+						"100%": number;
+					};
+				},
 			},
 		],
 		auto_close_items: true,
@@ -240,13 +273,24 @@ export const tasksListFixture: Task[] = [
 				},
 				keys_count: 2,
 				words_count: 5,
-				completed_at: undefined,
-				completed_at_timestamp: undefined,
-				completed_by: undefined,
-				completed_by_email: undefined,
+				completed_at: undefined as unknown as string,
+				completed_at_timestamp: undefined as unknown as number,
+				completed_by: undefined as unknown as number,
+				completed_by_email: undefined as unknown as string,
+				tm_leverage: undefined as unknown as {
+					status: string;
+					value: {
+						"0%+": number;
+						"50%+": number;
+						"75%+": number;
+						"85%+": number;
+						"95%+": number;
+						"100%": number;
+					};
+				},
 			},
 			{
-				language_iso: null,
+				language_iso: null as unknown as string,
 				users: [
 					{
 						user_id: 35555,
@@ -267,10 +311,21 @@ export const tasksListFixture: Task[] = [
 				},
 				keys_count: 2,
 				words_count: 8,
-				completed_at: undefined,
-				completed_at_timestamp: undefined,
-				completed_by: undefined,
-				completed_by_email: undefined,
+				completed_at: undefined as unknown as string,
+				completed_at_timestamp: undefined as unknown as number,
+				completed_by: undefined as unknown as number,
+				completed_by_email: undefined as unknown as string,
+				tm_leverage: undefined as unknown as {
+					status: string;
+					value: {
+						"0%+": number;
+						"50%+": number;
+						"75%+": number;
+						"85%+": number;
+						"95%+": number;
+						"100%": number;
+					};
+				},
 			},
 		],
 		auto_close_items: true,
@@ -333,13 +388,24 @@ export const taskPaginationFixture: Task = createBaseTask({
 			},
 			keys_count: 2,
 			words_count: 5,
-			completed_at: undefined,
-			completed_at_timestamp: undefined,
-			completed_by: undefined,
-			completed_by_email: undefined,
+			completed_at: undefined as unknown as string,
+			completed_at_timestamp: undefined as unknown as number,
+			completed_by: undefined as unknown as number,
+			completed_by_email: undefined as unknown as string,
+			tm_leverage: undefined as unknown as {
+				status: string;
+				value: {
+					"0%+": number;
+					"50%+": number;
+					"75%+": number;
+					"85%+": number;
+					"95%+": number;
+					"100%": number;
+				};
+			},
 		},
 		{
-			language_iso: null,
+			language_iso: null as unknown as string,
 			users: [
 				{
 					user_id: 35555,
@@ -360,10 +426,21 @@ export const taskPaginationFixture: Task = createBaseTask({
 			},
 			keys_count: 2,
 			words_count: 8,
-			completed_at: undefined,
-			completed_at_timestamp: undefined,
-			completed_by: undefined,
-			completed_by_email: undefined,
+			completed_at: undefined as unknown as string,
+			completed_at_timestamp: undefined as unknown as number,
+			completed_by: undefined as unknown as number,
+			completed_by_email: undefined as unknown as string,
+			tm_leverage: undefined as unknown as {
+				status: string;
+				value: {
+					"0%+": number;
+					"50%+": number;
+					"75%+": number;
+					"85%+": number;
+					"95%+": number;
+					"100%": number;
+				};
+			},
 		},
 	],
 	auto_close_items: true,
@@ -485,10 +562,21 @@ export const taskCreateFixture: Task = createBaseTask({
 			},
 			keys_count: 10,
 			words_count: 150,
-			completed_at: undefined,
-			completed_at_timestamp: undefined,
-			completed_by: undefined,
-			completed_by_email: undefined,
+			completed_at: undefined as unknown as string,
+			completed_at_timestamp: undefined as unknown as number,
+			completed_by: undefined as unknown as number,
+			completed_by_email: undefined as unknown as string,
+			tm_leverage: undefined as unknown as {
+				status: string;
+				value: {
+					"0%+": number;
+					"50%+": number;
+					"75%+": number;
+					"85%+": number;
+					"95%+": number;
+					"100%": number;
+				};
+			},
 		},
 	],
 	auto_close_items: false,
