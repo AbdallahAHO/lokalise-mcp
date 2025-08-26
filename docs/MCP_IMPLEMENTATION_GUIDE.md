@@ -321,6 +321,77 @@ npm run scaffold:domain:cli -- \
    { project_id: args.projectId }
    ```
 
+## Critical Implementation Requirements
+
+### MCP Tool Schema Registration
+
+**REQUIREMENT**: Always use `.shape` property for Zod schemas:
+```typescript
+// tool.ts implementation
+server.tool(
+  "lokalise_<operation>",
+  "Description...",
+  SchemaName.shape,  // MUST use .shape for ZodRawShape
+  handler
+);
+```
+
+**Why**: The MCP SDK expects `ZodRawShape`, not `ZodObject`. Using the full schema causes TypeScript compilation errors.
+
+### Resource URI Parsing
+
+**REQUIREMENT**: Handle custom protocol URLs correctly:
+```typescript
+// resource.ts implementation for lokalise://domain/id
+const pathParts = uri.pathname.split("/").filter(Boolean);
+const id = pathParts[0]; // NOT pathParts[1]
+
+// Custom protocols parse differently:
+// lokalise://projects/123 -> host="projects", pathname="/123"
+```
+
+### Resource Response Format
+
+**REQUIREMENT**: Include all required fields:
+```typescript
+return {
+  contents: [{
+    uri: uri.toString(),        // REQUIRED
+    text: result.content,       // REQUIRED
+    mimeType: "text/markdown",  // REQUIRED  
+    description: "..."          // REQUIRED
+  }]
+};
+```
+
+### Error Type Consistency
+
+**REQUIREMENT**: Use correct error types with prefixes:
+```typescript
+// Validation errors MUST include prefix
+throw new McpError(
+  "VALIDATION_ERROR: Field is required",
+  ErrorType.VALIDATION_ERROR
+);
+
+// API errors for external failures
+throw new McpError(
+  "Failed to fetch from Lokalise API",
+  ErrorType.API_ERROR
+);
+```
+
+### Number Parameter Parsing
+
+**REQUIREMENT**: Check for NaN explicitly:
+```typescript
+// Parse URL parameters safely
+if (urlParams.get("limit")) {
+  const parsed = Number.parseInt(urlParams.get("limit"), 10);
+  limit = Number.isNaN(parsed) ? undefined : parsed;
+}
+```
+
 ## Common Pitfalls & Solutions
 
 ### 1. McpError Constructor Order
