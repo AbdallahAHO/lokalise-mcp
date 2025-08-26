@@ -70,7 +70,7 @@ export function createMockLokaliseApi(
 			update: jest.fn(),
 			delete: jest.fn(),
 		})),
-	} as unknown;
+	} as any;
 
 	// Apply error simulation if specified
 	if (options.failOnMethod) {
@@ -104,7 +104,7 @@ export function createMockLokaliseApi(
 		}
 	}
 
-	return mockApi as unknown as jest.Mocked<LokaliseApi>;
+	return mockApi as jest.Mocked<LokaliseApi>;
 }
 
 // Helper function to create paginated responses
