@@ -6,59 +6,68 @@ This document provides complete, working examples of mock implementations for ea
 
 ## Complete Mock Setup
 
-### 1. Jest Configuration
+### 1. Vitest Configuration
 
-```javascript
-// jest.config.js
-module.exports = {
-  preset: "ts-jest",
-  testEnvironment: "node",
-  roots: ["<rootDir>/src"],
-  testMatch: ["**/*.test.ts"],
-  collectCoverageFrom: [
-    "src/**/*.ts",
-    "!src/**/*.test.ts",
-    "!src/**/*.fixtures.ts",
-    "!src/**/index.ts"
-  ],
-  coverageThreshold: {
-    global: {
-      branches: 90,
-      functions: 90,
-      lines: 90,
-      statements: 90
-    }
+```typescript
+// vitest.config.ts
+import { resolve } from "node:path";
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  test: {
+    globals: true,
+    environment: "node",
+    setupFiles: ["./src/test-utils/setup.ts"],
+    include: ["src/**/*.test.ts"],
+    unstubGlobals: true,
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json", "html"],
+      exclude: [
+        "node_modules/",
+        "dist/",
+        "**/*.test.ts",
+        "src/test-utils/",
+        "scripts/",
+      ],
+    },
+    clearMocks: true,
+    restoreMocks: true,
+    mockReset: true,
+    snapshotFormat: {
+      escapeString: false,
+      printBasicPrototype: false,
+    },
   },
-  setupFilesAfterEnv: ["<rootDir>/src/test-utils/setup.ts"],
-  moduleNameMapper: {
-    "^@/(.*)$": "<rootDir>/src/$1"
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "./src"),
+    },
   },
-  clearMocks: true,
-  restoreMocks: true
-};
+});
 ```
 
 ### 2. Test Setup File
 
 ```typescript
 // src/test-utils/setup.ts
-import { jest } from "@jest/globals";
+import { vi } from "vitest";
 
 // Set test environment
 process.env.NODE_ENV = "test";
 process.env.LOKALISE_API_KEY = "test_api_key";
 
 // Global test timeout
-jest.setTimeout(10000);
+vi.setConfig({ testTimeout: 10000 });
 
 // Mock console methods to reduce noise
 global.console = {
   ...console,
-  log: jest.fn(),
-  debug: jest.fn(),
-  info: jest.fn(),
-  warn: jest.fn(),
-  error: jest.fn()
+  log: vi.fn(),
+  debug: vi.fn(),
+  info: vi.fn(),
+  warn: vi.fn(),
+  error: vi.fn()
 };
 
 // Add custom matchers
@@ -83,38 +92,38 @@ expect.extend({
 
 ```typescript
 // src/domains/projects/projects.service.test.ts
-import { describe, it, expect, beforeEach, afterEach, jest } from "@jest/globals";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { ProjectsService } from "./projects.service";
 import { LokaliseApi } from "@lokalise/node-api";
 import type { Project, PaginatedResult } from "@lokalise/node-api";
 import { McpError } from "../../shared/utils/error.util";
 
 // Mock the entire @lokalise/node-api module
-jest.mock("@lokalise/node-api");
+vi.mock("@lokalise/node-api");
 
 describe("ProjectsService", () => {
   let service: ProjectsService;
-  let mockApi: jest.Mocked<LokaliseApi>;
-  let mockProjects: jest.Mocked<any>;
+  let mockApi: vi.Mocked<LokaliseApi>;
+  let mockProjects: vi.Mocked<any>;
 
   beforeEach(() => {
     // Create mock projects methods
     mockProjects = {
-      list: jest.fn(),
-      get: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-      empty: jest.fn()
+      list: vi.fn(),
+      get: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+      empty: vi.fn()
     };
 
     // Create mock API instance
     mockApi = {
-      projects: jest.fn(() => mockProjects)
+      projects: vi.fn(() => mockProjects)
     } as unknown;
 
     // Mock the constructor
-    (LokaliseApi as jest.MockedClass<typeof LokaliseApi>).mockImplementation(
+    (LokaliseApi as vi.MockedClass<typeof LokaliseApi>).mockImplementation(
       () => mockApi
     );
 
@@ -123,7 +132,7 @@ describe("ProjectsService", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("listProjects", () => {
@@ -373,34 +382,34 @@ describe("ProjectsService", () => {
 
 ```typescript
 // src/domains/keys/keys.service.test.ts
-import { describe, it, expect, beforeEach, jest } from "@jest/globals";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { KeysService } from "./keys.service";
 import { LokaliseApi } from "@lokalise/node-api";
 import type { Key, PaginatedResult } from "@lokalise/node-api";
 
-jest.mock("@lokalise/node-api");
+vi.mock("@lokalise/node-api");
 
 describe("KeysService", () => {
   let service: KeysService;
-  let mockApi: jest.Mocked<LokaliseApi>;
-  let mockKeys: jest.Mocked<any>;
+  let mockApi: vi.Mocked<LokaliseApi>;
+  let mockKeys: vi.Mocked<any>;
 
   beforeEach(() => {
     mockKeys = {
-      list: jest.fn(),
-      get: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      bulk_update: jest.fn(),
-      delete: jest.fn(),
-      bulk_delete: jest.fn()
+      list: vi.fn(),
+      get: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      bulk_update: vi.fn(),
+      delete: vi.fn(),
+      bulk_delete: vi.fn()
     };
 
     mockApi = {
-      keys: jest.fn(() => mockKeys)
+      keys: vi.fn(() => mockKeys)
     } as unknown;
 
-    (LokaliseApi as jest.MockedClass<typeof LokaliseApi>).mockImplementation(
+    (LokaliseApi as vi.MockedClass<typeof LokaliseApi>).mockImplementation(
       () => mockApi
     );
 
@@ -659,17 +668,17 @@ describe("KeysService", () => {
 
 ```typescript
 // src/test-utils/error-mocks.test.ts
-import { describe, it, expect, jest } from "@jest/globals";
+import { describe, it, expect, vi } from "vitest";
 import { LokaliseApi } from "@lokalise/node-api";
 import { McpError } from "../shared/utils/error.util";
 
-jest.mock("@lokalise/node-api");
+vi.mock("@lokalise/node-api");
 
 describe("Error Handling Examples", () => {
-  let mockApi: jest.Mocked<LokaliseApi>;
+  let mockApi: vi.Mocked<LokaliseApi>;
 
   beforeEach(() => {
-    mockApi = new LokaliseApi({ apiKey: "test" }) as jest.Mocked<LokaliseApi>;
+    mockApi = new LokaliseApi({ apiKey: "test" }) as vi.Mocked<LokaliseApi>;
   });
 
   it("should handle 401 Unauthorized", async () => {
@@ -681,9 +690,9 @@ describe("Error Handling Examples", () => {
     };
 
     const mockProjects = {
-      list: jest.fn().mockRejectedValue(error)
+      list: vi.fn().mockRejectedValue(error)
     };
-    mockApi.projects = jest.fn(() => mockProjects) as unknown;
+    mockApi.projects = vi.fn(() => mockProjects) as unknown;
 
     // Act & Assert
     await expect(mockApi.projects().list())
@@ -713,9 +722,9 @@ describe("Error Handling Examples", () => {
     };
 
     const mockProjects = {
-      delete: jest.fn().mockRejectedValue(error)
+      delete: vi.fn().mockRejectedValue(error)
     };
-    mockApi.projects = jest.fn(() => mockProjects) as unknown;
+    mockApi.projects = vi.fn(() => mockProjects) as unknown;
 
     // Act & Assert
     await expect(mockApi.projects().delete("protected_project"))
@@ -732,9 +741,9 @@ describe("Error Handling Examples", () => {
     };
 
     const mockProjects = {
-      get: jest.fn().mockRejectedValue(error)
+      get: vi.fn().mockRejectedValue(error)
     };
-    mockApi.projects = jest.fn(() => mockProjects) as unknown;
+    mockApi.projects = vi.fn(() => mockProjects) as unknown;
 
     // Act & Assert
     await expect(mockApi.projects().get("non_existent"))
@@ -756,11 +765,11 @@ describe("Error Handling Examples", () => {
     };
 
     const mockProjects = {
-      list: jest.fn()
+      list: vi.fn()
         .mockRejectedValueOnce(rateLimitError) // First call fails
         .mockResolvedValueOnce({ items: [] })  // Retry succeeds
     };
-    mockApi.projects = jest.fn(() => mockProjects) as unknown;
+    mockApi.projects = vi.fn(() => mockProjects) as unknown;
 
     // Act - First attempt fails
     await expect(mockApi.projects().list())
@@ -782,9 +791,9 @@ describe("Error Handling Examples", () => {
     };
 
     const mockProjects = {
-      create: jest.fn().mockRejectedValue(serverError)
+      create: vi.fn().mockRejectedValue(serverError)
     };
-    mockApi.projects = jest.fn(() => mockProjects) as unknown;
+    mockApi.projects = vi.fn(() => mockProjects) as unknown;
 
     // Act & Assert
     await expect(mockApi.projects().create({ name: "Test" }))
@@ -811,9 +820,9 @@ describe("Error Handling Examples", () => {
     };
 
     const mockProjects = {
-      create: jest.fn().mockRejectedValue(validationError)
+      create: vi.fn().mockRejectedValue(validationError)
     };
-    mockApi.projects = jest.fn(() => mockProjects) as unknown;
+    mockApi.projects = vi.fn(() => mockProjects) as unknown;
 
     // Act & Assert
     try {
@@ -831,7 +840,7 @@ describe("Error Handling Examples", () => {
 
 ```typescript
 // src/test-utils/rate-limiting.test.ts
-import { describe, it, expect, beforeEach, jest } from "@jest/globals";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 
 class RateLimitedApiMock {
   private requestCount = 0;
@@ -839,7 +848,7 @@ class RateLimitedApiMock {
   private resetTime = Date.now() + 60000;
 
   async makeRequest<T>(
-    mockFn: jest.Mock,
+    mockFn: vi.Mock,
     successResponse: T
   ): Promise<T> {
     this.requestCount++;
@@ -875,11 +884,11 @@ class RateLimitedApiMock {
 
 describe("Rate Limiting Simulation", () => {
   let rateLimiter: RateLimitedApiMock;
-  let mockApi: jest.Mock;
+  let mockApi: vi.Mock;
 
   beforeEach(() => {
     rateLimiter = new RateLimitedApiMock();
-    mockApi = jest.fn();
+    mockApi = vi.fn();
   });
 
   it("should allow requests within rate limit", async () => {
@@ -929,28 +938,28 @@ describe("Rate Limiting Simulation", () => {
 
 ```typescript
 // src/domains/keys/keys.bulk.test.ts
-import { describe, it, expect, beforeEach, jest } from "@jest/globals";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { KeysService } from "./keys.service";
 import { LokaliseApi } from "@lokalise/node-api";
 
-jest.mock("@lokalise/node-api");
+vi.mock("@lokalise/node-api");
 
 describe("Bulk Key Operations", () => {
   let service: KeysService;
-  let mockKeys: jest.Mocked<any>;
+  let mockKeys: vi.Mocked<any>;
 
   beforeEach(() => {
     mockKeys = {
-      create: jest.fn(),
-      bulk_update: jest.fn(),
-      bulk_delete: jest.fn()
+      create: vi.fn(),
+      bulk_update: vi.fn(),
+      bulk_delete: vi.fn()
     };
 
     const mockApi = {
-      keys: jest.fn(() => mockKeys)
+      keys: vi.fn(() => mockKeys)
     } as unknown;
 
-    (LokaliseApi as jest.MockedClass<typeof LokaliseApi>).mockImplementation(
+    (LokaliseApi as vi.MockedClass<typeof LokaliseApi>).mockImplementation(
       () => mockApi
     );
 
@@ -1070,7 +1079,7 @@ describe("Bulk Key Operations", () => {
 
 ```typescript
 // src/test-utils/performance.test.ts
-import { describe, it, expect, beforeEach, jest } from "@jest/globals";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { performance } from "perf_hooks";
 
 describe("Performance Testing", () => {
@@ -1086,7 +1095,7 @@ describe("Performance Testing", () => {
     }));
 
     const mockApi = {
-      process: jest.fn().mockImplementation(async (data) => {
+      process: vi.fn().mockImplementation(async (data) => {
         // Simulate processing time
         await new Promise(resolve => setTimeout(resolve, 1));
         return { processed: data.length };
@@ -1121,7 +1130,7 @@ describe("Performance Testing", () => {
   it("should handle concurrent requests efficiently", async () => {
     // Arrange
     const mockApi = {
-      fetch: jest.fn().mockImplementation(async (id) => {
+      fetch: vi.fn().mockImplementation(async (id) => {
         await new Promise(resolve => setTimeout(resolve, 10));
         return { id, data: `Data for ${id}` };
       })
@@ -1162,6 +1171,7 @@ describe("Performance Testing", () => {
 
 ---
 
-**Document Version**: 1.0.0
-**Last Updated**: 2025-08-24
+**Document Version**: 2.0.0
+**Last Updated**: 2025-08-26
+**Migration Status**: ✅ Fully migrated from Jest to Vitest
 **Related**: API_MOCKING_GUIDE.md, TEST_FIXTURES_SPECIFICATION.md, DOMAIN_TEST_SPECIFICATIONS.md

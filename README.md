@@ -482,7 +482,6 @@ The project features a comprehensive testing infrastructure with **113 passing t
 - **🏗️ Mock Factory System** - Complete Lokalise API simulation
 - **🔨 Domain Mock Builders** - Fluent APIs for test data creation
 - **📊 Performance Monitoring** - Built-in memory and CPU tracking
-- **🎯 Custom Jest Matchers** - Domain-specific validations
 - **🚀 Test Scaffolding** - Automated test generation (90% time savings)
 - **🔄 Error Simulation** - Comprehensive error scenario testing
 
@@ -513,9 +512,9 @@ const project = mockBuilder
   .withProject({
     name: "My Translation Project",
     project_id: "123.abc",
-    statistics: { 
+    statistics: {
       keys_total: 100,
-      progress_total: 75 
+      progress_total: 75
     }
   })
   .withPagination(1, 10)

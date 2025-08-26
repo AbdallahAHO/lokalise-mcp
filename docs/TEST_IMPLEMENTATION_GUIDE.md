@@ -33,7 +33,7 @@ src/domains/[domain]/
 
 ```typescript
 // src/domains/projects/projects.service.test.ts
-import { describe, it, expect, beforeEach, afterEach, jest } from "@jest/globals";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { ProjectsService } from "./projects.service";
 import { McpError } from "../../shared/utils/error.util";
 import { createMockLokaliseApi } from "../../test-utils/mock-factory";
@@ -49,7 +49,7 @@ describe("ProjectsService", () => {
 
   beforeEach(() => {
     // Clear any module cache
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Create mock API
     mockApi = createMockLokaliseApi();
@@ -62,7 +62,7 @@ describe("ProjectsService", () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe("listProjects", () => {
@@ -259,7 +259,7 @@ describe("ProjectsService", () => {
 
 ```typescript
 // src/domains/projects/projects.controller.test.ts
-import { describe, it, expect, beforeEach, jest } from "@jest/globals";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { projectsController } from "./projects.controller";
 import * as projectsService from "./projects.service";
 import { McpError } from "../../shared/utils/error.util";
@@ -269,13 +269,13 @@ import {
 } from "./__fixtures__/projects.fixtures";
 
 // Mock the service module
-jest.mock("./projects.service");
+vi.mock("./projects.service");
 
 describe("ProjectsController", () => {
-  const mockService = projectsService as jest.Mocked<typeof projectsService>;
+  const mockService = projectsService as vi.Mocked<typeof projectsService>;
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("listProjects", () => {
@@ -497,17 +497,17 @@ describe("ProjectsController", () => {
 
 ```typescript
 // src/domains/projects/projects.tool.test.ts
-import { describe, it, expect, beforeEach, jest } from "@jest/globals";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { projectsTool } from "./projects.tool";
 import { projectsController } from "./projects.controller";
 import { z } from "zod";
 
-jest.mock("./projects.controller");
+vi.mock("./projects.controller");
 
 describe("ProjectsTool", () => {
   let server: Server;
-  const mockController = projectsController as jest.Mocked<
+  const mockController = projectsController as vi.Mocked<
     typeof projectsController
   >;
 
@@ -517,7 +517,7 @@ describe("ProjectsTool", () => {
       version: "1.0.0"
     });
     projectsTool.registerTools(server);
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("lokalise_list_projects", () => {
@@ -673,16 +673,16 @@ describe("ProjectsTool", () => {
 
 ```typescript
 // src/domains/projects/projects.resource.test.ts
-import { describe, it, expect, beforeEach, jest } from "@jest/globals";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { projectsResource } from "./projects.resource";
 import { projectsController } from "./projects.controller";
 
-jest.mock("./projects.controller");
+vi.mock("./projects.controller");
 
 describe("ProjectsResource", () => {
   let server: Server;
-  const mockController = projectsController as jest.Mocked<
+  const mockController = projectsController as vi.Mocked<
     typeof projectsController
   >;
 
@@ -692,7 +692,7 @@ describe("ProjectsResource", () => {
       version: "1.0.0"
     });
     projectsResource.registerResources(server);
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("lokalise-projects", () => {
@@ -808,16 +808,16 @@ describe("ProjectsResource", () => {
 
 ```typescript
 // src/domains/projects/projects.cli.test.ts
-import { describe, it, expect, beforeEach, jest } from "@jest/globals";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { Command } from "commander";
 import { projectsCli } from "./projects.cli";
 import { projectsController } from "./projects.controller";
 
-jest.mock("./projects.controller");
+vi.mock("./projects.controller");
 
 describe("ProjectsCLI", () => {
   let program: Command;
-  const mockController = projectsController as jest.Mocked<
+  const mockController = projectsController as vi.Mocked<
     typeof projectsController
   >;
 
@@ -825,15 +825,15 @@ describe("ProjectsCLI", () => {
     program = new Command();
     program.exitOverride(); // Prevent process.exit in tests
     projectsCli.register(program);
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Mock console methods
-    jest.spyOn(console, "log").mockImplementation();
-    jest.spyOn(console, "error").mockImplementation();
+    vi.spyOn(console, "log").mockImplementation();
+    vi.spyOn(console, "error").mockImplementation();
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe("list-projects command", () => {
@@ -941,7 +941,7 @@ describe("ProjectsCLI", () => {
     it("should prompt for required fields", async () => {
       // This would use inquirer or similar for interactive prompts
       // Mock the prompt responses
-      const mockPrompt = jest.fn().mockResolvedValue({
+      const mockPrompt = vi.fn().mockResolvedValue({
         name: "New Project",
         description: "Test project"
       });
@@ -993,7 +993,7 @@ describe("ProjectsCLI", () => {
   describe("delete-project command", () => {
     it("should require confirmation", async () => {
       // Mock confirmation prompt
-      const mockConfirm = jest.fn().mockResolvedValue(false);
+      const mockConfirm = vi.fn().mockResolvedValue(false);
       (program as unknown).confirm = mockConfirm;
 
       // Act
@@ -1011,7 +1011,7 @@ describe("ProjectsCLI", () => {
 
     it("should delete with confirmation", async () => {
       // Mock confirmation prompt
-      const mockConfirm = jest.fn().mockResolvedValue(true);
+      const mockConfirm = vi.fn().mockResolvedValue(true);
       (program as unknown).confirm = mockConfirm;
 
       mockController.deleteProject.mockResolvedValue({
@@ -1045,12 +1045,12 @@ Always isolate mocks to prevent test interference:
 
 ```typescript
 beforeEach(() => {
-  jest.clearAllMocks();
-  jest.resetModules();
+  vi.clearAllMocks();
+  vi.resetModules();
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 ```
 
@@ -1238,7 +1238,7 @@ module.exports = {
   },
   reporters: [
     "default",
-    ["jest-junit", {
+    ["vitest-junit", {
       outputDirectory: "test-results",
       outputName: "junit.xml"
     }]
