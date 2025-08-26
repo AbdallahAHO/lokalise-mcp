@@ -1,8 +1,8 @@
 import { TextDecoder, TextEncoder } from "node:util";
-import { jest } from "@jest/globals";
+import { afterAll, afterEach, beforeAll, beforeEach, expect, vi } from "vitest";
 
-// Polyfill for TextEncoder/TextDecoder if not available
 if (typeof global.TextEncoder === "undefined") {
+	// Polyfill for TextEncoder/TextDecoder if not available
 	(global as unknown as { TextEncoder: typeof TextEncoder }).TextEncoder =
 		TextEncoder;
 	(global as unknown as { TextDecoder: typeof TextDecoder }).TextDecoder =
@@ -33,16 +33,16 @@ export function restoreConsole() {
 
 // Suppress console output in tests by default
 beforeAll(() => {
-	console.log = jest.fn();
-	console.error = jest.fn();
-	console.warn = jest.fn();
-	console.info = jest.fn();
-	console.debug = jest.fn();
+	console.log = vi.fn();
+	console.error = vi.fn();
+	console.warn = vi.fn();
+	console.info = vi.fn();
+	console.debug = vi.fn();
 });
 
 // Clear all mocks after each test
 afterEach(() => {
-	jest.clearAllMocks();
+	vi.clearAllMocks();
 });
 
 // Restore console after all tests
@@ -128,33 +128,38 @@ expect.extend({
 	},
 });
 
-// Extend Jest matchers TypeScript definitions
-declare global {
-	namespace Jest {
-		interface Matchers<R> {
-			toBeValidLokaliseId(): R;
-			toBeISODate(): R;
-			toHavePaginationMethods(): R;
-			toHaveCursorPagination(): R;
-			toBeWithinRange(floor: number, ceiling: number): R;
-		}
+// Extend Vitest matchers TypeScript definitions
+declare module "vitest" {
+	interface Assertion {
+		toBeValidLokaliseId(): void;
+		toBeISODate(): void;
+		toHavePaginationMethods(): void;
+		toHaveCursorPagination(): void;
+		toBeWithinRange(floor: number, ceiling: number): void;
+	}
+	interface AsymmetricMatchersContaining {
+		toBeValidLokaliseId(): unknown;
+		toBeISODate(): unknown;
+		toHavePaginationMethods(): unknown;
+		toHaveCursorPagination(): unknown;
+		toBeWithinRange(floor: number, ceiling: number): unknown;
 	}
 }
 
 // Helper to create mock timers
 export function useMockTimers() {
 	beforeEach(() => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 	});
 
 	afterEach(() => {
-		jest.useRealTimers();
+		vi.useRealTimers();
 	});
 
 	return {
-		advanceTime: (ms: number) => jest.advanceTimersByTime(ms),
-		runAllTimers: () => jest.runAllTimers(),
-		runOnlyPendingTimers: () => jest.runOnlyPendingTimers(),
+		advanceTime: (ms: number) => vi.advanceTimersByTime(ms),
+		runAllTimers: () => vi.runAllTimers(),
+		runOnlyPendingTimers: () => vi.runOnlyPendingTimers(),
 	};
 }
 
@@ -191,15 +196,18 @@ export function captureConsole() {
 	};
 
 	beforeEach(() => {
-		console.log = jest.fn((...args) => captured.log.push(args));
-		console.error = jest.fn((...args) => captured.error.push(args));
-		console.warn = jest.fn((...args) => captured.warn.push(args));
-		console.info = jest.fn((...args) => captured.info.push(args));
-		console.debug = jest.fn((...args) => captured.debug.push(args));
+		console.log = vi.fn((...args) => captured.log.push(args));
+		console.error = vi.fn((...args) => captured.error.push(args));
+		console.warn = vi.fn((...args) => captured.warn.push(args));
+		console.info = vi.fn((...args) => captured.info.push(args));
+		console.debug = vi.fn((...args) => captured.debug.push(args));
 	});
 
 	return captured;
 }
 
 // Export test utilities
-export { jest };
+export { vi };
+
+// Create Jest compatibility layer
+export const jest = vi;
