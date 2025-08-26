@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`KeysFormatter Edge Cases should handle null and undefined values gracefully 1`] = `
+exports[`KeysFormatter > Edge Cases > should handle null and undefined values gracefully 1`] = `
 "# Translation Key Details
 
 ## Core Identification
@@ -64,7 +64,7 @@ No platform-specific values set
 *Key details retrieved at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`KeysFormatter Edge Cases should handle special characters in translations 1`] = `
+exports[`KeysFormatter > Edge Cases > should handle special characters in translations 1`] = `
 "# Translation Key Details
 
 ## Core Identification
@@ -148,7 +148,7 @@ No platform-specific values set
 *Key details retrieved at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`KeysFormatter Edge Cases should handle very long key names 1`] = `
+exports[`KeysFormatter > Edge Cases > should handle very long key names 1`] = `
 "# Translation Keys Analysis
 
 ## Project: 803826145ba90b42d5d860.46800099
@@ -212,7 +212,7 @@ exports[`KeysFormatter Edge Cases should handle very long key names 1`] = `
 *Analysis completed at 2024-01-15 10:30:00 UTC* Showing 1 keys from project \`803826145ba90b42d5d860.46800099\`"
 `;
 
-exports[`KeysFormatter formatBulkDeleteKeysResult should format bulk deletion result 1`] = `
+exports[`KeysFormatter > formatBulkDeleteKeysResult > should format bulk deletion result 1`] = `
 "# Bulk Keys Deletion Successful
 
 **5 keys have been successfully deleted from project \`803826145ba90b42d5d860.46800099\`.**
@@ -229,7 +229,7 @@ exports[`KeysFormatter formatBulkDeleteKeysResult should format bulk deletion re
 *Bulk deletion completed at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`KeysFormatter formatBulkDeleteKeysResult should handle partial deletion with locked keys 1`] = `
+exports[`KeysFormatter > formatBulkDeleteKeysResult > should handle partial deletion with locked keys 1`] = `
 "# Bulk Keys Deletion Successful
 
 **5 keys have been successfully deleted from project \`803826145ba90b42d5d860.46800099\`.**
@@ -246,7 +246,7 @@ exports[`KeysFormatter formatBulkDeleteKeysResult should handle partial deletion
 *Bulk deletion completed at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`KeysFormatter formatBulkUpdateKeysResult should format bulk update result 1`] = `
+exports[`KeysFormatter > formatBulkUpdateKeysResult > should format bulk update result 1`] = `
 "# Bulk Keys Update Results
 
 **Project ID:** \`803826145ba90b42d5d860.46800099\`
@@ -268,7 +268,7 @@ exports[`KeysFormatter formatBulkUpdateKeysResult should format bulk update resu
 *Bulk update completed at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`KeysFormatter formatBulkUpdateKeysResult should handle partial failures 1`] = `
+exports[`KeysFormatter > formatBulkUpdateKeysResult > should handle partial failures 1`] = `
 "# Bulk Keys Update Results
 
 **Project ID:** \`803826145ba90b42d5d860.46800099\`
@@ -295,7 +295,7 @@ exports[`KeysFormatter formatBulkUpdateKeysResult should handle partial failures
 *Bulk update completed at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`KeysFormatter formatCreateKeysResult should format key creation result 1`] = `
+exports[`KeysFormatter > formatCreateKeysResult > should format key creation result 1`] = `
 "# Keys Creation Results
 
 **Project ID:** \`803826145ba90b42d5d860.46800099\`
@@ -317,7 +317,7 @@ exports[`KeysFormatter formatCreateKeysResult should format key creation result 
 *Keys creation completed at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`KeysFormatter formatCreateKeysResult should handle creation errors 1`] = `
+exports[`KeysFormatter > formatCreateKeysResult > should handle creation errors 1`] = `
 "# Keys Creation Results
 
 **Project ID:** \`803826145ba90b42d5d860.46800099\`
@@ -345,7 +345,7 @@ exports[`KeysFormatter formatCreateKeysResult should handle creation errors 1`] 
 *Keys creation completed at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`KeysFormatter formatCreateKeysResult should show next steps 1`] = `
+exports[`KeysFormatter > formatCreateKeysResult > should show next steps 1`] = `
 "# Keys Creation Results
 
 **Project ID:** \`803826145ba90b42d5d860.46800099\`
@@ -367,7 +367,7 @@ exports[`KeysFormatter formatCreateKeysResult should show next steps 1`] = `
 *Keys creation completed at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`KeysFormatter formatDeleteKeyResult should format key deletion result 1`] = `
+exports[`KeysFormatter > formatDeleteKeyResult > should format key deletion result 1`] = `
 "# Key Deletion Successful
 
 **Key with ID 12345 has been successfully deleted from project \`803826145ba90b42d5d860.46800099\`.**
@@ -384,7 +384,7 @@ exports[`KeysFormatter formatDeleteKeyResult should format key deletion result 1
 *Key deleted at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`KeysFormatter formatDeleteKeyResult should handle locked keys 1`] = `
+exports[`KeysFormatter > formatDeleteKeyResult > should handle locked keys 1`] = `
 "# Key Deletion Successful
 
 **Key with ID 12345 has been successfully deleted from project \`803826145ba90b42d5d860.46800099\`.**
@@ -401,7 +401,7 @@ exports[`KeysFormatter formatDeleteKeyResult should handle locked keys 1`] = `
 *Key deleted at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`KeysFormatter formatKeyDetails should format detailed key information 1`] = `
+exports[`KeysFormatter > formatKeyDetails > should format detailed key information 1`] = `
 "# Translation Key Details
 
 ## Core Identification
@@ -485,7 +485,7 @@ No platform-specific values set
 *Key details retrieved at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`KeysFormatter formatKeyDetails should format key with translations 1`] = `
+exports[`KeysFormatter > formatKeyDetails > should format key with translations 1`] = `
 "# Translation Key Details
 
 ## Core Identification
@@ -569,7 +569,7 @@ No platform-specific values set
 *Key details retrieved at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`KeysFormatter formatKeyDetails should handle comments 1`] = `
+exports[`KeysFormatter > formatKeyDetails > should handle comments 1`] = `
 "# Translation Key Details
 
 ## Core Identification
@@ -653,7 +653,7 @@ No platform-specific values set
 *Key details retrieved at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`KeysFormatter formatKeyDetails should handle screenshots 1`] = `
+exports[`KeysFormatter > formatKeyDetails > should handle screenshots 1`] = `
 "# Translation Key Details
 
 ## Core Identification
@@ -739,7 +739,7 @@ No platform-specific values set
 *Key details retrieved at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`KeysFormatter formatKeysList should format a list of keys with standard pagination 1`] = `
+exports[`KeysFormatter > formatKeysList > should format a list of keys with standard pagination 1`] = `
 "# Translation Keys Analysis
 
 ## Project: 803826145ba90b42d5d860.46800099
@@ -804,7 +804,7 @@ exports[`KeysFormatter formatKeysList should format a list of keys with standard
 *Analysis completed at 2024-01-15 10:30:00 UTC* Showing 2 keys from project \`803826145ba90b42d5d860.46800099\`"
 `;
 
-exports[`KeysFormatter formatKeysList should format a list with cursor pagination 1`] = `
+exports[`KeysFormatter > formatKeysList > should format a list with cursor pagination 1`] = `
 "# Translation Keys Analysis
 
 ## Project: 803826145ba90b42d5d860.46800099
@@ -876,7 +876,7 @@ exports[`KeysFormatter formatKeysList should format a list with cursor paginatio
 *Analysis completed at 2024-01-15 10:30:00 UTC* Additional keys available - use cursor pagination to fetch more"
 `;
 
-exports[`KeysFormatter formatKeysList should format keys with translations 1`] = `
+exports[`KeysFormatter > formatKeysList > should format keys with translations 1`] = `
 "# Translation Keys Analysis
 
 ## Project: 803826145ba90b42d5d860.46800099
@@ -946,7 +946,7 @@ exports[`KeysFormatter formatKeysList should format keys with translations 1`] =
 *Analysis completed at 2024-01-15 10:30:00 UTC* Showing 1 keys from project \`803826145ba90b42d5d860.46800099\`"
 `;
 
-exports[`KeysFormatter formatKeysList should format platform-specific key names 1`] = `
+exports[`KeysFormatter > formatKeysList > should format platform-specific key names 1`] = `
 "# Translation Keys Analysis
 
 ## Project: 803826145ba90b42d5d860.46800099
@@ -1010,7 +1010,7 @@ exports[`KeysFormatter formatKeysList should format platform-specific key names 
 *Analysis completed at 2024-01-15 10:30:00 UTC* Showing 1 keys from project \`803826145ba90b42d5d860.46800099\`"
 `;
 
-exports[`KeysFormatter formatKeysList should handle empty key list 1`] = `
+exports[`KeysFormatter > formatKeysList > should handle empty key list 1`] = `
 "# Translation Keys Analysis
 
 ## Project: 803826145ba90b42d5d860.46800099
@@ -1027,7 +1027,7 @@ This could mean:
 *Analysis completed at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`KeysFormatter formatKeysList should handle keys with tags 1`] = `
+exports[`KeysFormatter > formatKeysList > should handle keys with tags 1`] = `
 "# Translation Keys Analysis
 
 ## Project: 803826145ba90b42d5d860.46800099
@@ -1090,7 +1090,7 @@ exports[`KeysFormatter formatKeysList should handle keys with tags 1`] = `
 *Analysis completed at 2024-01-15 10:30:00 UTC* Showing 1 keys from project \`803826145ba90b42d5d860.46800099\`"
 `;
 
-exports[`KeysFormatter formatUpdateKeyResult should format key update result 1`] = `
+exports[`KeysFormatter > formatUpdateKeyResult > should format key update result 1`] = `
 "# Key Update Successful
 
 **Key \`[object Object]\` (ID: 378217831) has been updated successfully.**

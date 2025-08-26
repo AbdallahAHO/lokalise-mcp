@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, describe, expect, it } from "@jest/globals";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import type { PaginatedResult, Task, TaskDeleted } from "@lokalise/node-api";
 import { generators } from "../../test-utils/fixture-helpers/generators.js";
 import { TasksMockBuilder } from "../../test-utils/mock-builders/tasks.mock.js";

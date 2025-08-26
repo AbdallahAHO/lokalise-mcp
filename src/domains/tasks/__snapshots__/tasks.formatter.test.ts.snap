@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`TasksFormatter Edge Cases should escape markdown special characters 1`] = `
+exports[`TasksFormatter > Edge Cases > should escape markdown special characters 1`] = `
 "# Task Details
 
 ## Core Information
@@ -83,7 +83,7 @@ TM Leverage Status: completed
 *Task details retrieved at 2024-01-15 10:30:00 UTC* Task \`21659\` from project \`803826145ba90b42d5d860.46800099\`"
 `;
 
-exports[`TasksFormatter Edge Cases should handle invalid date formats 1`] = `
+exports[`TasksFormatter > Edge Cases > should handle invalid date formats 1`] = `
 "# Task Details
 
 ## Core Information
@@ -166,7 +166,7 @@ TM Leverage Status: completed
 *Task details retrieved at 2024-01-15 10:30:00 UTC* Task \`21659\` from project \`803826145ba90b42d5d860.46800099\`"
 `;
 
-exports[`TasksFormatter Edge Cases should handle null and undefined values gracefully 1`] = `
+exports[`TasksFormatter > Edge Cases > should handle null and undefined values gracefully 1`] = `
 "# Task Details
 
 ## Core Information
@@ -249,7 +249,7 @@ TM Leverage Status: completed
 *Task details retrieved at 2024-01-15 10:30:00 UTC* Task \`123\` from project \`803826145ba90b42d5d860.46800099\`"
 `;
 
-exports[`TasksFormatter Edge Cases should handle very long content appropriately 1`] = `
+exports[`TasksFormatter > Edge Cases > should handle very long content appropriately 1`] = `
 "# Tasks Analysis
 
 ## Project: 803826145ba90b42d5d860.46800099
@@ -306,7 +306,7 @@ exports[`TasksFormatter Edge Cases should handle very long content appropriately
 *Analysis completed at 2024-01-15 10:30:00 UTC* Showing 1 tasks from project \`803826145ba90b42d5d860.46800099\`"
 `;
 
-exports[`TasksFormatter formatCreateTaskResult should format task creation result 1`] = `
+exports[`TasksFormatter > formatCreateTaskResult > should format task creation result 1`] = `
 "# Task Created Successfully
 
 ## Created Task Information
@@ -335,7 +335,7 @@ exports[`TasksFormatter formatCreateTaskResult should format task creation resul
 *Task created at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`TasksFormatter formatCreateTaskResult should handle language coverage in created task 1`] = `
+exports[`TasksFormatter > formatCreateTaskResult > should handle language coverage in created task 1`] = `
 "# Task Created Successfully
 
 ## Created Task Information
@@ -364,7 +364,7 @@ exports[`TasksFormatter formatCreateTaskResult should handle language coverage i
 *Task created at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`TasksFormatter formatCreateTaskResult should suggest setting due date if not provided 1`] = `
+exports[`TasksFormatter > formatCreateTaskResult > should suggest setting due date if not provided 1`] = `
 "# Task Created Successfully
 
 ## Created Task Information
@@ -393,7 +393,7 @@ exports[`TasksFormatter formatCreateTaskResult should suggest setting due date i
 *Task created at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`TasksFormatter formatCreateTaskResult should warn about approaching deadlines 1`] = `
+exports[`TasksFormatter > formatCreateTaskResult > should warn about approaching deadlines 1`] = `
 "# Task Created Successfully
 
 ## Created Task Information
@@ -423,7 +423,7 @@ exports[`TasksFormatter formatCreateTaskResult should warn about approaching dea
 *Task created at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`TasksFormatter formatDeleteTaskResult should format task deletion result 1`] = `
+exports[`TasksFormatter > formatDeleteTaskResult > should format task deletion result 1`] = `
 "# Task Deleted Successfully
 
 ## Deletion Confirmation
@@ -454,7 +454,7 @@ exports[`TasksFormatter formatDeleteTaskResult should format task deletion resul
 *Task deleted at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`TasksFormatter formatDeleteTaskResult should handle false deletion result 1`] = `
+exports[`TasksFormatter > formatDeleteTaskResult > should handle false deletion result 1`] = `
 "# Task Deleted Successfully
 
 ## Deletion Confirmation
@@ -485,7 +485,7 @@ exports[`TasksFormatter formatDeleteTaskResult should handle false deletion resu
 *Task deleted at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`TasksFormatter formatTaskDetails should format detailed task information 1`] = `
+exports[`TasksFormatter > formatTaskDetails > should format detailed task information 1`] = `
 "# Task Details
 
 ## Core Information
@@ -568,7 +568,7 @@ TM Leverage Status: completed
 *Task details retrieved at 2024-01-15 10:30:00 UTC* Task \`21659\` from project \`803826145ba90b42d5d860.46800099\`"
 `;
 
-exports[`TasksFormatter formatTaskDetails should format schedule information correctly 1`] = `
+exports[`TasksFormatter > formatTaskDetails > should format schedule information correctly 1`] = `
 "# Task Details
 
 ## Core Information
@@ -651,7 +651,7 @@ TM Leverage Status: completed
 *Task details retrieved at 2024-01-15 10:30:00 UTC* Task \`21659\` from project \`803826145ba90b42d5d860.46800099\`"
 `;
 
-exports[`TasksFormatter formatTaskDetails should handle overdue tasks 1`] = `
+exports[`TasksFormatter > formatTaskDetails > should handle overdue tasks 1`] = `
 "# Task Details
 
 ## Core Information
@@ -734,7 +734,7 @@ TM Leverage Status: completed
 *Task details retrieved at 2024-01-15 10:30:00 UTC* Task \`21659\` from project \`803826145ba90b42d5d860.46800099\`"
 `;
 
-exports[`TasksFormatter formatTaskDetails should handle tasks with TM leverage data 1`] = `
+exports[`TasksFormatter > formatTaskDetails > should handle tasks with TM leverage data 1`] = `
 "# Task Details
 
 ## Core Information
@@ -817,7 +817,7 @@ TM Leverage Status: completed
 *Task details retrieved at 2024-01-15 10:30:00 UTC* Task \`21659\` from project \`803826145ba90b42d5d860.46800099\`"
 `;
 
-exports[`TasksFormatter formatTaskDetails should handle tasks without languages 1`] = `
+exports[`TasksFormatter > formatTaskDetails > should handle tasks without languages 1`] = `
 "# Task Details
 
 ## Core Information
@@ -872,7 +872,7 @@ exports[`TasksFormatter formatTaskDetails should handle tasks without languages 
 *Task details retrieved at 2024-01-15 10:30:00 UTC* Task \`21659\` from project \`803826145ba90b42d5d860.46800099\`"
 `;
 
-exports[`TasksFormatter formatTasksList should format a list of tasks with rich metadata 1`] = `
+exports[`TasksFormatter > formatTasksList > should format a list of tasks with rich metadata 1`] = `
 "# Tasks Analysis
 
 ## Project: 803826145ba90b42d5d860.46800099
@@ -995,7 +995,7 @@ exports[`TasksFormatter formatTasksList should format a list of tasks with rich 
 *Analysis completed at 2024-01-15 10:30:00 UTC* Showing 3 tasks from project \`803826145ba90b42d5d860.46800099\`"
 `;
 
-exports[`TasksFormatter formatTasksList should format task with language assignments correctly 1`] = `
+exports[`TasksFormatter > formatTasksList > should format task with language assignments correctly 1`] = `
 "# Tasks Analysis
 
 ## Project: 803826145ba90b42d5d860.46800099
@@ -1053,7 +1053,7 @@ exports[`TasksFormatter formatTasksList should format task with language assignm
 *Analysis completed at 2024-01-15 10:30:00 UTC* Showing 1 tasks from project \`803826145ba90b42d5d860.46800099\`"
 `;
 
-exports[`TasksFormatter formatTasksList should handle due dates and overdue status 1`] = `
+exports[`TasksFormatter > formatTasksList > should handle due dates and overdue status 1`] = `
 "# Tasks Analysis
 
 ## Project: 803826145ba90b42d5d860.46800099
@@ -1111,7 +1111,7 @@ exports[`TasksFormatter formatTasksList should handle due dates and overdue stat
 *Analysis completed at 2024-01-15 10:30:00 UTC* Showing 1 tasks from project \`803826145ba90b42d5d860.46800099\`"
 `;
 
-exports[`TasksFormatter formatTasksList should handle empty task list 1`] = `
+exports[`TasksFormatter > formatTasksList > should handle empty task list 1`] = `
 "# Tasks Analysis
 
 ## Project: 803826145ba90b42d5d860.46800099
@@ -1128,7 +1128,7 @@ This could mean:
 *Analysis completed at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`TasksFormatter formatTasksList should handle pagination information 1`] = `
+exports[`TasksFormatter > formatTasksList > should handle pagination information 1`] = `
 "# Tasks Analysis
 
 ## Project: 803826145ba90b42d5d860.46800099
@@ -1194,7 +1194,7 @@ exports[`TasksFormatter formatTasksList should handle pagination information 1`]
 *Additional tasks available - use cursor pagination to fetch more*"
 `;
 
-exports[`TasksFormatter formatUpdateTaskResult should format task update result 1`] = `
+exports[`TasksFormatter > formatUpdateTaskResult > should format task update result 1`] = `
 "# Task Updated Successfully
 
 ## Updated Task Information
@@ -1223,7 +1223,7 @@ exports[`TasksFormatter formatUpdateTaskResult should format task update result 
 *Task updated at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`TasksFormatter formatUpdateTaskResult should handle closed status 1`] = `
+exports[`TasksFormatter > formatUpdateTaskResult > should handle closed status 1`] = `
 "# Task Updated Successfully
 
 ## Updated Task Information
@@ -1252,7 +1252,7 @@ exports[`TasksFormatter formatUpdateTaskResult should handle closed status 1`] =
 *Task updated at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`TasksFormatter formatUpdateTaskResult should handle completed status 1`] = `
+exports[`TasksFormatter > formatUpdateTaskResult > should handle completed status 1`] = `
 "# Task Updated Successfully
 
 ## Updated Task Information
