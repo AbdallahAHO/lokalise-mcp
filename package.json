@@ -94,7 +94,7 @@
 		"@typescript-eslint/parser": "^8.37.0",
 		"@vitest/ui": "^3.2.4",
 		"chalk": "^5.4.1",
-		"dotenv-cli": "^8.0.0",
+		"dotenv-cli": "^10.0.0",
 		"eslint": "^9.31.0",
 		"happy-dom": "^18.0.1",
 		"husky": "^9.1.7",
