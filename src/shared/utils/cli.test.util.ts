@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import { join } from "node:path";
+import { expect } from "vitest";
 
-/**
 /**
  * Utility for testing CLI commands with real execution
  */
