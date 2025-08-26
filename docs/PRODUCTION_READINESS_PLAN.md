@@ -2347,11 +2347,11 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
    // package.json
    {
        "scripts": {
-           "test:coverage": "jest --coverage --coverageDirectory=coverage",
-           "test:coverage:html": "jest --coverage --coverageReporters=html",
-           "test:coverage:ci": "jest --coverage --coverageReporters=lcov"
+           "test:coverage": "vitest --coverage --coverageDirectory=coverage",
+           "test:coverage:html": "vitest --coverage --coverageReporters=html",
+           "test:coverage:ci": "vitest --coverage --coverageReporters=lcov"
        },
-       "jest": {
+       "vitest": {
            "coverageThreshold": {
                "global": {
                    "branches": 80,
@@ -2377,24 +2377,24 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
    export function mockLokaliseApi() {
        return {
            projects: () => ({
-               list: jest.fn().mockResolvedValue({
+               list: vitest.fn().mockResolvedValue({
                    items: [],
                    totalResults: 0,
                    totalPages: 0,
                    resultsPerPage: 100,
                    currentPage: 1
                }),
-               get: jest.fn(),
-               create: jest.fn(),
-               update: jest.fn(),
-               delete: jest.fn()
+               get: vitest.fn(),
+               create: vitest.fn(),
+               update: vitest.fn(),
+               delete: vitest.fn()
            }),
            keys: () => ({
-               list: jest.fn(),
-               get: jest.fn(),
-               create: jest.fn(),
-               update: jest.fn(),
-               delete: jest.fn()
+               list: vitest.fn(),
+               get: vitest.fn(),
+               create: vitest.fn(),
+               update: vitest.fn(),
+               delete: vitest.fn()
            })
        } as unknown as LokaliseApi;
    }
@@ -2412,10 +2412,10 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
 
    export function createMockResponse() {
        const res: unknown = {
-           status: jest.fn().mockReturnThis(),
-           json: jest.fn().mockReturnThis(),
-           setHeader: jest.fn().mockReturnThis(),
-           end: jest.fn().mockReturnThis()
+           status: vitest.fn().mockReturnThis(),
+           json: vitest.fn().mockReturnThis(),
+           setHeader: vitest.fn().mockReturnThis(),
+           end: vitest.fn().mockReturnThis()
        };
        return res;
    }
@@ -2424,16 +2424,16 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
 3. **Test template for controllers**:
    ```typescript
    // src/domains/projects/projects.controller.test.ts
-   import { describe, it, expect, jest, beforeEach } from '@jest/globals';
+   import { describe, it, expect, vitest, beforeEach } from '@vitest/globals';
    import * as projectsController from './projects.controller.js';
    import * as projectsService from './projects.service.js';
    import { mockLokaliseApi } from '../../test/utils/test-helpers.js';
 
-   jest.mock('./projects.service.js');
+   vitest.mock('./projects.service.js');
 
    describe('ProjectsController', () => {
        beforeEach(() => {
-           jest.clearAllMocks();
+           vitest.clearAllMocks();
        });
 
        describe('listProjects', () => {
@@ -2452,7 +2452,7 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
                    hasNextPage: () => false
                };
 
-               jest.mocked(projectsService.listProjects).mockResolvedValue(mockResponse);
+               vitest.mocked(projectsService.listProjects).mockResolvedValue(mockResponse);
 
                const result = await projectsController.listProjects({
                    page: 1,
@@ -2465,7 +2465,7 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
            });
 
            it('should handle empty results', async () => {
-               jest.mocked(projectsService.listProjects).mockResolvedValue({
+               vitest.mocked(projectsService.listProjects).mockResolvedValue({
                    items: [],
                    totalResults: 0,
                    currentPage: 1,
@@ -2480,7 +2480,7 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
            });
 
            it('should handle service errors', async () => {
-               jest.mocked(projectsService.listProjects)
+               vitest.mocked(projectsService.listProjects)
                    .mockRejectedValue(new Error('API Error'));
 
                await expect(projectsController.listProjects({}))
@@ -2493,7 +2493,7 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
 4. **Integration test template**:
    ```typescript
    // src/domains/projects/projects.integration.test.ts
-   import { describe, it, expect, beforeAll, afterAll } from '@jest/globals';
+   import { describe, it, expect, beforeAll, afterAll } from '@vitest/globals';
    import { createServer } from '../../server/index.js';
    import request from 'supertest';
 
@@ -3006,7 +3006,7 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
 - **OpenTelemetry Guide**: https://opentelemetry.io/docs/instrumentation/js/
 
 ### Testing & Quality
-- **Jest Documentation**: https://jestjs.io/docs/getting-started
+- **Vitest Documentation**: https://vitestjs.io/docs/getting-started
 - **Test Pyramid**: https://martinfowler.com/articles/practical-test-pyramid.html
 - **GitHub Actions**: https://docs.github.com/en/actions
 
@@ -3099,7 +3099,7 @@ MCP 2025 requires elicitation support for handling incomplete requests interacti
 |--------|---------|--------|-------------|
 | API Response Time | Unknown | <200ms p95 | OpenTelemetry |
 | Error Rate | Unknown | <0.1% | Grafana |
-| Test Coverage | 20% | 80% | Jest/Codecov |
+| Test Coverage | 20% | 80% | Vitest/Codecov |
 | Uptime | N/A | 99.9% | Pingdom |
 | Security Score | C | A | Snyk |
 

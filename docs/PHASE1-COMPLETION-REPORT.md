@@ -267,14 +267,14 @@ describe("DomainFormatter", () => {
 export function createMockLokaliseApi(options?: MockOptions) {
   return {
     projects: () => ({
-      list: jest.fn(),
-      get: jest.fn(),
-      create: jest.fn()
+      list: vitest.fn(),
+      get: vitest.fn(),
+      create: vitest.fn()
     }),
     keys: () => ({
-      list: jest.fn(),
-      get: jest.fn(),
-      create: jest.fn()
+      list: vitest.fn(),
+      get: vitest.fn(),
+      create: vitest.fn()
     })
     // ... all domains covered
   };
