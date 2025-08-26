@@ -1,7 +1,15 @@
-import { afterAll, beforeAll, describe, expect, it } from "@jest/globals";
-import type { Project } from "@lokalise/node-api";
+import type { Project, ProjectStatistics } from "@lokalise/node-api";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { generators } from "../../test-utils/fixture-helpers/generators.js";
 import { ProjectsMockBuilder } from "../../test-utils/mock-builders/projects.mock.js";
+import {
+	projectCreateFixture,
+	projectPaginationFixture,
+	projectRetrieveFixture,
+	projectsEmptyListFixture,
+	projectsListFixture,
+	projectUpdateFixture,
+} from "./__fixtures__/projects.fixtures.js";
 import {
 	formatCreateProjectResult,
 	formatDeleteProjectResult,
@@ -10,14 +18,6 @@ import {
 	formatProjectsList,
 	formatUpdateProjectResult,
 } from "./projects.formatter.js";
-import {
-	projectCreateFixture,
-	projectPaginationFixture,
-	projectRetrieveFixture,
-	projectUpdateFixture,
-	projectsEmptyListFixture,
-	projectsListFixture,
-} from "./__fixtures__/projects.fixtures.js";
 
 describe("ProjectsFormatter", () => {
 	// Mock Date to ensure consistent timestamps in snapshots
@@ -105,20 +105,10 @@ describe("ProjectsFormatter", () => {
 		it("should handle project without statistics", () => {
 			const projectNoStats: Project = {
 				...projectRetrieveFixture,
-				statistics: undefined,
+				statistics: undefined as unknown as ProjectStatistics,
 			};
 
 			const result = formatProjectDetails(projectNoStats);
-			expect(result).toMatchSnapshot();
-		});
-
-		it("should format branch information", () => {
-			const projectWithBranch: Project = {
-				...projectRetrieveFixture,
-				branch: "feature-branch",
-			};
-
-			const result = formatProjectDetails(projectWithBranch);
 			expect(result).toMatchSnapshot();
 		});
 

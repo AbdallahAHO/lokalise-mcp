@@ -1,35 +1,26 @@
-import {
-	afterEach,
-	beforeEach,
-	describe,
-	expect,
-	it,
-	jest,
-} from "@jest/globals";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { McpError } from "../../shared/utils/error.util.js";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { ErrorType, McpError } from "../../shared/utils/error.util.js";
+
+// Mock the controller
+vi.mock("./projects.controller.js");
+
 import projectsController from "./projects.controller.js";
 import projectsResource from "./projects.resource.js";
 
-// Mock the controller
-// TODO: Fix Jest ESM mock configuration issue
-// jest.mock("./projects.controller.js");
-
-describe.skip("ProjectsResource", () => {
+describe("ProjectsResource", () => {
 	let server: McpServer;
-	const mockedController = jest.mocked(projectsController);
+	const mockedController = vi.mocked(projectsController);
 	const mockResourceHandlers = new Map<
 		string,
 		(uri: URL) => Promise<unknown>
 	>();
 
 	beforeEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 
 		// Create a mock server
-		const transport = new StdioServerTransport();
 		server = new Server(
 			{
 				name: "test-server",
@@ -43,19 +34,20 @@ describe.skip("ProjectsResource", () => {
 		) as unknown as McpServer;
 
 		// Mock the server.resource method to capture handlers
-		server.resource = jest.fn(
+		server.resource = vi.fn(
 			(
 				name: string,
 				_template: unknown,
 				handler: (uri: URL) => Promise<unknown>,
 			) => {
 				mockResourceHandlers.set(name, handler);
+				return {} as unknown as ReturnType<typeof server.resource>;
 			},
-		) as unknown;
+		) as unknown as typeof server.resource;
 	});
 
 	afterEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 		mockResourceHandlers.clear();
 	});
 
@@ -112,7 +104,14 @@ describe.skip("ProjectsResource", () => {
 
 			// Assert
 			expect(result).toEqual({
-				contents: [{ text: mockResponse.content, mimeType: "text/markdown" }],
+				contents: [
+					{
+						uri: "lokalise://projects",
+						text: mockResponse.content,
+						mimeType: "text/markdown",
+						description: "Lokalise Projects List",
+					},
+				],
 			});
 			expect(mockedController.listProjects).toHaveBeenCalledWith({
 				limit: undefined,
@@ -136,7 +135,7 @@ describe.skip("ProjectsResource", () => {
 			);
 
 			// Act
-			const result = await handler?.(uri);
+			await handler?.(uri);
 
 			// Assert
 			expect(mockedController.listProjects).toHaveBeenCalledWith({
@@ -152,7 +151,7 @@ describe.skip("ProjectsResource", () => {
 			const uri = new URL("lokalise://projects?limit=invalid");
 
 			// Act
-			const result = await handler?.(uri);
+			await handler?.(uri);
 
 			// Assert
 			expect(mockedController.listProjects).toHaveBeenCalledWith({
@@ -165,7 +164,7 @@ describe.skip("ProjectsResource", () => {
 		it("should handle controller errors", async () => {
 			// Arrange
 			mockedController.listProjects.mockRejectedValue(
-				new McpError("API_ERROR", "Service unavailable"),
+				new McpError("Service unavailable", ErrorType.API_ERROR),
 			);
 
 			const handler = mockResourceHandlers.get("lokalise-projects");
@@ -178,8 +177,10 @@ describe.skip("ProjectsResource", () => {
 			expect(result).toEqual({
 				contents: [
 					{
+						uri: expect.any(String),
 						text: expect.stringContaining("Error"),
-						mimeType: "text/markdown",
+						mimeType: "text/plain",
+						description: expect.stringContaining("Error"),
 					},
 				],
 			});
@@ -208,7 +209,14 @@ describe.skip("ProjectsResource", () => {
 
 			// Assert
 			expect(result).toEqual({
-				contents: [{ text: mockResponse.content, mimeType: "text/markdown" }],
+				contents: [
+					{
+						uri: "lokalise://projects/test-123",
+						text: mockResponse.content,
+						mimeType: "text/markdown",
+						description: "Lokalise Project Details: test-123",
+					},
+				],
 			});
 			expect(mockedController.getProjectDetails).toHaveBeenCalledWith({
 				projectId: "test-123",
@@ -254,8 +262,10 @@ describe.skip("ProjectsResource", () => {
 			expect(result).toEqual({
 				contents: [
 					{
+						uri: expect.any(String),
 						text: expect.stringContaining("Error"),
-						mimeType: "text/markdown",
+						mimeType: "text/plain",
+						description: expect.stringContaining("Error"),
 					},
 				],
 			});
@@ -363,8 +373,10 @@ describe.skip("ProjectsResource", () => {
 			expect(result).toEqual({
 				contents: [
 					{
+						uri: expect.any(String),
 						text: expect.stringContaining("Error"),
-						mimeType: "text/markdown",
+						mimeType: "text/plain",
+						description: expect.stringContaining("Error"),
 					},
 				],
 			});
@@ -372,11 +384,11 @@ describe.skip("ProjectsResource", () => {
 
 		it("should handle malformed URIs", async () => {
 			// Arrange
-			const handler = mockResourceHandlers.get("lokalise-projects");
-			const uri = new URL("lokalise://invalid/path/structure");
+			projectsResource.registerResources(server);
+			const handler = mockResourceHandlers.get("non-existent-resource");
 
 			// Act & Assert
-			// Handler should not be found for invalid URI pattern
+			// Handler should not be found for non-existent resource
 			expect(handler).toBeUndefined();
 		});
 	});
