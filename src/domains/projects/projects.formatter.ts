@@ -12,16 +12,22 @@ import {
  * Format a list of Lokalise projects into Markdown.
  * @param projects - Array of Lokalise project data.
  * @param includeStats - Whether to include detailed statistics.
+ * @param metadata - Optional metadata about the result set.
  * @returns Formatted Markdown string.
  */
 export function formatProjectsList(
 	projects: LokaliseProject[],
 	includeStats = false,
+	metadata?: { page?: number; limit?: number; total?: number },
 ): string {
 	const lines: string[] = [];
 
-	// Add a main heading
-	lines.push(formatHeading(`Lokalise Projects (${projects.length})`, 1));
+	// Add a main heading with optional pagination info
+	const headingParts = [`Lokalise Projects (${projects.length})`];
+	if (metadata?.page) {
+		headingParts.push(`- Page ${metadata.page}`);
+	}
+	lines.push(formatHeading(headingParts.join(" "), 1));
 	lines.push("");
 
 	if (projects.length === 0) {

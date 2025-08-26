@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ProjectsFormatter Edge Cases should handle invalid date formats 1`] = `
+exports[`ProjectsFormatter > Edge Cases > should handle invalid date formats 1`] = `
 "# 🔴 Project: Demo Phoenix
 
 ## 📋 Project Overview
@@ -68,7 +68,7 @@ exports[`ProjectsFormatter Edge Cases should handle invalid date formats 1`] = `
 *Project ID: \`803826145ba90b42d5d860.46800099\`*"
 `;
 
-exports[`ProjectsFormatter Edge Cases should handle null and undefined values gracefully 1`] = `
+exports[`ProjectsFormatter > Edge Cases > should handle null and undefined values gracefully 1`] = `
 "# ⚪ Project: null
 
 ## 📋 Project Overview
@@ -101,7 +101,7 @@ No QA issues detected.
 *Project ID: \`test-id\`*"
 `;
 
-exports[`ProjectsFormatter Edge Cases should handle projects with zero statistics 1`] = `
+exports[`ProjectsFormatter > Edge Cases > should handle projects with zero statistics 1`] = `
 "# ⚪ Project: Demo Phoenix
 
 ## 📋 Project Overview
@@ -156,7 +156,7 @@ No QA issues detected.
 *Project ID: \`803826145ba90b42d5d860.46800099\`*"
 `;
 
-exports[`ProjectsFormatter Edge Cases should handle special characters in project names 1`] = `
+exports[`ProjectsFormatter > Edge Cases > should handle special characters in project names 1`] = `
 "# 🔴 Project: Project with **markdown** & <html> tags
 
 ## 📋 Project Overview
@@ -224,7 +224,7 @@ exports[`ProjectsFormatter Edge Cases should handle special characters in projec
 *Project ID: \`803826145ba90b42d5d860.46800099\`*"
 `;
 
-exports[`ProjectsFormatter Edge Cases should handle very long project names 1`] = `
+exports[`ProjectsFormatter > Edge Cases > should handle very long project names 1`] = `
 "# Lokalise Projects (1)
 
 ## Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name Very Long Project Name 
@@ -245,7 +245,7 @@ exports[`ProjectsFormatter Edge Cases should handle very long project names 1`] 
 *List retrieved at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`ProjectsFormatter formatCreateProjectResult should format project creation result 1`] = `
+exports[`ProjectsFormatter > formatCreateProjectResult > should format project creation result 1`] = `
 "# Project Created Successfully
 
 ## Project Information
@@ -269,7 +269,7 @@ exports[`ProjectsFormatter formatCreateProjectResult should format project creat
 *Project created at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`ProjectsFormatter formatDeleteProjectResult should format project deletion result 1`] = `
+exports[`ProjectsFormatter > formatDeleteProjectResult > should format project deletion result 1`] = `
 "# Project Deleted Successfully
 
 ## Deletion Details
@@ -287,7 +287,7 @@ exports[`ProjectsFormatter formatDeleteProjectResult should format project delet
 *Project deleted at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`ProjectsFormatter formatDeleteProjectResult should handle failed deletion 1`] = `
+exports[`ProjectsFormatter > formatDeleteProjectResult > should handle failed deletion 1`] = `
 "# Project Deleted Successfully
 
 ## Deletion Details
@@ -305,7 +305,7 @@ exports[`ProjectsFormatter formatDeleteProjectResult should handle failed deleti
 *Project deleted at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`ProjectsFormatter formatEmptyProjectResult should format project empty result 1`] = `
+exports[`ProjectsFormatter > formatEmptyProjectResult > should format project empty result 1`] = `
 "# Project Emptied Successfully
 
 ## Operation Details
@@ -327,7 +327,7 @@ exports[`ProjectsFormatter formatEmptyProjectResult should format project empty 
 *Project emptied at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`ProjectsFormatter formatEmptyProjectResult should handle large number of deleted keys 1`] = `
+exports[`ProjectsFormatter > formatEmptyProjectResult > should handle large number of deleted keys 1`] = `
 "# Project Emptied Successfully
 
 ## Operation Details
@@ -349,7 +349,7 @@ exports[`ProjectsFormatter formatEmptyProjectResult should handle large number o
 *Project emptied at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`ProjectsFormatter formatProjectDetails should format branch information 1`] = `
+exports[`ProjectsFormatter > formatProjectDetails > should format detailed project information 1`] = `
 "# 🔴 Project: Demo Phoenix
 
 ## 📋 Project Overview
@@ -417,75 +417,7 @@ exports[`ProjectsFormatter formatProjectDetails should format branch information
 *Project ID: \`803826145ba90b42d5d860.46800099\`*"
 `;
 
-exports[`ProjectsFormatter formatProjectDetails should format detailed project information 1`] = `
-"# 🔴 Project: Demo Phoenix
-
-## 📋 Project Overview
-- **Project ID**: \`803826145ba90b42d5d860.46800099\`
-- **Project Type**: localization_files
-- **Base Language**: en (ID: 640)
-- **Team ID**: 176692
-- **Created**: 2018-09-24 16:05:22 UTC
-- **Created By**: bodrovis@protonmail.com
-- **Team UUID**: 9ef160a0-d4c7-45f5-ab80-bc9e22e95b12
-- **Description**: Description Phoenix
-
-## 📊 Project Statistics
-### Overall Progress
-- **Completion**: 32%
-- **Total Keys**: 77
-- **Base Words**: 343
-- **Team Members**: 7
-- **Active Languages**: 3
-- **QA Issues**: 256
-
-### 🌐 Language Progress
-🔄 **EN** (ID: 640): 96%
-⚠️ **AR_001** (ID: 731): 0% (343 words remaining)
-⚠️ **SQ** (ID: 803): 0% (343 words remaining)
-
-### 🔍 Quality Assurance Issues
-**Total Issues: 256**
-
-• **Not Reviewed**: 231 issues - *Translations pending review*
-• **Unverified**: 20 issues - *Translations not yet verified*
-• **Spelling/Grammar**: 5 issues - *Potential language quality issues*
-
-🔴 **QA Health Score**: 0.0%
-
-## ⚙️ Project Configuration
-- **Review Workflow**: ✅ Enabled
-- **Auto-toggle Unverified**: ✅ Enabled
-- **Offline Translation**: ✅ Enabled
-- **Per-platform Key Names**: ✅ Enabled
-- **Key Editing**: ✅ Enabled
-- **Inline Machine Translations**: ✅ Enabled
-- **Branching**: ✅ Enabled
-- **Segmentation**: ❌ Disabled
-- **Custom Translation Statuses**: ❌ Disabled
-- **Multiple Custom Statuses**: ❌ Disabled
-
-## 📋 Project Context
-• 📊 **Progress**: 32% complete
-• 🔑 **Scale**: 77 keys, 343 words
-• 👥 **Team**: 7 members
-• 🌐 **Languages**: 3 active
-• 📝 **Remaining Work**: 686 words
-
-## 🔗 Quick Actions
-• [📊 View Dashboard](https://app.api.lokalise.com/project/803826145ba90b42d5d860.46800099/?view=multi)
-• [⚙️ Project Settings](https://app.api.lokalise.com/project/803826145ba90b42d5d860.46800099/?view=multi/settings)
-• [📈 Statistics](https://app.api.lokalise.com/project/803826145ba90b42d5d860.46800099/?view=multi/statistics)
-• [🔑 Keys](https://app.api.lokalise.com/project/803826145ba90b42d5d860.46800099/?view=multi/keys)
-• [🌐 Languages](https://app.api.lokalise.com/project/803826145ba90b42d5d860.46800099/?view=multi/languages)
-• [🔍 QA Issues](https://app.api.lokalise.com/project/803826145ba90b42d5d860.46800099/?view=multi/qa)
-
----
-*Complete project data exported at 2024-01-15 10:30:00 UTC*
-*Project ID: \`803826145ba90b42d5d860.46800099\`*"
-`;
-
-exports[`ProjectsFormatter formatProjectDetails should format project with statistics 1`] = `
+exports[`ProjectsFormatter > formatProjectDetails > should format project with statistics 1`] = `
 "# 🔴 Project: Blog
 
 ## 📋 Project Overview
@@ -552,7 +484,7 @@ exports[`ProjectsFormatter formatProjectDetails should format project with stati
 *Project ID: \`71749499610303a83ad8a2.67103833\`*"
 `;
 
-exports[`ProjectsFormatter formatProjectDetails should handle project without statistics 1`] = `
+exports[`ProjectsFormatter > formatProjectDetails > should handle project without statistics 1`] = `
 "# ⚪ Project: Demo Phoenix
 
 ## 📋 Project Overview
@@ -597,7 +529,7 @@ No QA issues detected.
 *Project ID: \`803826145ba90b42d5d860.46800099\`*"
 `;
 
-exports[`ProjectsFormatter formatProjectsList should format a list of projects with statistics 1`] = `
+exports[`ProjectsFormatter > formatProjectsList > should format a list of projects with statistics 1`] = `
 "# Lokalise Projects (2)
 
 ## Angular
@@ -647,7 +579,7 @@ exports[`ProjectsFormatter formatProjectsList should format a list of projects w
 *List retrieved at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`ProjectsFormatter formatProjectsList should handle empty project list 1`] = `
+exports[`ProjectsFormatter > formatProjectsList > should handle empty project list 1`] = `
 "# Lokalise Projects (0)
 
 No projects found. Create your first project in the Lokalise dashboard.
@@ -656,7 +588,7 @@ No projects found. Create your first project in the Lokalise dashboard.
 *List retrieved at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`ProjectsFormatter formatProjectsList should handle multiple projects 1`] = `
+exports[`ProjectsFormatter > formatProjectsList > should handle multiple projects 1`] = `
 "# Lokalise Projects (2)
 
 ## Angular
@@ -691,7 +623,7 @@ exports[`ProjectsFormatter formatProjectsList should handle multiple projects 1`
 *List retrieved at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`ProjectsFormatter formatProjectsList should handle project with statistics 1`] = `
+exports[`ProjectsFormatter > formatProjectsList > should handle project with statistics 1`] = `
 "# Lokalise Projects (1)
 
 ## Blog
@@ -720,7 +652,7 @@ exports[`ProjectsFormatter formatProjectsList should handle project with statist
 *List retrieved at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`ProjectsFormatter formatUpdateProjectResult should format project update result 1`] = `
+exports[`ProjectsFormatter > formatUpdateProjectResult > should format project update result 1`] = `
 "# Project Updated Successfully
 
 ## Updated Project Information
@@ -737,7 +669,7 @@ exports[`ProjectsFormatter formatUpdateProjectResult should format project updat
 *Project updated at 2024-01-15 10:30:00 UTC*"
 `;
 
-exports[`ProjectsFormatter formatUpdateProjectResult should include current statistics if available 1`] = `
+exports[`ProjectsFormatter > formatUpdateProjectResult > should include current statistics if available 1`] = `
 "# Project Updated Successfully
 
 ## Updated Project Information

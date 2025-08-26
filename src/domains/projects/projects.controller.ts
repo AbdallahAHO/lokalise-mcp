@@ -68,16 +68,16 @@ async function listProjects(
 		) {
 			// Validate limit if provided
 			throw new McpError(
-				"Invalid limit parameter. Must be between 1 and 500.",
-				ErrorType.API_ERROR,
+				"VALIDATION_ERROR: Invalid limit parameter. Must be between 1 and 500.",
+				ErrorType.VALIDATION_ERROR,
 			);
 		}
 
 		if (options.page !== undefined && options.page < 1) {
 			// Validate page if provided
 			throw new McpError(
-				"Invalid page parameter. Must be 1 or greater.",
-				ErrorType.API_ERROR,
+				"VALIDATION_ERROR: Invalid page parameter. Must be 1 or greater.",
+				ErrorType.VALIDATION_ERROR,
 			);
 		}
 
@@ -94,7 +94,16 @@ async function listProjects(
 				projectCount: projects.length,
 			});
 
-			const formattedContent = formatProjectsList(projects, args.includeStats);
+			// Pass pagination metadata to formatter
+			const metadata = {
+				page: args.page,
+				limit: args.limit,
+			};
+			const formattedContent = formatProjectsList(
+				projects,
+				args.includeStats,
+				metadata,
+			);
 			return { content: formattedContent };
 		} catch (error) {
 			// Handle specific Lokalise API errors
@@ -148,8 +157,8 @@ async function getProjectDetails(
 		// Validate project ID
 		if (!args.projectId || typeof args.projectId !== "string") {
 			throw new McpError(
-				"Project ID is required and must be a string.",
-				ErrorType.API_ERROR,
+				"VALIDATION_ERROR: Project ID is required and must be a string.",
+				ErrorType.VALIDATION_ERROR,
 			);
 		}
 
@@ -241,15 +250,15 @@ async function createProject(
 			args.name.trim().length === 0
 		) {
 			throw new McpError(
-				"Project name is required and must be a non-empty string.",
-				ErrorType.API_ERROR,
+				"VALIDATION_ERROR: Project name is required and must be a non-empty string.",
+				ErrorType.VALIDATION_ERROR,
 			);
 		}
 
 		if (args.name.length > 100) {
 			throw new McpError(
-				"Project name must be 100 characters or less.",
-				ErrorType.API_ERROR,
+				"VALIDATION_ERROR: Project name must be 100 characters or less.",
+				ErrorType.VALIDATION_ERROR,
 			);
 		}
 
@@ -330,24 +339,24 @@ async function updateProject(
 		// Validate project ID
 		if (!args.projectId || typeof args.projectId !== "string") {
 			throw new McpError(
-				"Project ID is required and must be a string.",
-				ErrorType.API_ERROR,
+				"VALIDATION_ERROR: Project ID is required and must be a string.",
+				ErrorType.VALIDATION_ERROR,
 			);
 		}
 
 		// Validate project data
 		if (!args.projectData || typeof args.projectData !== "object") {
 			throw new McpError(
-				"Project data is required and must be an object.",
-				ErrorType.API_ERROR,
+				"VALIDATION_ERROR: Project data is required and must be an object.",
+				ErrorType.VALIDATION_ERROR,
 			);
 		}
 
 		// Check that at least one field is provided for update
 		if (Object.keys(args.projectData).length === 0) {
 			throw new McpError(
-				"At least one field must be provided to update (name or description).",
-				ErrorType.API_ERROR,
+				"VALIDATION_ERROR: At least one field must be provided to update (name or description).",
+				ErrorType.VALIDATION_ERROR,
 			);
 		}
 
@@ -430,8 +439,8 @@ async function deleteProject(
 		// Validate project ID
 		if (!args.projectId || typeof args.projectId !== "string") {
 			throw new McpError(
-				"Project ID is required and must be a string.",
-				ErrorType.API_ERROR,
+				"VALIDATION_ERROR: Project ID is required and must be a string.",
+				ErrorType.VALIDATION_ERROR,
 			);
 		}
 
@@ -509,8 +518,8 @@ async function emptyProject(
 		// Validate project ID
 		if (!args.projectId || typeof args.projectId !== "string") {
 			throw new McpError(
-				"Project ID is required and must be a string.",
-				ErrorType.API_ERROR,
+				"VALIDATION_ERROR: Project ID is required and must be a string.",
+				ErrorType.VALIDATION_ERROR,
 			);
 		}
 

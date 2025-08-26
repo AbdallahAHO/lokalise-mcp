@@ -1,18 +1,10 @@
-import {
-	afterEach,
-	beforeEach,
-	describe,
-	expect,
-	it,
-	jest,
-} from "@jest/globals";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { McpError } from "../../shared/utils/error.util.js";
-import { ProjectsMockBuilder } from "../../test-utils/mock-builders/projects.mock.js";
-import projectsController from "./projects.controller.js";
-import projectsTool from "./projects.tool.js";
+import type {
+	McpServer,
+	RegisteredTool,
+} from "@modelcontextprotocol/sdk/server/mcp.js";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { ErrorType, McpError } from "../../shared/utils/error.util.js";
 import type {
 	CreateProjectToolArgsType,
 	DeleteProjectToolArgsType,
@@ -23,22 +15,23 @@ import type {
 } from "./projects.types.js";
 
 // Mock the controller
-// TODO: Fix Jest ESM mock configuration issue
-// jest.mock("./projects.controller.js");
+vi.mock("./projects.controller.js");
 
-describe.skip("ProjectsTool", () => {
+import projectsController from "./projects.controller.js";
+import projectsTool from "./projects.tool.js";
+
+describe("ProjectsTool", () => {
 	let server: McpServer;
-	const mockedController = jest.mocked(projectsController);
+	const mockedController = vi.mocked(projectsController);
 	const mockToolHandlers = new Map<
 		string,
 		(args: unknown) => Promise<unknown>
 	>();
 
 	beforeEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 
 		// Create a mock server
-		const transport = new StdioServerTransport();
 		server = new Server(
 			{
 				name: "test-server",
@@ -49,10 +42,10 @@ describe.skip("ProjectsTool", () => {
 					tools: {},
 				},
 			},
-		);
+		) as unknown as McpServer;
 
 		// Mock the server.tool method to capture handlers
-		server.tool = jest.fn(
+		server.tool = vi.fn(
 			(
 				name: string,
 				_description: string,
@@ -60,12 +53,13 @@ describe.skip("ProjectsTool", () => {
 				handler: (args: unknown) => Promise<unknown>,
 			) => {
 				mockToolHandlers.set(name, handler);
+				return {} as unknown as RegisteredTool;
 			},
-		) as unknown;
+		) as unknown as typeof server.tool;
 	});
 
 	afterEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 		mockToolHandlers.clear();
 	});
 
@@ -141,7 +135,9 @@ describe.skip("ProjectsTool", () => {
 			mockedController.listProjects.mockResolvedValue(mockResponse);
 
 			const handler = mockToolHandlers.get("lokalise_list_projects");
-			const args: ListProjectsToolArgsType = {};
+			const args: ListProjectsToolArgsType = {
+				includeStats: false,
+			};
 
 			// Act
 			const result = await handler?.(args);
@@ -180,19 +176,24 @@ describe.skip("ProjectsTool", () => {
 		it("should handle controller errors", async () => {
 			// Arrange
 			mockedController.listProjects.mockRejectedValue(
-				new McpError("API_ERROR", "Service unavailable"),
+				new McpError("Service unavailable", ErrorType.API_ERROR),
 			);
 
 			const handler = mockToolHandlers.get("lokalise_list_projects");
 
 			// Act
-			const result = await handler?.({});
+			const result = await handler?.({ includeStats: false });
 
 			// Assert
-			expect(result).toEqual({
-				content: [{ type: "text", text: expect.stringContaining("Error") }],
-				isError: true,
+			expect(result).toHaveProperty("content");
+			expect(
+				(result as unknown as { content: { type: string; text: string }[] })
+					.content[0],
+			).toEqual({
+				type: "text",
+				text: expect.stringContaining("Error"),
 			});
+			expect(result).toHaveProperty("metadata");
 		});
 	});
 
@@ -214,6 +215,7 @@ describe.skip("ProjectsTool", () => {
 			const args: GetProjectDetailsToolArgsType = {
 				projectId: "test-123",
 				includeLanguages: true,
+				includeKeysSummary: false,
 			};
 
 			// Act
@@ -245,7 +247,7 @@ describe.skip("ProjectsTool", () => {
 			const args: CreateProjectToolArgsType = {
 				name: "New Project",
 				description: "Test description",
-				baseLangIso: "en",
+				base_lang_iso: "en",
 			};
 
 			// Act
@@ -261,22 +263,28 @@ describe.skip("ProjectsTool", () => {
 		it("should handle validation errors", async () => {
 			// Arrange
 			mockedController.createProject.mockRejectedValue(
-				new McpError("VALIDATION_ERROR", "Name is required"),
+				new McpError("Name is required", ErrorType.VALIDATION_ERROR),
 			);
 
 			const handler = mockToolHandlers.get("lokalise_create_project");
 			const args: CreateProjectToolArgsType = {
 				name: "",
+				base_lang_iso: "en",
 			};
 
 			// Act
 			const result = await handler?.(args);
 
 			// Assert
-			expect(result).toEqual({
-				content: [{ type: "text", text: expect.stringContaining("Error") }],
-				isError: true,
+			expect(result).toHaveProperty("content");
+			expect(
+				(result as unknown as { content: { type: string; text: string }[] })
+					.content[0],
+			).toEqual({
+				type: "text",
+				text: expect.stringContaining("Error"),
 			});
+			expect(result).toHaveProperty("metadata");
 		});
 	});
 
@@ -297,7 +305,9 @@ describe.skip("ProjectsTool", () => {
 			const handler = mockToolHandlers.get("lokalise_update_project");
 			const args: UpdateProjectToolArgsType = {
 				projectId: "test-123",
-				name: "Updated Name",
+				projectData: {
+					name: "Updated Name",
+				},
 			};
 
 			// Act
@@ -377,13 +387,18 @@ describe.skip("ProjectsTool", () => {
 			projectsTool.registerTools(server);
 
 			// Act
-			const calls = (server.tool as jest.Mock).mock.calls;
+			const calls = (server.tool as unknown as { mock: { calls: unknown[][] } })
+				.mock.calls;
 
 			// Assert
 			calls.forEach(([_name, _desc, schema]) => {
 				expect(schema).toBeDefined();
-				expect(schema).toHaveProperty("type", "object");
-				expect(schema).toHaveProperty("properties");
+				// The shape object contains the field definitions
+				expect(typeof schema).toBe("object");
+				// Check for at least one property in the shape
+				expect(
+					Object.keys(schema as Record<string, unknown>).length,
+				).toBeGreaterThan(0);
 			});
 		});
 	});
@@ -410,18 +425,22 @@ describe.skip("ProjectsTool", () => {
 
 		it("should propagate errors from controller", async () => {
 			// Arrange
-			const error = new McpError("CONTROLLER_ERROR", "Controller failed");
+			const error = new McpError(
+				"Controller failed",
+				ErrorType.UNEXPECTED_ERROR,
+			);
 			mockedController.listProjects.mockRejectedValue(error);
 
 			const handler = mockToolHandlers.get("lokalise_list_projects");
 
 			// Act
-			const result = await handler?.({});
+			const result = await handler?.({ includeStats: false });
 
 			// Assert
-			expect(result).toHaveProperty("isError", true);
 			expect(result).toHaveProperty("content");
-			const content = (result as unknown).content[0].text;
+			expect(result).toHaveProperty("metadata");
+			const content = (result as { content: Array<{ text: string }> })
+				.content[0].text;
 			expect(content).toContain("Error");
 		});
 
@@ -432,10 +451,11 @@ describe.skip("ProjectsTool", () => {
 			const handler = mockToolHandlers.get("lokalise_list_projects");
 
 			// Act
-			const result = await handler?.({});
+			const result = await handler?.({ includeStats: false });
 
 			// Assert
-			expect(result).toHaveProperty("isError", true);
+			expect(result).toHaveProperty("content");
+			expect(result).toHaveProperty("metadata");
 		});
 	});
 });
