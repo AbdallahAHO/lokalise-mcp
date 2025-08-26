@@ -1,41 +1,40 @@
-import {
-	afterEach,
-	beforeEach,
-	describe,
-	expect,
-	it,
-	jest,
-} from "@jest/globals";
 import { Command } from "commander";
-import { McpError } from "../../shared/utils/error.util.js";
-import { ProjectsMockBuilder } from "../../test-utils/mock-builders/projects.mock.js";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { ErrorType, McpError } from "../../shared/utils/error.util.js";
+
+// Mock the controller with explicit implementation
+vi.mock("./projects.controller.js", () => ({
+	default: {
+		listProjects: vi.fn(),
+		getProjectDetails: vi.fn(),
+		createProject: vi.fn(),
+		updateProject: vi.fn(),
+		deleteProject: vi.fn(),
+		emptyProject: vi.fn(),
+	},
+}));
+
 import projectsCli from "./projects.cli.js";
 import projectsController from "./projects.controller.js";
 
-// Mock the controller
-// TODO: Fix Jest ESM mock configuration issue
-// jest.mock("./projects.controller.js");
-
-// Mock console methods to capture output
-const mockConsoleLog = jest.spyOn(console, "log").mockImplementation();
-const mockConsoleError = jest.spyOn(console, "error").mockImplementation();
-
-describe.skip("ProjectsCLI", () => {
+describe("ProjectsCLI", () => {
 	let program: Command;
-	const mockedController = jest.mocked(projectsController);
+	const mockedController = vi.mocked(projectsController);
 
 	beforeEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 		program = new Command();
 		program.exitOverride(); // Prevent process.exit during tests
 		program.configureOutput({
-			writeOut: jest.fn(),
-			writeErr: jest.fn(),
+			writeOut: vi.fn(),
+			writeErr: vi.fn(),
 		});
+		// Mock process.exit locally when needed
+		vi.spyOn(process, "exit").mockImplementation(() => undefined as never);
 	});
 
 	afterEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	describe("CLI Registration", () => {
@@ -89,7 +88,7 @@ describe.skip("ProjectsCLI", () => {
 				page: undefined,
 				includeStats: false,
 			});
-			expect(mockConsoleLog).toHaveBeenCalledWith(mockResponse.content);
+			expect(console.log).toHaveBeenCalledWith(mockResponse.content);
 		});
 
 		it("should handle pagination options", async () => {
@@ -148,16 +147,20 @@ describe.skip("ProjectsCLI", () => {
 		it("should handle controller errors", async () => {
 			// Arrange
 			mockedController.listProjects.mockRejectedValue(
-				new McpError("API_ERROR", "Service unavailable"),
+				new McpError("Service unavailable", ErrorType.API_ERROR),
 			);
 
-			// Act
-			await program.parseAsync(["node", "test", "list-projects"]);
+			// Act & Assert
+			try {
+				await program.parseAsync(["node", "test", "list-projects"]);
+			} catch {
+				// Expected - process.exit is mocked to not actually exit
+			}
 
-			// Assert
-			expect(mockConsoleError).toHaveBeenCalledWith(
+			expect(console.error).toHaveBeenCalledWith(
 				expect.stringContaining("Error"),
 			);
+			expect(process.exit).toHaveBeenCalledWith(1);
 		});
 	});
 
@@ -189,7 +192,7 @@ describe.skip("ProjectsCLI", () => {
 				includeLanguages: false,
 				includeKeysSummary: false,
 			});
-			expect(mockConsoleLog).toHaveBeenCalledWith(mockResponse.content);
+			expect(console.log).toHaveBeenCalledWith(mockResponse.content);
 		});
 
 		it("should handle optional flags", async () => {
@@ -246,10 +249,9 @@ describe.skip("ProjectsCLI", () => {
 			expect(mockedController.createProject).toHaveBeenCalledWith({
 				name: "New Project",
 				description: undefined,
-				baseLangIso: "en",
-				languages: undefined,
+				base_lang_iso: "en",
 			});
-			expect(mockConsoleLog).toHaveBeenCalledWith(mockResponse.content);
+			expect(console.log).toHaveBeenCalledWith(mockResponse.content);
 		});
 
 		it("should create project with all options", async () => {
@@ -277,8 +279,7 @@ describe.skip("ProjectsCLI", () => {
 			expect(mockedController.createProject).toHaveBeenCalledWith({
 				name: "Full Project",
 				description: "Test description",
-				baseLangIso: "de",
-				languages: undefined,
+				base_lang_iso: "de",
 			});
 		});
 	});
@@ -310,8 +311,9 @@ describe.skip("ProjectsCLI", () => {
 			// Assert
 			expect(mockedController.updateProject).toHaveBeenCalledWith({
 				projectId: "test-123",
-				name: "Updated Name",
-				description: undefined,
+				projectData: {
+					name: "Updated Name",
+				},
 			});
 		});
 
@@ -337,8 +339,9 @@ describe.skip("ProjectsCLI", () => {
 			// Assert
 			expect(mockedController.updateProject).toHaveBeenCalledWith({
 				projectId: "test-123",
-				name: undefined,
-				description: "New description",
+				projectData: {
+					description: "New description",
+				},
 			});
 		});
 
@@ -366,30 +369,32 @@ describe.skip("ProjectsCLI", () => {
 			// Assert
 			expect(mockedController.updateProject).toHaveBeenCalledWith({
 				projectId: "test-123",
-				name: "New Name",
-				description: "New Desc",
+				projectData: {
+					name: "New Name",
+					description: "New Desc",
+				},
 			});
 		});
 
 		it("should handle missing update fields", async () => {
-			// Arrange
-			const mockResponse = {
-				content: "# No updates",
-				data: {},
-				metadata: {},
-			};
-			mockedController.updateProject.mockResolvedValue(mockResponse);
+			// Act & Assert
+			try {
+				await program.parseAsync([
+					"node",
+					"test",
+					"update-project",
+					"test-123",
+				]);
+			} catch {
+				// Expected - process.exit is mocked to not actually exit
+			}
 
-			// Act
-			await program.parseAsync(["node", "test", "update-project", "test-123"]);
-
-			// Assert
-			// Should still call with undefined values
-			expect(mockedController.updateProject).toHaveBeenCalledWith({
-				projectId: "test-123",
-				name: undefined,
-				description: undefined,
-			});
+			// Should not call controller and should error
+			expect(mockedController.updateProject).not.toHaveBeenCalled();
+			expect(console.error).toHaveBeenCalledWith(
+				expect.stringContaining("At least one field must be provided"),
+			);
+			expect(process.exit).toHaveBeenCalledWith(1);
 		});
 	});
 
@@ -420,18 +425,27 @@ describe.skip("ProjectsCLI", () => {
 			expect(mockedController.deleteProject).toHaveBeenCalledWith({
 				projectId: "test-123",
 			});
-			expect(mockConsoleLog).toHaveBeenCalledWith(mockResponse.content);
+			expect(console.log).toHaveBeenCalledWith(mockResponse.content);
 		});
 
 		it("should skip deletion without confirmation", async () => {
-			// Act
-			await program.parseAsync(["node", "test", "delete-project", "test-123"]);
+			// Act & Assert
+			try {
+				await program.parseAsync([
+					"node",
+					"test",
+					"delete-project",
+					"test-123",
+				]);
+			} catch {
+				// Expected - process.exit is mocked to not actually exit
+			}
 
-			// Assert
 			expect(mockedController.deleteProject).not.toHaveBeenCalled();
-			expect(mockConsoleLog).toHaveBeenCalledWith(
+			expect(console.error).toHaveBeenCalledWith(
 				expect.stringContaining("requires confirmation"),
 			);
+			expect(process.exit).toHaveBeenCalledWith(1);
 		});
 	});
 
@@ -462,18 +476,22 @@ describe.skip("ProjectsCLI", () => {
 			expect(mockedController.emptyProject).toHaveBeenCalledWith({
 				projectId: "test-123",
 			});
-			expect(mockConsoleLog).toHaveBeenCalledWith(mockResponse.content);
+			expect(console.log).toHaveBeenCalledWith(mockResponse.content);
 		});
 
 		it("should skip emptying without confirmation", async () => {
-			// Act
-			await program.parseAsync(["node", "test", "empty-project", "test-123"]);
+			// Act & Assert
+			try {
+				await program.parseAsync(["node", "test", "empty-project", "test-123"]);
+			} catch {
+				// Expected - process.exit is mocked to not actually exit
+			}
 
-			// Assert
 			expect(mockedController.emptyProject).not.toHaveBeenCalled();
-			expect(mockConsoleLog).toHaveBeenCalledWith(
+			expect(console.error).toHaveBeenCalledWith(
 				expect.stringContaining("requires confirmation"),
 			);
+			expect(process.exit).toHaveBeenCalledWith(1);
 		});
 	});
 
@@ -488,13 +506,17 @@ describe.skip("ProjectsCLI", () => {
 				new Error("Controller failed"),
 			);
 
-			// Act
-			await program.parseAsync(["node", "test", "list-projects"]);
+			// Act & Assert
+			try {
+				await program.parseAsync(["node", "test", "list-projects"]);
+			} catch {
+				// Expected - process.exit is mocked to not actually exit
+			}
 
-			// Assert
-			expect(mockConsoleError).toHaveBeenCalledWith(
+			expect(console.error).toHaveBeenCalledWith(
 				expect.stringContaining("Error"),
 			);
+			expect(process.exit).toHaveBeenCalledWith(1);
 		});
 
 		it("should handle invalid command", async () => {
@@ -530,7 +552,7 @@ describe.skip("ProjectsCLI", () => {
 			await program.parseAsync(["node", "test", "list-projects"]);
 
 			// Assert
-			expect(mockConsoleLog).toHaveBeenCalledWith(mockResponse.content);
+			expect(console.log).toHaveBeenCalledWith(mockResponse.content);
 		});
 
 		it("should handle empty responses", async () => {
@@ -546,7 +568,7 @@ describe.skip("ProjectsCLI", () => {
 			await program.parseAsync(["node", "test", "list-projects"]);
 
 			// Assert
-			expect(mockConsoleLog).toHaveBeenCalledWith("");
+			expect(console.log).toHaveBeenCalledWith("");
 		});
 	});
 

@@ -34,12 +34,19 @@ function registerResources(server: McpServer): void {
 				});
 
 				const urlParams = new URLSearchParams(uri.search);
-				const page = urlParams.get("page")
-					? Number.parseInt(urlParams.get("page") ?? "1", 10)
-					: undefined;
-				const limit = urlParams.get("limit")
-					? Number.parseInt(urlParams.get("limit") ?? "100", 10)
-					: undefined;
+				let page: number | undefined;
+				let limit: number | undefined;
+
+				if (urlParams.get("page")) {
+					const parsed = Number.parseInt(urlParams.get("page") ?? "1", 10);
+					page = Number.isNaN(parsed) ? undefined : parsed;
+				}
+
+				if (urlParams.get("limit")) {
+					const parsed = Number.parseInt(urlParams.get("limit") ?? "100", 10);
+					limit = Number.isNaN(parsed) ? undefined : parsed;
+				}
+
 				const includeStats = urlParams.get("includeStats") === "true";
 
 				// Call the controller to get the projects list
@@ -82,9 +89,11 @@ function registerResources(server: McpServer): void {
 					uri: uri.toString(),
 				});
 
-				// Get project ID from the path (after 'projects/')
+				// Get project ID from the path
+				// For lokalise://projects/test-123, pathname is "/test-123"
 				const pathParts = uri.pathname.split("/").filter(Boolean);
-				const projectId = pathParts[1]; // Second part is the project ID after 'projects'
+				const projectId =
+					pathParts.length > 0 ? decodeURIComponent(pathParts[0]) : "";
 
 				if (!projectId) {
 					throw new Error("Project ID is required in the URI path");
