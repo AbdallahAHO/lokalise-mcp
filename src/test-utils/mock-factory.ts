@@ -1,5 +1,4 @@
-import { jest } from "@jest/globals";
-import type { LokaliseApi } from "@lokalise/node-api";
+import { vi } from "vitest";
 
 export interface MockLokaliseApiOptions {
 	failOnMethod?: string;
@@ -8,95 +7,153 @@ export interface MockLokaliseApiOptions {
 	delay?: number;
 }
 
+interface MockLokaliseApi {
+	projects: () => {
+		list: ReturnType<typeof vi.fn>;
+		get: ReturnType<typeof vi.fn>;
+		create: ReturnType<typeof vi.fn>;
+		update: ReturnType<typeof vi.fn>;
+		delete: ReturnType<typeof vi.fn>;
+		empty: ReturnType<typeof vi.fn>;
+	};
+	keys: () => {
+		list: ReturnType<typeof vi.fn>;
+		get: ReturnType<typeof vi.fn>;
+		create: ReturnType<typeof vi.fn>;
+		update: ReturnType<typeof vi.fn>;
+		bulk_update: ReturnType<typeof vi.fn>;
+		delete: ReturnType<typeof vi.fn>;
+		bulk_delete: ReturnType<typeof vi.fn>;
+	};
+	languages: () => {
+		system_languages: ReturnType<typeof vi.fn>;
+		list: ReturnType<typeof vi.fn>;
+		get: ReturnType<typeof vi.fn>;
+		create: ReturnType<typeof vi.fn>;
+		update: ReturnType<typeof vi.fn>;
+		delete: ReturnType<typeof vi.fn>;
+	};
+	tasks: () => ReturnType<typeof vi.fn> &
+		Record<string, ReturnType<typeof vi.fn>>;
+	comments: () => ReturnType<typeof vi.fn> &
+		Record<string, ReturnType<typeof vi.fn>>;
+	translations: () => ReturnType<typeof vi.fn> &
+		Record<string, ReturnType<typeof vi.fn>>;
+	contributors: () => ReturnType<typeof vi.fn> &
+		Record<string, ReturnType<typeof vi.fn>>;
+	glossary: () => ReturnType<typeof vi.fn> &
+		Record<string, ReturnType<typeof vi.fn>>;
+}
+
 export function createMockLokaliseApi(
 	options: MockLokaliseApiOptions = {},
-): jest.Mocked<LokaliseApi> {
+): MockLokaliseApi {
+	// Create mock methods once and reuse them
+	const projectsMock = {
+		list: vi.fn(),
+		get: vi.fn(),
+		create: vi.fn(),
+		update: vi.fn(),
+		delete: vi.fn(),
+		empty: vi.fn(),
+	};
+
+	const keysMock = {
+		list: vi.fn(),
+		get: vi.fn(),
+		create: vi.fn(),
+		update: vi.fn(),
+		bulk_update: vi.fn(),
+		delete: vi.fn(),
+		bulk_delete: vi.fn(),
+	};
+
+	const languagesMock = {
+		system_languages: vi.fn(),
+		list: vi.fn(),
+		get: vi.fn(),
+		create: vi.fn(),
+		update: vi.fn(),
+		delete: vi.fn(),
+	};
+
+	const tasksMock = {
+		list: vi.fn(),
+		get: vi.fn(),
+		create: vi.fn(),
+		update: vi.fn(),
+		delete: vi.fn(),
+	};
+
+	const commentsMock = {
+		list_project_comments: vi.fn(),
+		list_key_comments: vi.fn(),
+		get: vi.fn(),
+		create: vi.fn(),
+		delete: vi.fn(),
+	};
+
+	const translationsMock = {
+		list: vi.fn(),
+		get: vi.fn(),
+		update: vi.fn(),
+	};
+
+	const contributorsMock = {
+		list: vi.fn(),
+		get: vi.fn(),
+		create: vi.fn(),
+		update: vi.fn(),
+		delete: vi.fn(),
+	};
+
+	const glossaryMock = {
+		list: vi.fn(),
+		get: vi.fn(),
+		create: vi.fn(),
+		update: vi.fn(),
+		delete: vi.fn(),
+	};
+
 	const mockApi = {
-		projects: jest.fn(() => ({
-			list: jest.fn(),
-			get: jest.fn(),
-			create: jest.fn(),
-			update: jest.fn(),
-			delete: jest.fn(),
-			empty: jest.fn(),
-		})),
-		keys: jest.fn(() => ({
-			list: jest.fn(),
-			get: jest.fn(),
-			create: jest.fn(),
-			update: jest.fn(),
-			bulk_update: jest.fn(),
-			delete: jest.fn(),
-			bulk_delete: jest.fn(),
-		})),
-		languages: jest.fn(() => ({
-			system_languages: jest.fn(),
-			list: jest.fn(),
-			get: jest.fn(),
-			create: jest.fn(),
-			update: jest.fn(),
-			delete: jest.fn(),
-		})),
-		tasks: jest.fn(() => ({
-			list: jest.fn(),
-			get: jest.fn(),
-			create: jest.fn(),
-			update: jest.fn(),
-			delete: jest.fn(),
-		})),
-		comments: jest.fn(() => ({
-			list_project_comments: jest.fn(),
-			list_key_comments: jest.fn(),
-			get: jest.fn(),
-			create: jest.fn(),
-			delete: jest.fn(),
-		})),
-		translations: jest.fn(() => ({
-			list: jest.fn(),
-			get: jest.fn(),
-			update: jest.fn(),
-		})),
-		contributors: jest.fn(() => ({
-			list: jest.fn(),
-			get: jest.fn(),
-			create: jest.fn(),
-			update: jest.fn(),
-			delete: jest.fn(),
-		})),
-		glossary: jest.fn(() => ({
-			list: jest.fn(),
-			get: jest.fn(),
-			create: jest.fn(),
-			update: jest.fn(),
-			delete: jest.fn(),
-		})),
-	} as any;
+		projects: vi.fn(() => projectsMock),
+		keys: vi.fn(() => keysMock),
+		languages: vi.fn(() => languagesMock),
+		tasks: vi.fn(() => tasksMock),
+		comments: vi.fn(() => commentsMock),
+		translations: vi.fn(() => translationsMock),
+		contributors: vi.fn(() => contributorsMock),
+		glossary: vi.fn(() => glossaryMock),
+	} as unknown as MockLokaliseApi;
 
 	// Apply error simulation if specified
 	if (options.failOnMethod) {
 		const [domain, method] = options.failOnMethod.split(".");
-		const apiAny = mockApi as Record<string, unknown>;
+		const apiAny = mockApi as unknown as Record<string, unknown>;
 		if (apiAny[domain]) {
 			const domainMock = (apiAny[domain] as () => Record<string, unknown>)();
 			if (domainMock?.[method]) {
 				const error = new Error(
 					options.errorMessage || `API Error: ${options.errorCode || 500}`,
 				);
-				domainMock[method] = jest.fn(() => Promise.reject(error));
+				domainMock[method] = vi.fn(() => Promise.reject(error));
 			}
 		}
 	}
 
 	// Apply delay if specified
 	if (options.delay) {
-		const apiAny = mockApi as Record<string, () => Record<string, unknown>>;
+		const apiAny = mockApi as unknown as Record<
+			string,
+			() => Record<string, unknown>
+		>;
 		for (const domain of Object.keys(apiAny)) {
 			const domainMethods = apiAny[domain]();
 			for (const method of Object.keys(domainMethods)) {
 				const original = domainMethods[method] as (
 					...args: unknown[]
 				) => unknown;
-				domainMethods[method] = jest.fn(async (...args: unknown[]) => {
+				domainMethods[method] = vi.fn(async (...args: unknown[]) => {
 					await new Promise((resolve) => setTimeout(resolve, options.delay));
 					return original(...args);
 				});
@@ -104,7 +161,7 @@ export function createMockLokaliseApi(
 		}
 	}
 
-	return mockApi as jest.Mocked<LokaliseApi>;
+	return mockApi;
 }
 
 // Helper function to create paginated responses

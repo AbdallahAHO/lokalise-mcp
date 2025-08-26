@@ -1,3 +1,5 @@
 // Manual mock for lokalise-api.util
-export const getLokaliseApi = jest.fn();
-export const resetLokaliseApi = jest.fn();
+import { vi } from "vitest";
+
+export const getLokaliseApi = vi.fn();
+export const resetLokaliseApi = vi.fn();
