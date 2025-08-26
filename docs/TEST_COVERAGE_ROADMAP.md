@@ -27,9 +27,9 @@ This roadmap outlines the strategy to increase test coverage for the lokalise-mc
 | Glossary | 0% | 0 | LOW |
 
 ### Existing Test Infrastructure
-- **Framework**: Jest with TypeScript support
+- **Framework**: Vitest with TypeScript support
 - **Test Files**: 6 total (3 formatters, 3 utils)
-- **Configuration**: Basic Jest setup with coverage reporting
+- **Configuration**: Basic Vitest setup with coverage reporting
 - **Patterns**: Formatter tests established, fixture patterns in place
 
 ## Target State
@@ -55,7 +55,7 @@ This roadmap outlines the strategy to increase test coverage for the lokalise-mc
 **Objective**: Establish testing infrastructure and patterns
 
 #### Tasks:
-1. **Enhanced Jest Configuration**
+1. **Enhanced Vitest Configuration**
    - Enable parallel execution with workers
    - Configure coverage thresholds
    - Set up test sharding for CI/CD
@@ -74,7 +74,7 @@ This roadmap outlines the strategy to increase test coverage for the lokalise-mc
    - Set up fixture generators
 
 **Deliverables**:
-- jest.config.enhanced.js
+- vitest.config.enhanced.ts
 - src/test-utils/mock-factory.ts
 - src/test-utils/fixtures/
 - scripts/scaffold-tests.ts
@@ -101,7 +101,7 @@ This roadmap outlines the strategy to increase test coverage for the lokalise-mc
 ```typescript
 describe('ProjectsService', () => {
   let service: ProjectsService;
-  let mockApi: jest.Mocked<LokaliseApi>;
+  let mockApi: vi.Mocked<LokaliseApi>;
 
   beforeEach(() => {
     mockApi = createMockLokaliseApi();

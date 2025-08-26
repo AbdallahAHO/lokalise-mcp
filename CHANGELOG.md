@@ -156,7 +156,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Developer Experience**:
   - TypeScript with strict mode
   - Biome for consistent formatting and linting
-  - Jest testing framework with >80% coverage target
+  - Vitest testing framework with >80% coverage target
   - Comprehensive API documentation
   - .npmignore for clean package distribution
 

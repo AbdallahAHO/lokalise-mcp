@@ -301,7 +301,7 @@ export const createMockCursorPaginatedResult = <T>(
 **Template:** `src/domains/mydomain/mydomain.formatter.test.ts`
 
 ```typescript
-import { afterAll, beforeAll, beforeEach, describe, expect, it } from "@jest/globals";
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type { MyDomainItem, BulkResult } from "@lokalise/node-api";
 import { generators } from "../../test-utils/fixture-helpers/generators.js";
 import { MyDomainMockBuilder } from "../../test-utils/mock-builders/mydomain.mock.js";

@@ -132,7 +132,9 @@ class TestScaffolder {
 		console.log(chalk.gray("\nNext steps:"));
 		console.log(chalk.gray("1. Review and customize the generated tests"));
 		console.log(
-			chalk.gray(`2. Run tests: npm test -- ${domain}.${layer}.test.ts`),
+			chalk.gray(
+				`2. Run tests: npm test -- src/domains/${domain}/${domain}.${layer}.test.ts`,
+			),
 		);
 		console.log(chalk.gray("3. Check coverage: npm run test:coverage"));
 	}
