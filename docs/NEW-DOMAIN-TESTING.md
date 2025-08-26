@@ -6,6 +6,21 @@ This guide provides a step-by-step approach to implementing comprehensive tests 
 
 **Phase 1 Status**: ✅ COMPLETE - Mock builder infrastructure fully operational with 113 passing tests!
 
+## Understanding the Three-Tier Mocking Architecture
+
+Before implementing tests, understand our three distinct mocking approaches:
+
+### Mock Type Selection Guide
+
+| Testing This Layer | Mock This Layer | Use This Mock Type | Example |
+|-------------------|-----------------|-------------------|---------|
+| Tool | Controller | Module Mock (`__mocks__`) | `vi.mock("./mydomain.controller.js")` |
+| Resource | Controller | Module Mock (`__mocks__`) | `vi.mock("./mydomain.controller.js")` |
+| CLI | Controller | Module Mock (`__mocks__`) | `vi.mock("./mydomain.controller.js")` |
+| Controller | Service | Module Mock + Mock Builder | `vi.mock("./mydomain.service.js")` + `MyDomainMockBuilder` |
+| Service | Lokalise API | Mock Factory | `createMockLokaliseApi()` |
+| Formatter | Nothing | Mock Builder for input | `MyDomainMockBuilder` |
+
 ## Testing Setup Checklist
 
 When creating tests for a new domain:
@@ -14,16 +29,55 @@ When creating tests for a new domain:
 
 ```bash
 src/domains/mydomain/
+├── __mocks__/
+│   └── mydomain.controller.js      # Module mock for controller
 ├── __fixtures__/
 │   └── mydomain.fixtures.ts        # Static test data
 ├── __snapshots__/
 │   └── mydomain.formatter.test.ts.snap  # Auto-generated
 ├── mydomain.formatter.test.ts      # Formatter tests
-├── mydomain.controller.test.ts     # Controller tests (optional)
-└── mydomain.service.test.ts        # Service tests (optional)
+├── mydomain.controller.test.ts     # Controller tests
+├── mydomain.service.test.ts        # Service tests
+├── mydomain.tool.test.ts           # Tool tests
+├── mydomain.resource.test.ts       # Resource tests
+└── mydomain.cli.test.ts            # CLI tests
 ```
 
-### 2. Create Mock Builder (Phase 1 Pattern)
+### 2. Create Module Mock (For Tool/Resource/CLI Tests)
+
+**Template:** `src/domains/mydomain/__mocks__/mydomain.controller.js`
+
+```javascript
+import { vi } from "vitest";
+
+// Module mock replaces the entire controller for isolation testing
+export default {
+  listItems: vi.fn(),
+  getItemDetails: vi.fn(),
+  createItem: vi.fn(),
+  updateItem: vi.fn(),
+  deleteItem: vi.fn(),
+  // Add all controller methods your domain implements
+};
+```
+
+**Usage in tool/resource/cli tests:**
+```typescript
+// Automatically loads __mocks__/mydomain.controller.js
+vi.mock("./mydomain.controller.js");
+
+import mydomainController from "./mydomain.controller.js";
+const mockedController = vi.mocked(mydomainController);
+
+// In tests
+mockedController.listItems.mockResolvedValue({
+  content: "# Items List",
+  data: [],
+  metadata: {}
+});
+```
+
+### 3. Create Mock Builder (Phase 1 Pattern)
 
 **Template:** `src/test-utils/mock-builders/mydomain.mock.ts`
 

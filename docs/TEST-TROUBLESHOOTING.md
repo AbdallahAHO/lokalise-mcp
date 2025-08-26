@@ -463,6 +463,167 @@ npm install
 NODE_OPTIONS="--max-old-space-size=4096" npm test
 ```
 
+## MCP-Specific Test Issues
+
+### 8. MCP Tool Schema Registration
+
+**Error**: TypeScript build failure with Zod schemas
+```
+error TS2769: No overload matches this call.
+Argument of type 'ZodObject' is not assignable to parameter of type 'ZodRawShape'
+```
+
+**Fix**: Use `.shape` property for MCP tool registration
+```typescript
+// ❌ Wrong: Passing full Zod schema
+server.tool(
+  "lokalise_list_projects",
+  "Description",
+  ListProjectsToolArgs,  // Full ZodObject
+  handler
+);
+
+// ✅ Correct: Pass the shape property
+server.tool(
+  "lokalise_list_projects",
+  "Description",
+  ListProjectsToolArgs.shape,  // ZodRawShape
+  handler
+);
+```
+
+**Test Validation**:
+```typescript
+// Test that schemas are properly formatted
+it("should validate input schemas", () => {
+  const calls = (server.tool as any).mock.calls;
+  calls.forEach(([_name, _desc, schema]) => {
+    expect(schema).toBeDefined();
+    expect(typeof schema).toBe("object");
+    // Shape objects have field definitions
+    expect(Object.keys(schema).length).toBeGreaterThan(0);
+  });
+});
+```
+
+### 9. Custom Protocol URL Parsing
+
+**Error**: Resource tests fail with "Project ID is required"
+```
+Error: Project ID is required in the URI path
+```
+
+**Issue**: Custom protocol URLs parse differently than HTTP
+- For `lokalise://projects/test-123`:
+  - `uri.host` = "projects" (not part of path)
+  - `uri.pathname` = "/test-123" (not "/projects/test-123")
+
+**Fix**: Adjust parsing logic for custom protocols
+```typescript
+// ❌ Wrong: Assuming HTTP-style paths
+const pathParts = uri.pathname.split("/").filter(Boolean);
+const projectId = pathParts[1]; // undefined!
+
+// ✅ Correct: Account for custom protocol structure
+const pathParts = uri.pathname.split("/").filter(Boolean);
+const projectId = pathParts.length > 0 ? decodeURIComponent(pathParts[0]) : "";
+```
+
+### 10. Error Response Format Consistency
+
+**Error**: Test expects `isError` property that doesn't exist
+```
+expected { content: [...], metadata: {...} } to have property "isError"
+```
+
+**Fix**: Match actual error formatter output
+```typescript
+// ❌ Wrong expectation
+expect(result).toEqual({
+  content: [{ type: "text", text: expect.stringContaining("Error") }],
+  isError: true,  // Not included by formatter
+});
+
+// ✅ Correct expectation
+expect(result).toHaveProperty("content");
+expect(result).toHaveProperty("metadata");
+expect(result.content[0]).toEqual({
+  type: "text",
+  text: expect.stringContaining("Error"),
+});
+```
+
+### 11. Validation Error Types and Messages
+
+**Error**: Controller tests expect wrong error types
+```
+expected ErrorType.API_ERROR to be ErrorType.VALIDATION_ERROR
+```
+
+**Fix**: Use correct error types and include prefixes
+```typescript
+// ❌ Wrong: API_ERROR for validation issues
+throw new McpError(
+  "Name is required",
+  ErrorType.API_ERROR
+);
+
+// ✅ Correct: VALIDATION_ERROR with prefix
+throw new McpError(
+  "VALIDATION_ERROR: Name is required",
+  ErrorType.VALIDATION_ERROR
+);
+```
+
+### 12. Resource Response Structure
+
+**Error**: Resource tests missing required fields
+```
+expected { text, mimeType } to equal { uri, text, mimeType, description }
+```
+
+**Fix**: Include all required fields in resource responses
+```typescript
+// ❌ Incomplete response
+return {
+  contents: [{
+    text: result.content,
+    mimeType: "text/markdown"
+  }]
+};
+
+// ✅ Complete response
+return {
+  contents: [{
+    uri: uri.toString(),
+    text: result.content,
+    mimeType: "text/markdown",
+    description: `Lokalise Project Details: ${projectId}`
+  }]
+};
+```
+
+### 13. NaN vs undefined in Number Parsing
+
+**Error**: Invalid number parsed as NaN, not undefined
+```
+expected limit: undefined but got limit: NaN
+```
+
+**Fix**: Check for NaN explicitly
+```typescript
+// ❌ Wrong: NaN passes through
+const limit = urlParams.get("limit")
+  ? Number.parseInt(urlParams.get("limit") ?? "100", 10)
+  : undefined;
+
+// ✅ Correct: Check for NaN
+if (urlParams.get("limit")) {
+  const parsed = Number.parseInt(urlParams.get("limit") ?? "100", 10);
+  limit = Number.isNaN(parsed) ? undefined : parsed;
+}
+```
+
 ## Common Anti-Patterns to Avoid
 
 ### ❌ Don't Do This

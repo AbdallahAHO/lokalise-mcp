@@ -17,6 +17,53 @@ This comprehensive guide documents the test patterns, best practices, and soluti
 7. [Phase 1 Achievements](#phase-1-achievements)
 8. [Performance and Quality Standards](#performance-and-quality-standards)
 
+## Strict No-Any Policy
+
+**CRITICAL**: The `any` type is FORBIDDEN throughout the codebase, including all test files.
+
+### Type Safety Requirements
+
+```typescript
+// ❌ FORBIDDEN - Will fail linting and compilation
+const mockData = {} as any;
+const result = (response as any).data;
+const calls = (vi.fn as any).mock.calls;
+
+// ✅ CORRECT - Use proper types or type assertions
+const mockData = {} as MockDataType;
+const result = (response as { data: string }).data;
+const calls = (vi.fn as unknown as { mock: { calls: unknown[][] } }).mock.calls;
+
+// ✅ For mocked functions, use proper generics
+const mockFn = vi.fn<[string, number], void>();
+const mockApi = createMockLokaliseApi(); // Returns properly typed MockLokaliseApi interface
+```
+
+### Type Assertion Best Practices
+
+1. **Use `unknown` as intermediate type**: When casting between incompatible types
+2. **Create proper interfaces**: Define interfaces for mock structures
+3. **Use vi.fn generics**: Specify argument and return types for mocked functions
+4. **Never suppress errors with `any`**: Fix the underlying type issue instead
+
+### Mock Type Examples
+
+```typescript
+// Define proper mock interfaces
+interface MockServerTool {
+  mock: {
+    calls: Array<[string, string, unknown, (args: unknown) => Promise<unknown>]>
+  }
+}
+
+// Use in tests
+const mockTool = server.tool as unknown as MockServerTool;
+const calls = mockTool.mock.calls;
+
+// For Lokalise API mocks
+const mockApi: MockLokaliseApi = createMockLokaliseApi();
+```
+
 ## Testing Architecture
 
 ### Test Organization
@@ -52,19 +99,143 @@ src/
 
 ### Test Configuration
 
-**Jest Configuration** (`jest.config.js`):
+**Vitest Configuration** (`vitest.config.ts`):
 - ES modules support with TypeScript
-- UTC timezone enforcement
-- Coverage collection from `src/**/*.ts`
-- Custom module name mapping for `.js` imports
-- Mock restoration and clearing between tests
+- UTC timezone enforcement via setup
+- Coverage collection from `src/**/*.ts` using v8 provider
+- Alias support for `@/` imports
+- Automatic mock restoration and clearing between tests
 
 **Environment Setup** (`src/test-utils/setup.ts`):
 - TextEncoder/TextDecoder polyfills
 - Console output suppression
-- Custom Jest matchers for domain-specific validation
+- Custom Vitest matchers for domain-specific validation
 - Mock timer utilities
 - Environment variable management
+
+## Three-Tier Mocking Architecture
+
+### Overview
+
+Our testing infrastructure uses three distinct mocking approaches, each serving a specific purpose in isolating and testing different layers of the application. Understanding when to use each type is crucial for writing effective tests.
+
+### The Three Mock Types
+
+#### 1. Module Mocks (`__mocks__/`)
+**Purpose**: Replace entire modules with mock implementations for unit testing
+
+**Location**: `src/domains/{domain}/__mocks__/{module}.js`
+
+**Usage**: Testing layers in complete isolation (e.g., testing tools without controllers)
+
+```typescript
+// src/domains/projects/__mocks__/projects.controller.js
+import { vi } from "vitest";
+
+export default {
+  listProjects: vi.fn(),
+  getProjectDetails: vi.fn(),
+  createProject: vi.fn(),
+  updateProject: vi.fn(),
+  deleteProject: vi.fn(),
+  emptyProject: vi.fn(),
+};
+```
+
+**When to use**:
+- Testing the tool layer → mock the controller
+- Testing the resource layer → mock the controller
+- Testing the CLI layer → mock the controller
+- Focus: "Does layer A correctly call layer B with proper arguments?"
+
+#### 2. Mock Builders (`mock-builders/`)
+**Purpose**: Create realistic test data with a fluent API
+
+**Location**: `src/test-utils/mock-builders/{domain}.mock.ts`
+
+**Usage**: Building complex, realistic test objects for data transformation tests
+
+```typescript
+// Create realistic test data
+const mockData = new ProjectsMockBuilder()
+  .withProject({ name: "Test Project", keys_total: 150 })
+  .withPagination(1, 100)
+  .build();
+```
+
+**When to use**:
+- Testing controllers → need realistic service responses
+- Testing formatters → need realistic input data
+- Testing data transformations and business logic
+- Focus: "Does the layer process data correctly?"
+
+#### 3. Mock Factory (`mock-factory.ts`)
+**Purpose**: Create mock Lokalise API client for service layer testing
+
+**Location**: `src/test-utils/mock-factory.ts`
+
+**Usage**: Mocking external API dependencies with error simulation
+
+```typescript
+// Create mock API client with failure simulation
+const mockApi = createMockLokaliseApi({
+  failOnMethod: "projects.list",  // Simulate API error
+  delay: 100  // Simulate network delay
+});
+```
+
+**When to use**:
+- Testing the service layer → mock the Lokalise API
+- Testing API error handling
+- Testing network delays and timeouts
+- Focus: "Does the service handle API responses/errors correctly?"
+
+### Layer Testing Strategy
+
+| Layer Being Tested | What Gets Mocked | Mock Type Used | Test Focus |
+|-------------------|------------------|----------------|------------|
+| Tool Layer | Controller | Module Mock (`__mocks__`) | Input validation, controller invocation |
+| Resource Layer | Controller | Module Mock (`__mocks__`) | URI parsing, controller invocation |
+| CLI Layer | Controller | Module Mock (`__mocks__`) | Command parsing, controller invocation |
+| Controller Layer | Service | Module Mock + Mock Builders | Business logic, data transformation |
+| Service Layer | Lokalise API | Mock Factory | API interaction, error handling |
+| Formatter Layer | Nothing | Mock Builders for input | Markdown formatting, output structure |
+
+### Example: Testing Flow for `projects` Domain
+
+```typescript
+// 1. Testing projects.tool.test.ts (Tool Layer)
+vi.mock("./projects.controller.js"); // Uses __mocks__/projects.controller.js
+// Test: "When tool receives projectId='123', does it call controller.getProjectDetails('123')?"
+
+// 2. Testing projects.controller.test.ts (Controller Layer)
+vi.mock("./projects.service.js"); // Mock the service
+const mockData = new ProjectsMockBuilder().withProject({...}).build();
+mockedService.getProjects.mockResolvedValue(mockData);
+// Test: "When controller receives request, does it validate and transform correctly?"
+
+// 3. Testing projects.service.test.ts (Service Layer)
+const mockApi = createMockLokaliseApi();
+mockGetLokaliseApi.mockReturnValue(mockApi as unknown as LokaliseApi);
+// Test: "When service calls API, does it handle responses/errors correctly?"
+```
+
+### Key Principles
+
+1. **Isolation**: Each layer is tested independently
+2. **Speed**: Module mocks avoid real implementations
+3. **Realism**: Mock builders provide realistic data structures
+4. **Flexibility**: Mock factory simulates various API scenarios
+5. **Maintainability**: Changes to one layer don't break other tests
+
+### Common Pitfalls to Avoid
+
+- ❌ Don't use Mock Factory when testing controllers (too much integration)
+- ❌ Don't manually create complex objects when Mock Builders exist
+- ❌ Don't test multiple layers together in unit tests
+- ❌ Don't forget to `vi.clearAllMocks()` between tests
+- ✅ Use the right mock for the right layer
+- ✅ Keep tests focused on a single layer's responsibilities
 
 ## Mock Builder Patterns
 
@@ -493,7 +664,7 @@ describe("FormatterTests", () => {
 - Review snapshot changes carefully during updates
 - Keep snapshots focused and not overly large
 
-### 5. Custom Jest Matchers
+### 5. Custom Vitest Matchers
 
 **Domain-Specific Validation:**
 ```typescript
@@ -839,10 +1010,10 @@ npm test -- --updateSnapshot
 
 ```bash
 # Run with debugging
-node --inspect-brk node_modules/.bin/jest --runInBand
+node --inspect-brk node_modules/.bin/vitest --run
 
 # Use VS Code debugger
-# Set breakpoints and use "Debug Jest Tests" configuration
+# Set breakpoints and use "Debug Vitest Tests" configuration
 
 # Console output during tests
 import { restoreConsole } from '../test-utils/setup.js';
