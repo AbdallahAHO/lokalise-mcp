@@ -106,7 +106,7 @@
 		"vitest": "^3.2.4"
 	},
 	"dependencies": {
-		"@lokalise/node-api": "^14.9.1",
+		"@lokalise/node-api": "^15.2.1",
 		"@modelcontextprotocol/sdk": "^1.13.0",
 		"commander": "^14.0.0",
 		"cors": "^2.8.5",
