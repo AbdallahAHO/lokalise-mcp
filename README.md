@@ -1,9 +1,9 @@
 # Lokalise MCP Server
 
-> **⚠️ Disclaimer**: This is an unofficial, personal project and is not affiliated with, endorsed by, or associated with Lokalise Inc. It uses the publicly available [Lokalise Node.js SDK](https://github.com/lokalise/node-api) to provide MCP integration. All code and implementation are my own work.
+> **⚠️ Disclaimer**: This is an unofficial, personal project and is not affiliated with, endorsed by, or associated with Lokalise Inc. It uses the open-source [Lokalise Node.js SDK](https://github.com/lokalise/node-api) to provide MCP integration. All code and implementation are my own work.
 
 <div align="center">
-  **Bring the power of Lokalise to your AI assistant**
+  <b>Bring the power of Lokalise to your AI assistant</b>
 
   [![smithery badge](https://smithery.ai/badge/@AbdallahAHO/lokalise-mcp)](https://smithery.ai/server/@AbdallahAHO/lokalise-mcp)
   [![NPM Version](https://img.shields.io/npm/v/lokalise-mcp)](https://www.npmjs.com/package/lokalise-mcp)
@@ -12,216 +12,334 @@
   [![Node.js](https://img.shields.io/badge/Node.js-18%2B-green)](https://nodejs.org/)
 </div>
 
-## What is this?
+## 🎯 What Is This?
 
 The Lokalise MCP Server connects AI assistants like Claude to [Lokalise](https://lokalise.com), the leading translation management platform. Through natural conversation, you can manage translation projects, update content, and automate localization workflows—no coding required.
 
-### 🎯 Perfect for:
-- **Product Managers** - Monitor translation progress and identify bottlenecks
-- **Developers** - Automate key management and bulk updates
-- **Localization Teams** - Manage translations and collaborate efficiently
-- **Content Teams** - Keep translations synchronized across projects
+**Perfect for:** Product Managers • Developers • Localization Teams • Content Teams
 
-## ✨ Key Features
+---
 
-### 🎯 Why Choose Lokalise MCP?
+## 🚀 Key Features & Capabilities
 
-| Feature | Description |
-|---------|-------------|
-| **🚀 59 MCP Tools** | Comprehensive toolset covering all Lokalise operations |
-| **📊 11 Domains** | Organized by functional areas for easy discovery |
-| **🤖 17 Workflows** | Pre-built automation for complex multi-step tasks |
-| **🔄 Auto-Discovery** | New domains automatically registered, zero configuration |
-| **🌐 Dual Transport** | Supports both HTTP and STDIO modes |
-| **🔒 Secure** | Multi-layer configuration with OS keychain integration |
-| **📈 Production Ready** | Rate limiting, error recovery, and session logging |
+Transform your localization workflow with **59 tools** across **11 domains** and **17 pre-built automation templates**:
 
-## Capabilities
+| Feature Category | Capabilities | What You Get |
+|-----------------|-------------|--------------|
+| **🎯 Strategic Management** | Portfolio analysis, project health monitoring, team coordination | Executive insights, bottleneck identification, resource optimization |
+| **🔤 Smart Content Operations** | Bulk key operations (1000+ at once), filename filtering, platform tagging | Release-ready content management, iOS/Android/Web coordination |
+| **🌍 Global Expansion** | Language addition, progress tracking, completion analytics | Market entry automation, translation velocity insights |
+| **👥 Team Orchestration** | User groups, permissions, workload distribution, reviewer assignment | Optimal team structure, timezone-aware assignments |
+| **🔄 Workflow Automation** | File processing, TM+MT integration, multi-stage review pipelines | End-to-end automation, quality gates, escalation rules |
+| **📊 Real-time Monitoring** | Process dashboards, audit trails, bulk operation tracking | Operational visibility, failure detection, performance metrics |
+| **🔒 Enterprise Security** | Multi-layer auth, secure token handling, rate limiting | Production-ready security, compliance support |
 
-### 📊 **Project Management**
-- List and analyze all your projects with completion stats
-- Create new projects with base languages
-- Monitor translation health across teams
-- Empty projects while preserving settings
+### 🎯 **Why to use Lokalise MCP?**
 
-### 🔤 **Translation Keys (Enhanced)**
-- Browse and search translation keys
-- **NEW: Filter by uploaded filenames** for document-based workflows
-- Bulk create/update/delete operations (up to 1000 keys)
-- Filter by platform (iOS, Android, Web)
-- Cursor pagination for large datasets
+| **Traditional Approach** | **With Lokalise MCP** |
+|--------------------------|----------------------|
+| Manual project analysis across multiple screens | "Analyze my portfolio" → Instant strategic insights |
+| Hours setting up review workflows | "Create review tasks for uploaded file" → Done in seconds |
+| Complex team permission management | "Set up teams for 3 new markets" → Automated structure |
+| Reactive problem-solving | Proactive bottleneck identification and recommendations |
+| Tool-by-tool operations | Orchestrated multi-tool workflows with one prompt |
 
-### 🌍 **Languages & Translations**
-- Add new target languages instantly
-- Update translations across multiple languages
-- Track translation progress and review status
-- Bulk translation updates with rate limiting
+## ✨ See It In Action
 
-### 👥 **Team Collaboration (Expanded)**
-- **User Groups**: Organize teams with bulk permissions
-- **Team Users**: Workspace-level user management
-- Manage contributors and project permissions
-- Create and assign translation tasks
-- Add comments for translator context
-- Flexible assignment to groups or individuals
+Copy these prompts to experience sophisticated multi-tool orchestration. From simple requests to advanced patterns—Claude handles the complexity automatically:
 
-### 📝 **Content Management**
-- Maintain glossaries for consistency
-- Handle plural forms and variants
-- Process uploaded files with review workflows
-- Monitor queued processes and imports
 
-### 🔄 **Workflow Automation**
-- **Post-Upload Review**: Automated task creation for uploaded files
-- **Document Extraction**: Extract content and create translation keys
-- **TM+MT Integration**: Leverage translation memory and machine translation
-- **Flexible Assignment**: Auto-detect user groups vs individual reviewers
+### 💻 **React i18n Development Workflow (Cursor IDE)**
+*MCP Tools: `lokalise_list_projects` → `lokalise_list_keys` → `lokalise_create_keys` → `lokalise_list_usergroups` → `lokalise_create_task`*
 
-### 🔒 **Enterprise Ready**
-- Secure API token handling
-- Rate limiting and error recovery
-- Support for custom API endpoints
-- Multi-source configuration management
+```
+Prompt: "I'm working on a new checkout flow in React. Please scan my current
+components, extract all hardcoded strings that need internationalization,
+convert them to i18n keys using our naming convention (checkout.step1.title),
+refactor the JSX to use our i18next hooks, then sync the new keys to our
+'Mobile App' project in Lokalise and create translation tasks for our EU markets using relevant tools in configured Lokalise MCP.
 
-## 📦 Installation
+Use these exact Lokalise MCP tools:
+- lokalise_list_projects (to find Mobile App project)
+- lokalise_list_keys (to check for existing keys)
+- lokalise_create_keys (to upload new i18n keys)
+- lokalise_list_usergroups (to find EU translation teams)
+- lokalise_create_task (to create translation tasks)"
 
-### Option 1: Smithery install (recommended) ✨
+// Before: components/checkout/PaymentStep.tsx
+const PaymentStep = () => (
+  <div>
+    <h2>Payment Information</h2>
+    <p>Enter your card details below</p>
+    <button>Continue to Review</button>
+  </div>
+);
+
+What Claude orchestrates with MCP tools:
+✓ `lokalise_list_projects` - Locates 'Mobile App' project
+✓ `lokalise_list_keys` - Validates against existing keys to prevent duplicates
+✓ `lokalise_create_keys` - Bulk uploads new i18n keys with platform tags:
+  [{
+    key_name: "checkout.payment.title",
+    platforms: ["web", "ios", "android"],
+    translations: [{ language_iso: "en", translation: "Payment Information" }]
+  }]
+✓ `lokalise_list_usergroups` - Resolves "EU markets" to specific translation teams
+✓ `lokalise_create_task` - Creates translation tasks for DE, FR, ES, IT with team assignments
+✓ Auto-refactors JSX to use useTranslation hooks
+✓ Updates local i18n JSON files with new key structure
+
+// After: Automatically refactored
+const PaymentStep = () => {
+  const { t } = useTranslation();
+  return (
+    <div>
+      <h2>{t('checkout.payment.title')}</h2>
+      <p>{t('checkout.payment.subtitle')}</p>
+      <button>{t('checkout.payment.continue')}</button>
+    </div>
+  );
+};
+
+Result: Code internationalized, 12 new keys synced via Lokalise MCP tools,
+translation tasks created for 4 languages—all without leaving your IDE.
+Development workflow stays uninterrupted while localization setup happens
+automatically through direct lokalise MCP integration.
+```
+
+
+### 📊 **CSV Translation Upload Automation**
+*Triggers: `lokalise_list_projects` → CSV parsing → `lokalise_create_keys` (bulk) → `lokalise_list_project_languages` → `lokalise_create_task` (per language)*
+
+```
+Prompt: "I'm attaching our latest feature strings export from Product. It's a CSV with
+columns: key_id, context, en_source, es_draft, fr_draft. Using relevant tools in configured Lokalise MCP; Please upload these 50 new keys to our 'E-commerce Platform' project, create translation tasks for the missing
+languages (German, Italian, Portuguese), and assign them to our relevant regional teams.
+The Product team wants this shipped by end of sprint (March 15th)."
+
+[Attach: feature_v3_strings.csv]
+
+What Claude orchestrates:
+✓ Parses CSV and validates column structure
+✓ Locates E-commerce Platform project
+✓ Creates 50 keys with English source + Spanish/French drafts
+✓ Identifies missing target languages (DE, IT, PT)
+✓ Resolves regional team assignments automatically
+✓ Creates separate translation tasks per language/team
+✓ Sets March 15th deadline with buffer for review
+✓ Provides upload summary + task tracking URLs
+
+Result: 50 keys uploaded, 3 translation tasks created, teams notified—
+what used to take 2 hours of manual CSV imports, key creation, and task setup
+now happens in 30 seconds with full audit trail and team coordination.
+```
+
+### 🎯 **Strategic Portfolio Dashboard**
+*Triggers: `lokalise_list_projects` → `lokalise_get_project` (parallel) → `lokalise_list_project_languages` → `lokalise_list_tasks`*
+
+```
+Prompt: "I need a strategic overview of my localization portfolio. Using relevant tools in configured Lokalise MCP;
+Show me which projects need immediate attention, identify bottlenecks across teams, and give me data-driven
+recommendations for resource allocation. Include completion rates, task backlogs, and
+any projects that haven't seen activity in the last 30 days."
+
+What Claude does automatically:
+✓ Fetches all projects with statistics
+✓ Analyzes each project's health in parallel
+✓ Cross-references team workloads
+✓ Identifies stalled projects and overdue tasks
+✓ Generates strategic recommendations
+
+Result: Executive-level insights you can act on immediately
+```
+
+### 🔄 **Intelligent File Processing Workflow**
+*Triggers: `lokalise_list_projects` → `lokalise_list_keys` (filter by filename) → `lokalise_list_usergroups` + `lokalise_list_contributors` → `lokalise_list_project_languages` → `lokalise_create_task` (multiple)*
+
+```
+Prompt: "I just uploaded 'user-onboarding-v2.json' to my Mobile App project via the Lokalise UI.
+The TM+MT processing is done. Now create review tasks for quality assurance - assign
+Spanish content to our EMEA translation team, French to Marie (marie@ourcompany.com),
+and German to whoever is available on the DACH team. Set the deadline for next Friday."
+
+What Claude orchestrates:
+✓ Locates your Mobile App project
+✓ Finds all keys from the uploaded file
+✓ Resolves "EMEA translation team" → user group ID
+✓ Resolves "marie@ourcompany.com" → contributor ID
+✓ Finds DACH team members and assigns optimally
+✓ Creates separate review tasks per language
+✓ Sets appropriate deadlines and task descriptions
+
+Result: Complete review workflow ready in seconds, not minutes of manual setup
+```
+
+
+### 🚀 **Bulk Operations with Smart Validation**
+*Triggers: `lokalise_list_projects` → `lokalise_list_keys` (filtered) → `lokalise_bulk_update_keys` → `lokalise_list_tasks` → `lokalise_create_task`*
+
+```
+Prompt: "I need to clean up our iOS release. Find all keys tagged 'onboarding' across all
+projects, ensure they have iOS platform designation, verify they're all translated to
+Spanish and French, and create catch-up tasks for any missing translations. Also check
+if any of these keys have been changed in the last 7 days and might need re-review."
+
+What Claude coordinates:
+✓ Searches across all projects for 'onboarding' tagged keys
+✓ Audits platform tags and adds iOS where missing
+✓ Cross-checks translation completeness for Spanish/French
+✓ Identifies recently modified keys needing re-review
+✓ Creates targeted tasks for missing translations
+✓ Provides summary of changes and remaining work
+
+Result: Release-ready content with full audit trail and completion plan
+```
+
+> **💡 Master Tip**: The more context and constraints you provide, the smarter Claude's orchestration becomes. Include timelines, priorities, team constraints, and business objectives for maximum AI leverage.
+
+---
+
+## 🎯 Built-in Workflow Prompts
+
+Beyond these examples, the MCP server includes **17 sophisticated prompt templates** that orchestrate complex multi-tool workflows automatically. These aren't just examples—they're production-ready templates you can use immediately.
+
+### 📋 **Project Management Suite**
+Ready-to-use prompts for strategic project oversight:
+
+| Prompt Template | What It Does | Tools Orchestrated |
+|----------------|--------------|-------------------|
+| **`project_portfolio_overview`** | Strategic analysis across all projects with bottleneck identification | 4-6 tools in parallel |
+| **`project_deep_dive`** | Comprehensive health analysis of a specific project | 6-8 tools coordinated |
+| **`new_project_setup`** | Complete project creation with languages and initial structure | 5-7 tools sequenced |
+| **`project_cleanup`** | Safe removal of deprecated content with impact analysis | 3-5 tools with validation |
+
+### 🌍 **Localization Workflow Suite**
+Automated language expansion and progress monitoring:
+
+| Prompt Template | What It Does | Tools Orchestrated |
+|----------------|--------------|-------------------|
+| **`language_expansion`** | Add new markets with proper configuration and team setup | 4-6 tools coordinated |
+| **`translation_progress_check`** | Comprehensive progress analysis with actionable insights | 3-5 tools in parallel |
+| **`bulk_key_creation`** | Smart content organization for new features | 3-4 tools sequenced |
+
+### 🔄 **Advanced Workflow Automation**
+Sophisticated multi-stage orchestration:
+
+| Prompt Template | What It Does | Tools Orchestrated |
+|----------------|--------------|-------------------|
+| **`post_upload_review_workflow`** | Complete review pipeline for uploaded files with team assignment | 6-8 tools orchestrated |
+| **`document_extraction_review_workflow`** | Extract uploaded CSV/JSON content as keys + create translation tasks | 5-7 tools coordinated |
+| **`automated_review_pipeline`** | Multi-stage review with quality gates and escalation | 8-10 tools orchestrated |
+| **`team_translation_setup`** | Organize teams with optimal workload distribution | 6-8 tools coordinated |
+
+### 🚀 **Enterprise Automation Suite**
+Production-ready workflows for complex operations:
+
+| Prompt Template | What It Does | Tools Orchestrated |
+|----------------|--------------|-------------------|
+| **`process_monitoring_dashboard`** | Real-time monitoring across projects with failure detection | 4-6 tools in parallel |
+| **`user_group_audit`** | Comprehensive team analysis with security recommendations | 5-7 tools coordinated |
+| **`translation_memory_import`** | Smart TM integration with conflict resolution | 6-8 tools orchestrated |
+| **`bulk_operations_monitor`** | Track and audit large-scale changes with rollback info | 4-6 tools coordinated |
+| **`team_onboarding_workflow`** | Complete new member setup with permissions and training | 5-7 tools sequenced |
+
+### 🎭 **How to Use Prompt Templates**
+
+```bash
+# In Claude, simply reference the prompt name:
+"Use the project_portfolio_overview prompt from configured Lokalise MCP to analyze my localization portfolio"
+
+# Or trigger directly with parameters:
+"Run the post_upload_review_workflow from configured Lokalise MCP  for 'user-guide.pdf' in Mobile App project,
+assign Spanish to EMEA Team and French to marie@company.com"
+
+# Customize for your needs:
+"Use the team_translation_setup prompt from configured Lokalise MCP but focus on timezone optimization
+for our distributed team across 4 continents"
+```
+
+**Template Benefits:**
+- 🎯 **Zero Learning Curve**: Pre-built workflows ready to use
+- 🚀 **Multi-Tool Orchestration**: Each template coordinates 3-10 tools automatically
+- 🧠 **Context Awareness**: Smart parameter resolution and error handling
+- 📊 **Rich Outputs**: Formatted reports with actionable insights
+- ⚡ **Production Ready**: Battle-tested in real localization projects
+
+---
+
+
+## 📦 Quick Start
+
+Get up and running in under 60 seconds:
+
+### 🚀 **Recommended: One-Click Install**
 
 [![smithery badge](https://smithery.ai/badge/@AbdallahAHO/lokalise-mcp)](https://smithery.ai/server/@AbdallahAHO/lokalise-mcp)
 
-[Smithery](https://smithery.ai/server/@AbdallahAHO/lokalise-mcp) provides automated installation for popular MCP clients:
-
 ```bash
-# Claude Desktop
+# Install for Claude Desktop (most popular)
 npx -y @smithery/cli install @AbdallahAHO/lokalise-mcp --client claude
 
-# Cursor
-npx -y @smithery/cli install @AbdallahAHO/lokalise-mcp --client cursor
-
-# VS Code (Claude Code)
-npx -y @smithery/cli install @AbdallahAHO/lokalise-mcp --client vscode
-
-# Raycast
-npx -y @smithery/cli install @AbdallahAHO/lokalise-mcp --client raycast
-
-# Gemini CLI
-npx -y @smithery/cli install @AbdallahAHO/lokalise-mcp --client gemini
+# Other clients: cursor, vscode, raycast, gemini
 ```
 
-What this does:
-- ✅ Installs and configures the MCP server for your client
-- ✅ Prompts for and stores `LOKALISE_API_KEY`
-- ✅ Sets required permissions automatically
+**What happens:** Auto-installs, configures permissions, prompts for your Lokalise API key, ready to use.
 
-Inspect tools available before installing:
+### 🎯 **Alternative Installation Methods**
+
+<details>
+<summary><b>Claude Desktop Extension (.dxt)</b></summary>
+
+**Fast local install, no Node.js required:**
+
+1. Download the latest `.dxt` from [Releases](https://github.com/AbdallahAHO/lokalise-mcp/releases)
+2. Double-click or drag into Claude Desktop → Settings → Extensions
+3. Enter your `LOKALISE_API_KEY` when prompted
+4. Verify: "Can you list my Lokalise projects?"
+
+</details>
+
+<details>
+<summary><b>NPX (No Installation)</b></summary>
+
+**Run directly without installing:**
 
 ```bash
-npx -y @smithery/cli@latest inspect @AbdallahAHO/lokalise-mcp
-```
-
-### Option 2: Claude Desktop Extension (DXT)
-
-Fast, local install for Claude Desktop using a packaged extension.
-
-1) Download the latest `.dxt` from Releases:
-   - https://github.com/AbdallahAHO/lokalise-mcp/releases
-
-2) Install in Claude Desktop:
-   - Double‑click the `.dxt` file, or
-   - Drag it into Claude Desktop → Settings → Extensions
-
-3) When prompted, enter your `LOKALISE_API_KEY` (stored securely in the OS keychain). No Node.js needed; Claude ships the runtime.
-
-4) Verify: ask “Can you list my Lokalise projects?”
-
-Notes:
-- Uses the `/mcp` HTTP endpoint internally and stdio as appropriate
-- Updates by installing a newer `.dxt` from Releases
-
-### Option 3: NPM Global Install
-
-Install globally for persistent access:
-
-```bash
-npx -y @smithery/cli@latest inspect @AbdallahAHO/lokalise-mcp
-```
-
-### Option 2: Claude Desktop Extension (DXT)
-
-Fast, local install for Claude Desktop using a packaged extension.
-
-1) Download the latest `.dxt` from Releases:
-   - https://github.com/AbdallahAHO/lokalise-mcp/releases
-
-2) Install in Claude Desktop:
-   - Double‑click the `.dxt` file, or
-   - Drag it into Claude Desktop → Settings → Extensions
-
-3) When prompted, enter your `LOKALISE_API_KEY` (stored securely in the OS keychain). No Node.js needed; Claude ships the runtime.
-
-4) Verify: ask “Can you list my Lokalise projects?”
-
-Notes:
-- Uses the `/mcp` HTTP endpoint internally and stdio as appropriate
-- Updates by installing a newer `.dxt` from Releases
-
-### Option 3: Local (clone + run)
-
-# Run the server
-lokalise-mcp
-```
-
-### Option 4: NPX (Quick Start)
-
-Use npx to run the server without installation:
-
-```bash
-# Run directly with npx
+# Direct execution
 npx lokalise-mcp
-
-# Or configure in Claude Desktop's config file:
 ```
 
-**Claude Desktop Configuration** (`~/Library/Application Support/Claude/claude_desktop_config.json`):
-
+**Claude Desktop config** (`~/Library/Application Support/Claude/claude_desktop_config.json`):
 ```json
 {
   "mcpServers": {
     "lokalise": {
       "command": "npx",
       "args": ["-y", "lokalise-mcp"],
-      "env": {
-        "LOKALISE_API_KEY": "your-api-key-here"
-      }
+      "env": {"LOKALISE_API_KEY": "your-api-key-here"}
     }
   }
 }
 ```
 
-This will automatically download and run the latest version when Claude Desktop starts.
+</details>
 
-### Option 4: Local (clone + run)
-
-Use this for development or when you prefer to run locally:
+<details>
+<summary><b>Global Install</b></summary>
 
 ```bash
-git clone https://github.com/AbdallahAHO/lokalise-mcp.git
-cd lokalise-mcp
-npm install
-
-# Provide your API key
-export LOKALISE_API_KEY="your-api-key-here"
-
-# Start HTTP transport (default port 3000)
-npm run mcp:http
-
-# Or start STDIO transport
-npm run mcp:stdio
+npm install -g lokalise-mcp
+lokalise-mcp  # Run the server
 ```
 
-Then connect your client to either:
-- STDIO: configure your client to launch the binary `lokalise-mcp` (via `npx lokalise-mcp@latest`), or simply use the Smithery install
-- HTTP (SSE): `http://localhost:3000/mcp`
+</details>
+
+### 🔑 **Get Your API Key**
+
+1. Log in to [Lokalise](https://app.lokalise.com)
+2. Go to **Settings** → **API Tokens**
+3. Click **Generate new token**
+4. Copy and save securely
 
 ## ⚙️ Configuration
 
@@ -283,50 +401,14 @@ Claude will use the `lokalise_list_projects` tool to fetch and display your proj
 
 If installed via Smithery, no manual config is needed. Verify by looking for the 🔌 icon and asking Claude: “Can you list my Lokalise projects?”
 
-### 💬 Example Conversations
+### ✅ **Verification**
 
-#### 📊 **Project Overview**
+Once installed, test the connection:
 ```
-You: "Show me all my Lokalise projects and their translation progress"
-
-Claude: I'll fetch your Lokalise projects with their translation statistics.
-[Uses lokalise_list_projects tool]
-
-Here are your projects:
-1. Mobile App (85% translated, 5 languages)
-2. Website (92% translated, 12 languages)
-3. Documentation (78% translated, 3 languages)
+"Can you list my Lokalise projects?"
 ```
 
-#### 🔤 **Content Management**
-```
-You: "Create a key 'welcome_message' with text 'Welcome to our app!'"
-
-Claude: I'll create that translation key with the English text.
-[Uses lokalise_create_keys tool]
-
-✅ Created 'welcome_message' with base translation.
-```
-
-#### 🔄 **Bulk Operations**
-```
-You: "Find all keys containing 'button' and add iOS platform"
-
-Claude: I'll find and update all button-related keys.
-[Uses lokalise_list_keys and lokalise_bulk_update_keys tools]
-
-✅ Updated 23 keys with iOS platform designation.
-```
-
-#### 👥 **Team Collaboration**
-```
-You: "Create a German translation task and assign to the German team"
-
-Claude: I'll create a task for German translations.
-[Uses lokalise_create_task tool]
-
-✅ Created task with 47 keys assigned to German team.
-```
+Claude will use the `lokalise_list_projects` tool and display your projects with statistics.
 
 ## 📚 Available Tools
 
@@ -360,16 +442,15 @@ The server provides **59 MCP tools** covering all major Lokalise operations acro
 - `lokalise_update_language` - Update language settings
 - `lokalise_remove_language` - Remove a language
 
-### User Groups (9 tools) - **NEW**
+### User Groups (8 tools) - **NEW**
 - `lokalise_list_usergroups` - List all user groups
 - `lokalise_get_usergroup` - Get group details
 - `lokalise_create_usergroup` - Create new group
 - `lokalise_update_usergroup` - Update group settings
 - `lokalise_delete_usergroup` - Delete group
-- `lokalise_add_usergroup_members` - Add members
-- `lokalise_remove_usergroup_members` - Remove members
-- `lokalise_list_usergroup_members` - List members
-- `lokalise_add_usergroup_projects` - Assign to projects
+- `lokalise_add_members_to_group` - Add members to group
+- `lokalise_remove_members_from_group` - Remove members from group
+- `lokalise_add_projects_to_group` - Assign projects to group
 
 ### Translations (4 tools)
 - `lokalise_list_translations` - List with cursor pagination
@@ -397,25 +478,6 @@ The server provides **59 MCP tools** covering all major Lokalise operations acro
 | `TRANSPORT_MODE` | Server mode: `http` or `stdio` | `http` |
 | `PORT` | HTTP server port | `3000` |
 | `DEBUG` | Enable debug logging | `false` |
-
-## 🤝 Contributing
-
-We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for details on:
-- Setting up the development environment
-- Architecture and code organization
-- Automated CI/CD checks on all PRs
-- Release process and workflow
-- Creating new tools and domains
-- Submitting pull requests
-
-## 📖 Documentation
-
-| Document | Description |
-|----------|-------------|
-| [🤝 Contributing Guide](CONTRIBUTING.md) | Development setup and guidelines |
-| [🌐 Lokalise API Docs](https://developers.lokalise.com/reference) | Official API reference |
-| [🤖 MCP Documentation](https://modelcontextprotocol.io) | Learn about Model Context Protocol |
-| [🎯 Smithery Server](https://smithery.ai/server/@AbdallahAHO/lokalise-mcp) | Installation and updates |
 
 ## 🐛 Troubleshooting
 
@@ -459,78 +521,25 @@ DEBUG=true npm run mcp:http
 
 ### Getting Help
 
+1. Check this troubleshooting section
 2. Review [GitHub Issues](https://github.com/AbdallahAHO/lokalise-mcp/issues)
 3. Enable debug mode for detailed error messages
 4. Contact support with debug logs
 
-## 🧪 Testing
-
-### Testing Infrastructure (Phase 1 ✅ COMPLETE)
-
-The project features a comprehensive testing infrastructure with **113 passing tests** and zero failures:
-
-| Metric | Status |
-|--------|--------|
-| **Test Suites** | 6 passing, 0 failing |
-| **Individual Tests** | 113 passing, 0 failing |
-| **Snapshot Tests** | 66 passing |
-| **Execution Time** | 0.663 seconds |
-| **Test Coverage** | 18.18% (Phase 1 baseline) |
-
-### Key Testing Features
-
-- **🏗️ Mock Factory System** - Complete Lokalise API simulation
-- **🔨 Domain Mock Builders** - Fluent APIs for test data creation
-- **📊 Performance Monitoring** - Built-in memory and CPU tracking
-- **🚀 Test Scaffolding** - Automated test generation (90% time savings)
-- **🔄 Error Simulation** - Comprehensive error scenario testing
-
-### Running Tests
-
-```bash
-# Run all tests
-npm test
-
-# Run with coverage report
-npm run test:coverage
-
-# Run specific test file
-npm test -- projects.formatter.test.ts
-
-# Generate new test files
-npm run scaffold:tests
-```
-
-### Mock Builder Example
-
-```typescript
-// Using the ProjectsMockBuilder
-import { ProjectsMockBuilder } from "./test-utils/mock-builders/projects.mock";
-
-const mockBuilder = new ProjectsMockBuilder();
-const project = mockBuilder
-  .withProject({
-    name: "My Translation Project",
-    project_id: "123.abc",
-    statistics: {
-      keys_total: 100,
-      progress_total: 75
-    }
-  })
-  .withPagination(1, 10)
-  .build();
-```
-
-### Test Documentation
-
-- [Testing Guide](docs/TESTING-GUIDE.md) - Comprehensive testing patterns
-- [Troubleshooting](docs/TEST-TROUBLESHOOTING.md) - Common issues and solutions
-- [New Domain Testing](docs/NEW-DOMAIN-TESTING.md) - Adding tests for new domains
-- [Phase 1 Report](docs/PHASE1-COMPLETION-REPORT.md) - Infrastructure achievements
-
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) for details.
+
+## 🤝 Contributing
+
+We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for details on:
+- Setting up the development environment
+- Architecture and code organization
+- Automated CI/CD checks on all PRs
+- Release process and workflow
+- Creating new tools and domains
+- Submitting pull requests
+
 
 ## 🙏 Acknowledgments
 
