@@ -1,4 +1,29 @@
-## [1.0.7] - 2025-08-14
+## [1.1.0] - 2025-08-28
+
+### Added
+- **Enhanced HTTP Transport with Web UI**: New rich HTTP transport featuring an interactive health check page with server status, configuration display, and detailed usage instructions for easier debugging and setup
+- **Advanced Manifest System**: Comprehensive manifest with 59 tools across 11 domains and 38 well-defined workflow prompts for enhanced AI assistant capabilities
+- **Production-Ready Test Infrastructure**: Complete test scaffolding system with interactive CLI for generating domain tests, comprehensive mock builders, and performance benchmarking utilities
+- **Comprehensive Documentation Portal**: Organized documentation structure with categorized guides for getting started, development, testing, deployment, and project management
+
+### Changed
+- **Testing Framework Migration**: Migrated from Jest to Vitest for improved ES module support, faster test execution, and better TypeScript integration
+- **Configuration System Enhancement**: Enhanced configuration parsing with support for base64-encoded Smithery configs and dot-notation query parameters for dynamic runtime configuration
+- **Documentation Restructure**: Reorganized all documentation into logical categories (01-getting-started, 02-development, 03-testing, 04-deployment, 05-project-management, 06-reference) for improved discoverability
+- **Manifest Tooling Improvements**: Enhanced manifest generation with multiline string parsing, escaped content support, and detailed tool descriptions with usage examples
+
+### Fixed
+- **Test Stability & Reliability**: Implemented stable snapshot testing with fixed date mocking, standardized fixture values, and comprehensive edge case coverage
+- **Build Optimization**: Excluded test and fixture files from TypeScript compilation for improved build performance and reduced bundle size
+- **Error Handling Consistency**: Standardized error handling patterns across all domains with proper context preservation and mock simulation
+
+### Developer Experience
+- **Interactive Test Scaffolding**: New CLI tool (`npm run scaffold:tests`) for generating complete test suites with mock builders and fixtures
+- **Three-Tier Mocking Architecture**: Structured approach with module mocks, mock builders, and mock factory for maintainable and type-safe tests
+- **Performance Testing Utilities**: Built-in benchmarking and performance measurement tools for testing bulk operations and API response times
+- **Comprehensive Test Coverage**: 236+ passing tests with ~25% coverage including pagination, error handling, and bulk operations validation
+
+## [1.0.7] - 2025-08-18
 
 ### Added
 - **Initial Languages Support on Project Creation**: Enhanced project creation to support specifying initial languages when creating a project, with automatic base language inclusion when it differs from English
