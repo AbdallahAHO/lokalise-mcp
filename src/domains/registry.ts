@@ -168,7 +168,16 @@ export class DomainRegistry {
 			});
 			return module;
 		} catch (error) {
-			methodLogger.error(`Failed to load domain ${name}`, { error });
+			const errorMessage =
+				error instanceof Error ? error.message : String(error);
+			const errorStack = error instanceof Error ? error.stack : undefined;
+
+			methodLogger.error(`Failed to load domain ${name}`, {
+				error: errorMessage,
+				stack: errorStack,
+				indexPath: join(this.domainsPath, name, "index.js"),
+				name,
+			});
 
 			// Update registry with error
 			this.registryMap.set(name, {
@@ -176,7 +185,7 @@ export class DomainRegistry {
 				path: join(this.domainsPath, name),
 				module: {},
 				loaded: false,
-				error: error instanceof Error ? error.message : String(error),
+				error: errorMessage,
 			});
 
 			return null;

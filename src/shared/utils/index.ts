@@ -1,5 +1,4 @@
 // Shared utilities exports
-export * from "./cli.test.util.js";
 export * from "./config.util.js";
 export * from "./constants.util.js";
 export * from "./error.util.js";

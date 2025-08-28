@@ -317,63 +317,63 @@ function registerTools(server: McpServer) {
 
 	server.tool(
 		"lokalise_list_usergroups",
-		"Lists all user groups in a Lokalise team with pagination support",
+		"Lists all user groups in a Lokalise team with pagination support. Required: teamId. Optional: limit (100), page. Use to audit team organization, check group structure, or prepare group management operations. Returns: User groups with names, member counts, permissions, and language assignments. Essential for understanding team hierarchy.",
 		ListUsergroupsToolArgs.shape,
 		handleListUsergroups,
 	);
 
 	server.tool(
 		"lokalise_get_usergroup",
-		"Gets detailed information about a specific user group",
+		"Gets detailed information about a specific user group including members, permissions, and project assignments. Required: teamId, groupId. Use to audit group configuration, verify member access, or understand permission structure. Returns: Complete group profile with admin rights, language permissions, and assigned projects/members.",
 		GetUsergroupsToolArgs.shape,
 		handleGetUsergroups,
 	);
 
 	server.tool(
 		"lokalise_create_usergroup",
-		"Creates a new user group in a Lokalise team",
+		"Creates a new user group in a Lokalise team for organized permission management. Required: teamId, name, isReviewer, isAdmin. Optional: adminRights, languages, projects, members. Use to establish role-based access control, organize team permissions, or set up project-specific groups. Returns: Created group with assigned ID and configuration.",
 		CreateUsergroupsToolArgs.shape,
 		handleCreateUsergroups,
 	);
 
 	server.tool(
 		"lokalise_update_usergroup",
-		"Updates a user group's properties",
+		"Updates a user group's properties including permissions and assignments. Required: teamId, groupId, name, isReviewer, isAdmin. Optional: adminRights, languages. Use to adjust group permissions, modify access levels, or reorganize team structure. Returns: Updated group configuration. Note: Cannot modify projects/members here - use dedicated tools.",
 		UpdateUsergroupsToolArgs.shape,
 		handleUpdateUsergroups,
 	);
 
 	server.tool(
 		"lokalise_delete_usergroup",
-		"Deletes a user group from a Lokalise team",
+		"Deletes a user group from a Lokalise team, removing all associated permissions. Required: teamId, groupId. Use for cleanup, removing obsolete groups, or restructuring team organization. Returns: Deletion confirmation. Warning: Removes all group assignments - members lose group-based permissions immediately.",
 		DeleteUsergroupsToolArgs.shape,
 		handleDeleteUsergroups,
 	);
 
 	server.tool(
 		"lokalise_add_members_to_group",
-		"Adds users to a user group",
+		"Adds users to a user group, granting them group-based permissions and project access. Required: teamId, groupId, userIds array. Use to onboard team members, assign role-based access, or batch permission updates. Returns: Operation confirmation. Members immediately gain group permissions and project access.",
 		AddMembersToolArgs.shape,
 		handleAddMembers,
 	);
 
 	server.tool(
 		"lokalise_remove_members_from_group",
-		"Removes users from a user group",
+		"Removes users from a user group, revoking group-based permissions and project access. Required: teamId, groupId, userIds array. Use for role changes, offboarding, or permission cleanup. Returns: Operation confirmation. Warning: Immediate effect - users lose group permissions and project access.",
 		RemoveMembersToolArgs.shape,
 		handleRemoveMembers,
 	);
 
 	server.tool(
 		"lokalise_add_projects_to_group",
-		"Adds projects to a user group",
+		"Adds projects to a user group, granting all group members access to specified projects. Required: teamId, groupId, projectIds array. Use to expand group project scope, onboard projects to existing teams, or batch project assignments. Returns: Operation confirmation. All group members gain immediate project access.",
 		AddProjectsToolArgs.shape,
 		handleAddProjects,
 	);
 
 	server.tool(
 		"lokalise_remove_projects_from_group",
-		"Removes projects from a user group",
+		"Removes projects from a user group, revoking group member access to specified projects. Required: teamId, groupId, projectIds array. Use to limit project scope, offboard projects, or restructure access. Returns: Operation confirmation. Warning: All group members lose immediate project access.",
 		RemoveProjectsToolArgs.shape,
 		handleRemoveProjects,
 	);

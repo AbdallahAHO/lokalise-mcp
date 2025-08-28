@@ -113,5 +113,13 @@
 		"skipLibCheck": true /* Skip type checking all .d.ts files. */
 	},
 	"include": ["src/**/*"],
-	"exclude": ["**/__fixtures__/**/*", "**/*.test.ts"]
+	"exclude": [
+		"**/__fixtures__/**/*",
+		"**/*.test.ts",
+		"**/*.test.js",
+		"**/test-utils/**/*",
+		"**/scripts/**/*",
+		"**/__mocks__/**/*",
+		"**/__snapshots__/**/*"
+	]
 }

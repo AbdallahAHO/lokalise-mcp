@@ -107,14 +107,14 @@ function registerTools(server: McpServer) {
 
 	server.tool(
 		"lokalise_list_queued_processes",
-		"Lists all background/async processes in a Lokalise project with status tracking",
+		"Lists all background/async processes in a Lokalise project with status tracking. Required: projectId. Optional: limit (100), page. Use to monitor file uploads, downloads, bulk operations, or troubleshoot process issues. Returns: Processes with status, progress, and completion estimates.",
 		ListQueuedprocessesToolArgs.shape,
 		handleListQueuedprocesses,
 	);
 
 	server.tool(
 		"lokalise_get_queued_process",
-		"Gets detailed status and information about a specific async process (upload, download, etc.)",
+		"Gets detailed status and information about a specific async process (upload, download, etc.). Required: projectId, processId. Use to check process completion, diagnose failures, or get detailed progress information. Returns: Complete process details with logs and status history.",
 		GetQueuedprocessesToolArgs.shape,
 		handleGetQueuedprocesses,
 	);

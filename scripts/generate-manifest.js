@@ -32,19 +32,31 @@ async function extractToolsFromFile(filePath) {
 		const content = await readFile(filePath, "utf-8");
 		const tools = [];
 
-		// Match server.tool() calls with better multiline support
-		// This regex captures the tool name and the full description string
-		const toolRegex =
-			/server\.tool\(\s*["'`]([^"'`]+)["'`]\s*,\s*["'`]((?:[^"'`\\]|\\.)*)["'`]/gs;
+		// Find all server.tool() calls and parse their arguments properly
+		const toolCallRegex = /server\.tool\(\s*/g;
 		let match;
 
-		// biome-ignore lint/suspicious/noAssignInExpressions: YOLO
-		while ((match = toolRegex.exec(content)) !== null) {
-			const name = match[1] ? match[1].trim() : "";
-			const description = match[2] ? match[2].trim() : "";
+		// biome-ignore lint/suspicious/noAssignInExpressions: Need to iterate through matches
+		while ((match = toolCallRegex.exec(content)) !== null) {
+			const startIndex = match.index + match[0].length;
+
+			// Parse the first argument (tool name)
+			const nameResult = parseStringLiteral(content, startIndex);
+			if (!nameResult) continue;
+
+			// Skip comma and whitespace
+			let nextIndex = nameResult.endIndex;
+			while (nextIndex < content.length && /[\s,]/.test(content[nextIndex])) {
+				nextIndex++;
+			}
+
+			// Parse the second argument (description)
+			const descResult = parseStringLiteral(content, nextIndex);
+			if (!descResult) continue;
+
 			tools.push({
-				name,
-				description,
+				name: nameResult.value,
+				description: descResult.value,
 			});
 		}
 
@@ -53,6 +65,69 @@ async function extractToolsFromFile(filePath) {
 		console.error(chalk.red(`Error reading ${filePath}:`), error.message);
 		return [];
 	}
+}
+
+/**
+ * Parse a string literal from the given position, handling escape sequences properly
+ */
+function parseStringLiteral(content, startIndex) {
+	if (startIndex >= content.length) return null;
+
+	const quote = content[startIndex];
+	if (quote !== '"' && quote !== "'" && quote !== "`") return null;
+
+	let i = startIndex + 1;
+	let value = "";
+
+	while (i < content.length) {
+		const char = content[i];
+
+		if (char === quote) {
+			// Found closing quote
+			return { value, endIndex: i + 1 };
+		}
+
+		if (char === "\\") {
+			// Handle escape sequence
+			i++;
+			if (i < content.length) {
+				const escaped = content[i];
+				switch (escaped) {
+					case "n":
+						value += "\n";
+						break;
+					case "t":
+						value += "\t";
+						break;
+					case "r":
+						value += "\r";
+						break;
+					case "\\":
+						value += "\\";
+						break;
+					case '"':
+						value += '"';
+						break;
+					case "'":
+						value += "'";
+						break;
+					case "`":
+						value += "`";
+						break;
+					default:
+						value += escaped;
+						break;
+				}
+			}
+		} else {
+			value += char;
+		}
+
+		i++;
+	}
+
+	// Unclosed string
+	return null;
 }
 
 /**
@@ -333,6 +408,19 @@ async function generateManifest() {
 		manifest.repository = packageJson.repository;
 	}
 
+	// Preserve manually crafted display_name and description if they exist and are custom
+	if (!manifest.display_name || manifest.display_name === "Lokalise MCP") {
+		manifest.display_name = "Lokalise MCP";
+	}
+
+	if (
+		!manifest.description ||
+		manifest.description.includes("Manage 59 tools across 11 domains")
+	) {
+		manifest.description =
+			"Transform Lokalise into your conversational AI assistant. Manage tools across domains with natural language - from project creation to translation workflows, team management to bulk operations. Stop clicking, start commanding.";
+	}
+
 	// Discover and extract tools
 	console.log(chalk.yellow("📂 Discovering domain tools..."));
 	const toolFiles = await discoverToolFiles();
@@ -362,15 +450,24 @@ async function generateManifest() {
 	manifest.tools = allTools;
 	manifest.tools_generated = true;
 
-	// Generate long description
-	console.log(chalk.yellow("📝 Generating long description..."));
-	manifest.long_description = generateLongDescription(allTools, domainCounts);
+	// Only generate long description if it doesn't exist or is the old auto-generated format
+	if (
+		!manifest.long_description ||
+		manifest.long_description.includes(
+			"Transform Your Localization Workflow with Conversational AI",
+		)
+	) {
+		console.log(chalk.yellow("📝 Generating long description..."));
+		manifest.long_description = generateLongDescription(allTools, domainCounts);
+	} else {
+		console.log(chalk.gray("📝 Preserving existing long description..."));
+	}
 
 	// Extract prompts (if implemented)
 	const prompts = await extractPrompts();
 	if (prompts.length > 0) {
 		manifest.prompts = prompts;
-		manifest.prompts_generated = false; // Set to true when auto-generation is implemented
+		manifest.prompts_generated = true; // Set to true when auto-generation is implemented
 	}
 
 	// Write the manifest
