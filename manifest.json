@@ -3,8 +3,8 @@
 	"name": "lokalise-mcp",
 	"display_name": "Lokalise MCP",
 	"version": "1.0.7",
-	"description": "Unofficial Lokalise integration for AI assistants - manage projects, keys, languages, tasks, translations, teams, and workflows through natural language with 59 intelligent tools across 11 domains.",
-	"long_description": "# Lokalise MCP Server\n\n> **Disclaimer**: This is an independent project and not affiliated with Lokalise Inc. It uses the publicly available Lokalise Node.js SDK to provide MCP integration.\n\n## Transform Your Localization Workflow with Conversational AI\n\n**Stop clicking, start commanding.** With 59 intelligent tools across 9 domains, this MCP server transforms Lokalise from a complex UI into your personal localization assistant. Simply describe what you need in natural language, and watch as your AI orchestrates sophisticated API workflows in seconds.\n\nInstead of clicking through multiple screens, just chat with your AI assistant:\n- *\"Show me all projects with less than 80% translation progress\"*\n- *\"Create a new mobile app project with German, French, and Spanish support\"*\n- *\"Find all untranslated keys in the iOS app and assign them to the German team\"*\n- *\"Archive all keys tagged 'v1_deprecated' across all projects\"*\n\n### 59 Production-Ready Tools Across 9 Domains\n\n**Contributors (5 tools)** - Team collaboration and permission management\n**Keys (5 tools)** - Intelligent key management with bulk operations and smart filtering\n**Glossary (5 tools)** - Terminology consistency and brand voice enforcement\n**Project (5 tools)** - Comprehensive project management capabilities\n**Tasks (5 tools)** - Workflow automation and deadline management\n**Group (4 tools)** - Comprehensive group management capabilities\n**Projects (4 tools)** - Complete project lifecycle management from creation to archival\n**Translations (4 tools)** - Direct translation management with review workflows\n\n### Real-World Workflows That Save Hours\n\n**For Localization Managers:**\n- *Morning standup in 10 seconds*: \"Give me the health check for all active projects. Who's behind schedule?\"\n- *Instant team scaling*: \"Add marie@company.com as a French reviewer to all e-commerce projects\"\n- *Proactive monitoring*: \"Alert me when any project drops below 70% completion\"\n\n**For Developers:**\n- *Zero-friction deployment*: \"Sync the feature/new-login branch to Lokalise and create tasks for Spanish and German\"\n- *Instant validation*: \"Check if all keys in the Android app have iOS equivalents\"\n- *Automated QA*: \"Find all keys with unbalanced brackets and create a cleanup task\"\n\n**For Marketing Teams:**\n- *Campaign launch in one command*: \"Create a project from this Google Doc, translate to our tier-1 markets, use informal tone\"\n- *Brand consistency*: \"Add 'QuantumLeap' to the glossary as non-translatable across all projects\"\n- *Content updates*: \"Update all homepage headlines with the new tagline across all languages\"\n\n**Traditional UI Workflow:**\n- Navigate through multiple screens\n- Click through complex forms\n- Context switch between tools\n- Time: 10-15 minutes per task\n\n**Conversational MCP Workflow:**\n- Express intent in natural language\n- AI orchestrates API calls\n- Results delivered instantly\n- Time: 10-30 seconds per task\n\n\n### Get Started in 30 Seconds\n\n1. Install the MCP server\n2. Add your Lokalise API token\n3. Start commanding your localization workflow\n",
+	"description": "Transform Lokalise into a conversational AI localization copilot inside Claude Desktop.",
+	"long_description": "# 🚀 Lokalise MCP – AI-Powered Localization Copilot> Transform Lokalise into a **conversational AI assistant** inside Claude or any MCP-enabled app.  Stop navigating complex UIs — start commanding your localization pipeline with natural language.--- ## 🎯 Why It MattersManaging localization projects often means hours of clicking through UIs: creating projects, adding languages, onboarding translators, assigning tasks, chasing deadlines.  With Lokalise MCP, you simply **tell Claude what you want**, and it orchestrates the right tools instantly.  - \"Create a new Mobile App project with German, French, and Spanish, assign the EU translation team, and set tasks due next Friday.\"  - \"Upload this CSV of 50 new keys, add them to our E-commerce project, and create translation tasks for missing DE/IT/PT by March 15.\"  - \"Give me a portfolio health report across all projects, flagging overdue tasks and inactive projects.\"  Hours of work shrink into seconds.   --- \n ## 🛠️ Tools – The Building BlocksLokalise MCP comes with **59 tools** across 11 domains. They're the low-level capabilities that make up any localization workflow.  ### 👥 Contributors & TeamsOnboard new translators, update roles, manage permissions, audit contributors.  ### 🗂️ ProjectsCreate, update, reset, or analyze projects. Generate portfolio overviews.  ### 🌍 LanguagesAdd new target markets, adjust plural rules, inspect progress, or remove languages.  ### 🔑 Keys & ContentCreate new keys (up to 1000 at once), bulk update metadata, delete deprecated content, or deep-inspect a single key.  ### ✍️ TranslationsApprove, update, or bulk-edit translations. Audit quality flags and review status.  ### 📝 TasksSpin up translation/review tasks, assign deadlines, reassign workloads, or check task health.  ### 📒 Comments & CollaborationLeave context, flag issues, review discussions, or clean up resolved comments.  ### 📚 Glossary & TerminologyManage terminology consistency: add, update, delete, or inspect glossary terms.  ### 👥 User Groups & TeamsCreate structured groups, assign projects, manage membership, optimize permissions.  ### 🔄 Processes & MonitoringTrack background uploads/downloads, monitor bulk operations, audit failures.  ### 👤 User ContextCheck your own permissions and access before running sensitive operations.   --- \n ## 🎭 Prompts – Orchestrated PlaybooksWhile tools are the raw actions, **prompts are pre-built workflows** that chain multiple tools together. These capture best practices and deliver full outcomes with one command.  ### 📊 Strategic Management- **project_portfolio_overview** – Strategic analysis across all projects with bottleneck detection.  - **project_deep_dive** – Detailed health analysis of one project (tasks, languages, risks).  - **translation_progress_check** – Scan project languages, flag incomplete or unreviewed ones.  - **user_group_audit** – Audit team structures and permissions with optimization suggestions.  ### 🚀 Setup & Expansion- **new_project_setup** – End-to-end project creation with languages, roles, and defaults.  - **language_expansion** – Add new markets with proper configuration and review pipelines.  - **project_cleanup** – Identify and safely remove deprecated keys or unused content.  ### 🔄 Content & Translation- **bulk_key_creation** – Generate structured keys for new features or screens.  - **create_translation_task** – Create multi-language tasks with deadlines and assignees.  - **document_extraction_review_workflow** – Convert document text to keys, assign review tasks.  - **post_upload_review_workflow** – Build review tasks automatically after file uploads.  ### 👥 Team & Process- **team_translation_setup** – Build multi-team setups with balanced workloads.  - **team_onboarding_workflow** – Onboard new members, set permissions, give checklist.  - **automated_review_pipeline** – Create multi-stage reviews with quality gates.  ### 🎯 Operations & Monitoring- **process_monitoring_dashboard** – Real-time view of uploads, tasks, and background jobs.  - **bulk_operations_monitor** – Track bulk updates/deletes and audit results.  - **translation_memory_import** – Import TM with conflict resolution and auto-approval thresholds.   --- \n ## ✨ Why It's Powerful in Claude DesktopInside Claude, Lokalise MCP feels like magic:  - **Natural Language First** – No APIs, no config panels. Just tell Claude what you want.  - **Multi-Tool Orchestration** – Claude chains 3–10 tools per request, handling complexity for you.  - **Context-Aware** – It resolves \"EU translation team\" into the right user group, or \"Marie\" into a contributor ID.  - **Time-Saving** – What used to take 2 hours in the Lokalise UI now runs in 30 seconds with a full audit trail.   --- \n ## 🔑 The Big Picture- **Tools** = atomic operations (like adding a language or updating a key).  - **Prompts** = intelligent playbooks (like creating a full review pipeline).  Together, they turn Lokalise into a **conversational, automated, intelligent localization system**.  Less clicking, more commanding.",
 	"author": {
 		"name": "Abdallah Othman",
 		"email": "contact@abdallahaho.com",
@@ -16,41 +16,45 @@
 		"type": "git",
 		"url": "git+https://github.com/AbdallahAHO/lokalise-mcp.git"
 	},
+	"homepage": "https://github.com/AbdallahAHO/lokalise-mcp",
+	"documentation": "https://github.com/AbdallahAHO/lokalise-mcp/blob/main/README.md",
+	"support": "https://github.com/AbdallahAHO/lokalise-mcp/issues",
 	"server": {
 		"type": "node",
-		"entry_point": "${__dirname}/dist/index.js",
+		"entry_point": "${__dirname}/bin/lokalise-mcp.js",
 		"mcp_config": {
 			"command": "node",
-			"args": ["${__dirname}/dist/index.js"],
+			"args": ["${__dirname}/bin/lokalise-mcp.js"],
 			"env": {
-				"LOKALISE_API_KEY": "${user_config.LOKALISE_API_KEY}",
-				"LOKALISE_API_HOSTNAME": "${user_config.LOKALISE_API_HOSTNAME}",
+				"LOKALISE_API_KEY": "${user_config.api_key}",
+				"LOKALISE_API_HOSTNAME": "${user_config.api_hostname}",
 				"DEBUG": "${user_config.debug_mode}",
-				"MCP_SERVER_MODE": "true"
+				"MCP_SERVER_MODE": "true",
+				"NODE_ENV": "production"
 			}
 		}
 	},
 	"user_config": {
-		"LOKALISE_API_KEY": {
+		"api_key": {
 			"type": "string",
-			"title": "Your Lokalise API token",
-			"description": "Enter your Lokalise API token to securely connect your account. Required for all project and translation actions.",
+			"title": "Lokalise API Token",
+			"description": "Your Lokalise API token for secure authentication. Get yours at Settings → API Tokens in your Lokalise dashboard. Required for all operations.",
 			"required": true,
 			"sensitive": true,
 			"default": ""
 		},
-		"LOKALISE_API_HOSTNAME": {
+		"api_hostname": {
 			"type": "string",
-			"title": "Lokalise API Hostname",
-			"description": "Custom Lokalise API hostname for enterprise or custom deployments. Leave blank to use the default Lokalise API endpoint.",
+			"title": "API Hostname (Optional)",
+			"description": "Custom Lokalise API endpoint for enterprise deployments. Leave empty for standard Lokalise cloud (recommended for most users).",
 			"required": false,
 			"sensitive": false,
 			"default": ""
 		},
 		"debug_mode": {
 			"type": "boolean",
-			"title": "Enable Debug Mode",
-			"description": "Enable debug mode to see detailed logging output",
+			"title": "Debug Logging",
+			"description": "Enable detailed logging for troubleshooting. Recommended only during setup or when experiencing issues.",
 			"default": false,
 			"required": false
 		}
@@ -62,7 +66,7 @@
 		},
 		{
 			"name": "lokalise_add_members_to_group",
-			"description": "Adds users to a user group"
+			"description": "Adds users to a user group, granting them group-based permissions and project access. Required: teamId, groupId, userIds array. Use to onboard team members, assign role-based access, or batch permission updates. Returns: Operation confirmation. Members immediately gain group permissions and project access."
 		},
 		{
 			"name": "lokalise_add_project_languages",
@@ -70,7 +74,7 @@
 		},
 		{
 			"name": "lokalise_add_projects_to_group",
-			"description": "Adds projects to a user group"
+			"description": "Adds projects to a user group, granting all group members access to specified projects. Required: teamId, groupId, projectIds array. Use to expand group project scope, onboard projects to existing teams, or batch project assignments. Returns: Operation confirmation. All group members gain immediate project access."
 		},
 		{
 			"name": "lokalise_bulk_delete_keys",
@@ -86,7 +90,7 @@
 		},
 		{
 			"name": "lokalise_create_comments",
-			"description": "Adds one or more comments to a translation key for team collaboration. Required: projectId, keyId, comments array with"
+			"description": "Adds one or more comments to a translation key for team collaboration. Required: projectId, keyId, comments array with 'comment' text. Use to ask translators questions, provide context, leave implementation notes, or flag issues. Supports bulk creation for efficiency. Returns: Created comments with IDs. Note: Comments are visible to all project members."
 		},
 		{
 			"name": "lokalise_create_glossary_terms",
@@ -98,7 +102,7 @@
 		},
 		{
 			"name": "lokalise_create_project",
-			"description": "Initializes a new localization project for an app or service. Required: name. Optional: description, base_lang_iso (default"
+			"description": "Initializes a new localization project for an app or service. Required: name. Optional: description, base_lang_iso (default 'en'). Use when starting localization for new products or creating test environments. Returns: Project ID and access details. Next steps: Add languages, upload keys, invite team members."
 		},
 		{
 			"name": "lokalise_create_task",
@@ -106,7 +110,7 @@
 		},
 		{
 			"name": "lokalise_create_usergroup",
-			"description": "Creates a new user group in a Lokalise team"
+			"description": "Creates a new user group in a Lokalise team for organized permission management. Required: teamId, name, isReviewer, isAdmin. Optional: adminRights, languages, projects, members. Use to establish role-based access control, organize team permissions, or set up project-specific groups. Returns: Created group with assigned ID and configuration."
 		},
 		{
 			"name": "lokalise_delete_comment",
@@ -130,11 +134,11 @@
 		},
 		{
 			"name": "lokalise_delete_team_user",
-			"description": "Removes a user from a Lokalise team"
+			"description": "Removes a user from a Lokalise team. Required: teamId, userId. Use to remove members, clean up permissions, or manage team structure. Returns: Success message with user details."
 		},
 		{
 			"name": "lokalise_delete_usergroup",
-			"description": "Deletes a user group from a Lokalise team"
+			"description": "Deletes a user group from a Lokalise team, removing all associated permissions. Required: teamId, groupId. Use for cleanup, removing obsolete groups, or restructuring team organization. Returns: Deletion confirmation. Warning: Removes all group assignments - members lose group-based permissions immediately."
 		},
 		{
 			"name": "lokalise_empty_project",
@@ -146,7 +150,7 @@
 		},
 		{
 			"name": "lokalise_get_contributor",
-			"description": "Retrieves detailed information about a specific team member"
+			"description": "Retrieves detailed information about a specific team member's access and permissions. Required: projectId, contributorId. Use to verify exact permissions before updates, investigate access issues, or get complete language assignments. Returns: Full contributor profile including all language permissions and administrative rights."
 		},
 		{
 			"name": "lokalise_get_current_user",
@@ -166,11 +170,11 @@
 		},
 		{
 			"name": "lokalise_get_project",
-			"description": "Deep analysis of a single project"
+			"description": "Deep analysis of a single project's health and configuration. Required: projectId. Optional: includeLanguages (completion rates), includeKeysSummary (content stats). Use for project audits, progress reports, or understanding structure. Returns: Complete project metadata, team info, language progress, key statistics. Essential for project status assessment."
 		},
 		{
 			"name": "lokalise_get_queued_process",
-			"description": "Gets detailed status and information about a specific async process (upload, download, etc.)"
+			"description": "Gets detailed status and information about a specific async process (upload, download, etc.). Required: projectId, processId. Use to check process completion, diagnose failures, or get detailed progress information. Returns: Complete process details with logs and status history."
 		},
 		{
 			"name": "lokalise_get_task",
@@ -178,7 +182,7 @@
 		},
 		{
 			"name": "lokalise_get_team_user",
-			"description": "Gets detailed information about a specific user in a team"
+			"description": "Gets detailed information about a specific user in a team. Required: teamId, userId. Use to verify user permissions, check role assignments, or investigate access issues. Returns: Complete user profile with all team permissions and administrative rights."
 		},
 		{
 			"name": "lokalise_get_translation",
@@ -186,7 +190,7 @@
 		},
 		{
 			"name": "lokalise_get_usergroup",
-			"description": "Gets detailed information about a specific user group"
+			"description": "Gets detailed information about a specific user group including members, permissions, and project assignments. Required: teamId, groupId. Use to audit group configuration, verify member access, or understand permission structure. Returns: Complete group profile with admin rights, language permissions, and assigned projects/members."
 		},
 		{
 			"name": "lokalise_list_contributors",
@@ -202,7 +206,7 @@
 		},
 		{
 			"name": "lokalise_list_keys",
-			"description": "Explores the project"
+			"description": "Explores the project's content structure by listing translation keys. Required: projectId. Optional: limit (100), cursor, filterKeys array, filterPlatforms array, includeTranslations. Use to browse content organization, find specific keys, or audit platform coverage. Returns: Keys with metadata and optional translations. Supports cursor pagination for large projects. Start here to understand project content."
 		},
 		{
 			"name": "lokalise_list_project_comments",
@@ -210,7 +214,7 @@
 		},
 		{
 			"name": "lokalise_list_project_languages",
-			"description": "Shows which languages are currently being translated in a project. Required: projectId. Optional: includeProgress (shows completion %), limit, page. Use to audit translation coverage, identify incomplete languages, or prepare reports. Returns: Active languages with progress stats. Start here to understand project"
+			"description": "Shows which languages are currently being translated in a project. Required: projectId. Optional: includeProgress (shows completion %), limit, page. Use to audit translation coverage, identify incomplete languages, or prepare reports. Returns: Active languages with progress stats. Start here to understand project's localization scope."
 		},
 		{
 			"name": "lokalise_list_projects",
@@ -218,7 +222,7 @@
 		},
 		{
 			"name": "lokalise_list_queued_processes",
-			"description": "Lists all background/async processes in a Lokalise project with status tracking"
+			"description": "Lists all background/async processes in a Lokalise project with status tracking. Required: projectId. Optional: limit (100), page. Use to monitor file uploads, downloads, bulk operations, or troubleshoot process issues. Returns: Processes with status, progress, and completion estimates."
 		},
 		{
 			"name": "lokalise_list_system_languages",
@@ -230,7 +234,7 @@
 		},
 		{
 			"name": "lokalise_list_team_users",
-			"description": "Lists all users in a Lokalise team with pagination support"
+			"description": "Lists all users in a Lokalise team with pagination support. Required: teamId. Optional: limit (100), page. Use to audit team composition, check access levels, or prepare team changes. Returns: Users with roles, permissions, and activity status."
 		},
 		{
 			"name": "lokalise_list_translations",
@@ -238,7 +242,7 @@
 		},
 		{
 			"name": "lokalise_list_usergroups",
-			"description": "Lists all user groups in a Lokalise team with pagination support"
+			"description": "Lists all user groups in a Lokalise team with pagination support. Required: teamId. Optional: limit (100), page. Use to audit team organization, check group structure, or prepare group management operations. Returns: User groups with names, member counts, permissions, and language assignments. Essential for understanding team hierarchy."
 		},
 		{
 			"name": "lokalise_remove_contributor",
@@ -250,15 +254,15 @@
 		},
 		{
 			"name": "lokalise_remove_members_from_group",
-			"description": "Removes users from a user group"
+			"description": "Removes users from a user group, revoking group-based permissions and project access. Required: teamId, groupId, userIds array. Use for role changes, offboarding, or permission cleanup. Returns: Operation confirmation. Warning: Immediate effect - users lose group permissions and project access."
 		},
 		{
 			"name": "lokalise_remove_projects_from_group",
-			"description": "Removes projects from a user group"
+			"description": "Removes projects from a user group, revoking group member access to specified projects. Required: teamId, groupId, projectIds array. Use to limit project scope, offboard projects, or restructure access. Returns: Operation confirmation. Warning: All group members lose immediate project access."
 		},
 		{
 			"name": "lokalise_update_contributor",
-			"description": "Modifies a team member"
+			"description": "Modifies a team member's role, permissions, or language access. Required: projectId, contributorId. Optional: admin_rights, is_reviewer, languages array. Use to promote/demote users, adjust language assignments, or fix permission issues. Returns: Updated contributor profile. Note: Cannot modify your own admin rights."
 		},
 		{
 			"name": "lokalise_update_glossary_terms",
@@ -282,7 +286,7 @@
 		},
 		{
 			"name": "lokalise_update_team_user",
-			"description": "Updates a team user"
+			"description": "Updates a team user's role (owner, admin, member, or biller). Required: teamId, userId, role. Use to manage permissions, promote/demote, or adjust access levels. Returns: Updated user profile with new role and permissions."
 		},
 		{
 			"name": "lokalise_update_translation",
@@ -290,7 +294,7 @@
 		},
 		{
 			"name": "lokalise_update_usergroup",
-			"description": "Updates a user group"
+			"description": "Updates a user group's properties including permissions and assignments. Required: teamId, groupId, name, isReviewer, isAdmin. Optional: adminRights, languages. Use to adjust group permissions, modify access levels, or reorganize team structure. Returns: Updated group configuration. Note: Cannot modify projects/members here - use dedicated tools."
 		}
 	],
 	"prompts": [
@@ -298,205 +302,72 @@
 			"name": "project_portfolio_overview",
 			"description": "Get a comprehensive overview of all your Lokalise projects",
 			"arguments": [],
-			"text": "Show me all my Lokalise projects with their current status, team information, and key statistics. Highlight any projects that need immediate attention or have been inactive recently. Present this as a management dashboard summary."
+			"text": "Generate a comprehensive overview of all Lokalise projects to understand the current localization portfolio, identify projects needing attention, and make strategic resource allocation decisions."
 		},
 		{
 			"name": "project_deep_dive",
 			"description": "Analyze a specific project in detail with languages and key statistics",
-			"arguments": ["projectId"],
-			"text": "Give me a comprehensive analysis of project '${arguments.projectId}'. Include: project details, all configured languages with progress percentages, key statistics, and recent activity. Identify any potential issues or optimization opportunities."
+			"arguments": ["projectName"],
+			"text": "Perform a comprehensive analysis of the Lokalise project named '${arguments.projectName}' to understand its current localization status, identify bottlenecks, and provide actionable optimization recommendations."
 		},
 		{
 			"name": "new_project_setup",
 			"description": "Create and configure a new localization project",
-			"arguments": ["projectName", "description", "targetLanguages"],
-			"text": "Create a new Lokalise project named '${arguments.projectName}' with description '${arguments.description}'. Then add support for these languages: ${arguments.targetLanguages}. Show me the created project details and confirm all languages are properly configured."
+			"arguments": [
+				"projectName",
+				"description",
+				"baseLanguage",
+				"targetLanguages"
+			],
+			"text": "Create a new Lokalise project named '${arguments.projectName}' with description '${arguments.description}', set up with base language '${arguments.baseLanguage}' and target languages '${arguments.targetLanguages}'."
 		},
 		{
 			"name": "project_cleanup",
 			"description": "Clean up unused or deprecated content from a project",
-			"arguments": ["projectId", "cleanupScope"],
-			"text": "Help me clean up project '${arguments.projectId}' by ${arguments.cleanupScope}. Show me what will be removed, get my confirmation, then execute the cleanup. Provide a detailed summary of what was cleaned up and the current project state."
+			"arguments": ["projectName", "cleanupScope"],
+			"text": "Clean up the project named '${arguments.projectName}' by ${arguments.cleanupScope}. Analyze what needs to be removed, get confirmation, then execute the cleanup safely."
 		},
 		{
 			"name": "language_expansion",
 			"description": "Add new languages to an existing project",
-			"arguments": ["projectId", "newLanguages"],
-			"text": "Add these languages to project '${arguments.projectId}': ${arguments.newLanguages}. After adding them, show me the updated language list with current statistics and confirm everything is set up correctly for translation work to begin."
+			"arguments": ["projectName", "newLanguages", "setCustomNames"],
+			"text": "Add new languages '${arguments.newLanguages}' to the project '${arguments.projectName}' and configure them properly for translation work. ${arguments.setCustomNames ? 'Apply custom names: ' + arguments.setCustomNames : ''}"
 		},
 		{
 			"name": "translation_progress_check",
 			"description": "Monitor translation status across languages",
-			"arguments": ["projectId", "threshold"],
-			"text": "Show me the translation progress for all languages in project '${arguments.projectId}'. ${arguments.threshold ? 'Highlight any languages below ' + arguments.threshold + '% completion.' : ''} Include word counts, completion percentages, and reviewer approval status. Suggest priorities for completing translations."
-		},
-		{
-			"name": "multi_language_setup",
-			"description": "Set up multiple language groups at once",
-			"arguments": ["projectId", "languageGroups"],
-			"text": "Set up language groups for project '${arguments.projectId}' as follows: ${arguments.languageGroups}. Add all languages in their respective groups, show me the complete language configuration, and suggest any additional languages commonly used in these regions."
-		},
-		{
-			"name": "key_inventory_analysis",
-			"description": "Analyze translation keys in a project with filtering and insights",
-			"arguments": ["projectId", "platformFilter"],
-			"text": "Analyze all translation keys in project '${arguments.projectId}' ${arguments.platformFilter ? 'filtered for platform: ' + arguments.platformFilter : ''}. Show me: total key count, platform distribution, keys with missing descriptions, and any organizational patterns. Suggest improvements for key management."
+			"arguments": ["projectName", "threshold", "includeReviewStatus"],
+			"text": "Check translation progress for all languages in project '${arguments.projectName}' ${arguments.threshold ? ', highlighting any below ' + arguments.threshold + '% completion' : ''}. ${arguments.includeReviewStatus ? 'Include review and approval status.' : ''}"
 		},
 		{
 			"name": "bulk_key_creation",
 			"description": "Create multiple translation keys for a new feature or screen",
-			"arguments": ["projectId", "featureName", "keyList"],
-			"text": "Create a set of translation keys for the '${arguments.featureName}' feature in project '${arguments.projectId}'. Use this key list: ${arguments.keyList}. Set appropriate descriptions and platform assignments for each key, then confirm all keys were created successfully."
-		},
-		{
-			"name": "key_maintenance_workflow",
-			"description": "Update or clean up existing translation keys",
-			"arguments": ["projectId", "maintenanceType", "criteria"],
-			"text": "Perform ${arguments.maintenanceType} maintenance on keys in project '${arguments.projectId}' that match: ${arguments.criteria}. First, show me which keys will be affected, then ask for confirmation before making any changes. Provide a summary of all changes made."
-		},
-		{
-			"name": "platform_key_management",
-			"description": "Manage keys for specific platforms",
-			"arguments": ["projectId", "platform", "action"],
-			"text": "${arguments.action} platform '${arguments.platform}' for keys in project '${arguments.projectId}'. Show me the affected keys and confirm the platform assignments have been updated correctly. Provide statistics on platform coverage."
+			"arguments": [
+				"projectName",
+				"featureName",
+				"keyList",
+				"platforms",
+				"baseTranslations"
+			],
+			"text": "Create translation keys for the '${arguments.featureName}' feature in project '${arguments.projectName}' using the key list: '${arguments.keyList}'. ${arguments.platforms ? 'Assign to platforms: ' + arguments.platforms : ''} ${arguments.baseTranslations ? 'Include base translations: ' + arguments.baseTranslations : ''}"
 		},
 		{
 			"name": "create_translation_task",
 			"description": "Create tasks with language assignments",
-			"arguments": ["projectId", "taskTitle", "languages", "dueDate"],
-			"text": "Create a translation task titled '${arguments.taskTitle}' in project '${arguments.projectId}' for languages: ${arguments.languages}. ${arguments.dueDate ? 'Set the due date to ' + arguments.dueDate + '.' : ''} Assign to appropriate team members based on language expertise. Show me the created task details."
-		},
-		{
-			"name": "overdue_task_management",
-			"description": "Handle overdue tasks across projects",
-			"arguments": ["projectId", "action"],
-			"text": "${arguments.action} overdue tasks ${arguments.projectId ? 'in project \"' + arguments.projectId + '\"' : 'across all projects'}. Show me task details including assignees, languages, and days overdue. ${arguments.action === 'reassign' ? 'Suggest new assignees based on workload.' : ''} ${arguments.action === 'extend' ? 'Recommend realistic new deadlines.' : ''}"
-		},
-		{
-			"name": "review_task_automation",
-			"description": "Set up review workflows",
-			"arguments": ["projectId", "reviewType", "assignees"],
-			"text": "Create a ${arguments.reviewType} review task in project '${arguments.projectId}'. Assign to: ${arguments.assignees}. Set up the workflow with appropriate permissions and notifications. Show me the task configuration and estimated completion time."
-		},
-		{
-			"name": "task_status_report",
-			"description": "Get comprehensive task status",
-			"arguments": ["projectId", "groupBy"],
-			"text": "Generate a task status report ${arguments.projectId ? 'for project \"' + arguments.projectId + '\"' : 'for all projects'} ${arguments.groupBy ? 'grouped by ' + arguments.groupBy : ''}. Include task counts, completion rates, average time to completion, and highlight any bottlenecks or delays."
-		},
-		{
-			"name": "product_catalog_update",
-			"description": "Process seasonal catalog updates",
-			"arguments": ["projectId", "catalogSource", "targetMarkets"],
-			"text": "Process this seasonal product catalog update: extract all product descriptions, titles, and marketing copy from ${arguments.catalogSource}, create translation keys organized by product category in project '${arguments.projectId}', set up automated workflows for markets: ${arguments.targetMarkets}, and generate a timeline showing when each market will be ready."
-		},
-		{
-			"name": "campaign_launch_setup",
-			"description": "Set up marketing campaign localization",
-			"arguments": ["campaignName", "contentSources", "targetRegions"],
-			"text": "Launch '${arguments.campaignName}' campaign: extract content from ${arguments.contentSources}, create a new project with appropriate structure, translate for ${arguments.targetRegions} regions, ensure brand voice consistency, coordinate with regional teams, and set up publishing workflows."
-		},
-		{
-			"name": "content_extraction_workflow",
-			"description": "Extract and localize content from documents",
-			"arguments": ["projectId", "contentSource", "contentType"],
-			"text": "Extract ${arguments.contentType} content from ${arguments.contentSource} and import into project '${arguments.projectId}'. Organize by sections, apply appropriate metadata and tags, detect any existing translations, and create tasks for missing translations."
-		},
-		{
-			"name": "feature_branch_sync",
-			"description": "Sync feature branch with Lokalise",
-			"arguments": ["projectId", "branchName", "syncDirection"],
-			"text": "Sync the '${arguments.branchName}' feature branch with project '${arguments.projectId}' ${arguments.syncDirection ? '(direction: ' + arguments.syncDirection + ')' : ''}. Detect new or modified keys, create appropriate translation tasks, and provide a summary of what was synced."
-		},
-		{
-			"name": "ci_cd_integration",
-			"description": "Automate CI/CD localization workflow",
-			"arguments": ["projectId", "pipelineType", "triggerEvent"],
-			"text": "Set up ${arguments.pipelineType} CI/CD integration for project '${arguments.projectId}' triggered on ${arguments.triggerEvent}. Configure automatic key sync, translation status checks, and build generation. Show me the workflow configuration."
-		},
-		{
-			"name": "build_generation",
-			"description": "Generate translation bundles on demand",
-			"arguments": ["projectId", "platform", "format", "environment"],
-			"text": "Generate a ${arguments.format} translation bundle for ${arguments.platform} platform from project '${arguments.projectId}' ${arguments.environment ? 'for ' + arguments.environment + ' environment' : ''}. Include only reviewed translations, apply platform-specific formatting, and provide download link."
-		},
-		{
-			"name": "regulatory_doc_processing",
-			"description": "Process compliance documents",
 			"arguments": [
-				"projectId",
-				"documentType",
-				"complianceRegions",
-				"previousVersion"
+				"projectName",
+				"taskTitle",
+				"taskDescription",
+				"languages",
+				"assignTo",
+				"dueDate",
+				"keyPattern"
 			],
-			"text": "Process ${arguments.documentType} for ${arguments.complianceRegions} compliance in project '${arguments.projectId}'. ${arguments.previousVersion ? 'Compare with version \"' + arguments.previousVersion + '\" to identify changes.' : ''} Create structured translation tasks, ensure terminology compliance, set up multi-stage review workflow, and generate audit trail."
-		},
-		{
-			"name": "audit_trail_generation",
-			"description": "Generate compliance audit trails",
-			"arguments": ["projectId", "auditPeriod", "auditScope"],
-			"text": "Generate a comprehensive audit trail for project '${arguments.projectId}' covering ${arguments.auditPeriod}. Include ${arguments.auditScope} with timestamps, user details, and change history. Format for regulatory submission and highlight any compliance concerns."
-		},
-		{
-			"name": "quality_assurance_check",
-			"description": "Run comprehensive QA checks",
-			"arguments": ["projectId", "qaType", "languages"],
-			"text": "Run ${arguments.qaType} QA checks on project '${arguments.projectId}' ${arguments.languages ? 'for languages: ' + arguments.languages : 'for all languages'}. Identify issues, generate detailed report with severity levels, create tasks for critical issues, and suggest corrective actions."
-		},
-		{
-			"name": "contributor_assignment",
-			"description": "Manage team assignments",
-			"arguments": ["projectId", "contributorEmail", "role", "languages"],
-			"text": "Add '${arguments.contributorEmail}' to project '${arguments.projectId}' as ${arguments.role} ${arguments.languages ? 'for languages: ' + arguments.languages : ''}. Set appropriate permissions, notify about assigned tasks, and show current team structure."
-		},
-		{
-			"name": "glossary_management",
-			"description": "Check and update glossary terms",
-			"arguments": ["projectId", "action", "terms"],
-			"text": "${arguments.action} glossary ${arguments.terms ? 'for terms: ' + arguments.terms : ''} in project '${arguments.projectId}'. ${arguments.action === 'check' ? 'Identify missing or conflicting terms.' : ''} ${arguments.action === 'add' ? 'Ensure consistency across languages.' : ''} ${arguments.action === 'export' ? 'Format for external use.' : ''} Show results and any recommendations."
-		},
-		{
-			"name": "comment_collaboration",
-			"description": "Facilitate team discussions on keys",
-			"arguments": ["projectId", "keyPattern", "action"],
-			"text": "${arguments.action} comments in project '${arguments.projectId}' ${arguments.keyPattern ? 'for keys matching \"' + arguments.keyPattern + '\"' : ''}. ${arguments.action === 'list' ? 'Show recent discussions.' : ''} ${arguments.action === 'summarize' ? 'Group by topic and urgency.' : ''} ${arguments.action === 'resolve' ? 'Mark as addressed and notify participants.' : ''}"
-		},
-		{
-			"name": "international_app_launch",
-			"description": "Complete setup for launching app internationally",
-			"arguments": [
-				"appName",
-				"appDescription",
-				"targetMarkets",
-				"featureSets"
-			],
-			"text": "I'm launching a ${arguments.appDescription} app called '${arguments.appName}' across these markets: ${arguments.targetMarkets}. Set up complete localization: create project with optimal settings, add all target languages, create keys for ${arguments.featureSets}, configure review workflows, and provide launch readiness report with timeline."
-		},
-		{
-			"name": "seasonal_campaign_cloning",
-			"description": "Clone and adapt seasonal campaigns",
-			"arguments": [
-				"sourceProjectId",
-				"newCampaignName",
-				"modifications",
-				"targetDate"
-			],
-			"text": "Clone project '${arguments.sourceProjectId}' to create '${arguments.newCampaignName}'. Apply these modifications: ${arguments.modifications}. Clear existing translations but keep structure, set up new tasks with ${arguments.targetDate} deadline, and show launch timeline."
-		},
-		{
-			"name": "emergency_hotfix",
-			"description": "Handle urgent translation fixes",
-			"arguments": [
-				"projectId",
-				"issueDescription",
-				"affectedKeys",
-				"priority"
-			],
-			"text": "URGENT: ${arguments.issueDescription} in project '${arguments.projectId}' affecting keys: ${arguments.affectedKeys}. Priority: ${arguments.priority || 'critical'}. Create emergency fix tasks, notify relevant team members immediately, fast-track review process, and prepare hotfix bundle."
+			"text": "Create a translation task titled '${arguments.taskTitle}' in project '${arguments.projectName}' for languages '${arguments.languages}'. Description: '${arguments.taskDescription}'. ${arguments.assignTo ? 'Assign to: ' + arguments.assignTo : ''} ${arguments.dueDate ? 'Due date: ' + arguments.dueDate : ''} ${arguments.keyPattern ? 'Include keys matching: ' + arguments.keyPattern : ''}"
 		},
 		{
 			"name": "post_upload_review_workflow",
-			"description": "Create review tasks for files already uploaded to Lokalise with flexible assignment",
+			"description": "Create review tasks for files already uploaded to Lokalise with flexible assignee mapping",
 			"arguments": [
 				"projectName",
 				"uploadedFileName",
@@ -505,52 +376,137 @@
 				"confirmBeforeTaskCreation",
 				"reviewDeadline"
 			],
-			"text": "Process the file '${arguments.uploadedFileName}' already uploaded to project '${arguments.projectName}'. Set up review tasks with this mapping: ${arguments.languageAssignmentMapping}. ${arguments.assignmentType ? 'Assignment type: ' + arguments.assignmentType + '.' : ''} ${arguments.confirmBeforeTaskCreation === 'false' ? 'Create tasks immediately.' : 'Confirm before creating tasks.'} ${arguments.reviewDeadline ? 'Reviews due by: ' + arguments.reviewDeadline : ''}"
+			"text": "Create review tasks for the file '${arguments.uploadedFileName}' already uploaded to project '${arguments.projectName}' with language-specific assignee mapping: '${arguments.languageAssignmentMapping}'. ${arguments.assignmentType ? 'Assignment type: ' + arguments.assignmentType : ''} ${arguments.confirmBeforeTaskCreation === 'false' ? 'Create tasks immediately.' : 'Confirm before creating tasks.'} ${arguments.reviewDeadline ? 'Reviews due by: ' + arguments.reviewDeadline : ''}"
+		},
+		{
+			"name": "team_translation_setup",
+			"description": "Set up translation teams with proper group structure and permissions",
+			"arguments": [
+				"projectName",
+				"teamStructure",
+				"workloadDistribution",
+				"groupPermissions"
+			],
+			"text": "Set up translation teams for project '${arguments.projectName}' with structure: '${arguments.teamStructure}' and workload distribution: '${arguments.workloadDistribution}'. ${arguments.groupPermissions ? 'Group permissions: ' + arguments.groupPermissions : ''}"
+		},
+		{
+			"name": "process_monitoring_dashboard",
+			"description": "Monitor all active background processes across projects",
+			"arguments": [
+				"projectNames",
+				"processTypes",
+				"includeCompleted",
+				"alertOnFailures"
+			],
+			"text": "Create a monitoring dashboard for background processes ${arguments.projectNames ? 'in projects: ' + arguments.projectNames : 'across all projects'}. ${arguments.processTypes ? 'Filter for types: ' + arguments.processTypes : ''} ${arguments.includeCompleted ? 'Include completed processes.' : ''} ${arguments.alertOnFailures ? 'Alert on failures.' : ''}"
+		},
+		{
+			"name": "user_group_audit",
+			"description": "Audit user groups for permissions, workload, and optimization",
+			"arguments": [
+				"teamName",
+				"auditScope",
+				"reportFormat",
+				"includeRecommendations"
+			],
+			"text": "Perform an audit of ${arguments.teamName === 'all' ? 'all user groups' : 'the \"' + arguments.teamName + '\" group'} focusing on: ${arguments.auditScope}. ${arguments.reportFormat ? 'Report format: ' + arguments.reportFormat : ''} ${arguments.includeRecommendations ? 'Include recommendations for improvements.' : ''}"
+		},
+		{
+			"name": "translation_memory_import",
+			"description": "Import and configure translation memory with review workflow",
+			"arguments": [
+				"projectName",
+				"importDescription",
+				"sourceLanguage",
+				"targetLanguages",
+				"autoApproveThreshold",
+				"conflictResolution"
+			],
+			"text": "Import translation memory for '${arguments.importDescription}' into project '${arguments.projectName}' from '${arguments.sourceLanguage}' to '${arguments.targetLanguages}' with auto-approval threshold of ${arguments.autoApproveThreshold || 100}%. ${arguments.conflictResolution ? 'Conflict resolution: ' + arguments.conflictResolution : ''}"
+		},
+		{
+			"name": "bulk_operations_monitor",
+			"description": "Track and report on bulk operations across projects",
+			"arguments": ["projectName", "operationType", "timeframe", "showDetails"],
+			"text": "Monitor bulk operations of type '${arguments.operationType}' in project '${arguments.projectName}' for the timeframe: '${arguments.timeframe}'. ${arguments.showDetails ? 'Show detailed operation results.' : ''}"
+		},
+		{
+			"name": "team_onboarding_workflow",
+			"description": "Complete onboarding workflow for new team members",
+			"arguments": [
+				"memberEmail",
+				"memberName",
+				"role",
+				"languages",
+				"projects",
+				"groupMemberships",
+				"sendWelcome"
+			],
+			"text": "Onboard new team member '${arguments.memberName}' (${arguments.memberEmail}) as a ${arguments.role} for languages '${arguments.languages}' with access to projects: '${arguments.projects}'. ${arguments.groupMemberships ? 'Add to groups: ' + arguments.groupMemberships : ''} ${arguments.sendWelcome ? 'Send welcome task with getting started instructions.' : ''}"
+		},
+		{
+			"name": "automated_review_pipeline",
+			"description": "Set up multi-stage review workflow with automatic assignments",
+			"arguments": [
+				"projectName",
+				"sourceMaterial",
+				"reviewStages",
+				"assignmentStrategy",
+				"deadline",
+				"escalationRules"
+			],
+			"text": "Set up an automated review pipeline for '${arguments.sourceMaterial}' in project '${arguments.projectName}' with stages: '${arguments.reviewStages}' using assignment strategy: '${arguments.assignmentStrategy}'. ${arguments.deadline ? 'Deadline: ' + arguments.deadline : ''} ${arguments.escalationRules ? 'Escalation rules: ' + arguments.escalationRules : ''}"
 		},
 		{
 			"name": "document_extraction_review_workflow",
-			"description": "Extract content from documents and create translation keys with review workflow",
+			"description": "Extract document content as translation keys and create review tasks",
 			"arguments": [
 				"projectName",
 				"documentContent",
-				"targetLanguages",
+				"keyPrefix",
+				"baseLanguage",
 				"languageAssignmentMapping",
 				"assignmentType",
-				"useTmMt",
 				"reviewDeadline"
 			],
-			"text": "Extract and process this content: '${arguments.documentContent}' for project '${arguments.projectName}'. Target languages: ${arguments.targetLanguages}. ${arguments.useTmMt === 'true' ? 'Apply TM+MT for initial translations.' : ''} Set up review with mapping: ${arguments.languageAssignmentMapping}. ${arguments.assignmentType ? 'Assignment type: ' + arguments.assignmentType + '.' : ''} ${arguments.reviewDeadline ? 'Complete by: ' + arguments.reviewDeadline : ''}"
+			"text": "Extract content from the provided document, create translation keys in project '${arguments.projectName}' with prefix '${arguments.keyPrefix}', base language '${arguments.baseLanguage}', and set up review tasks with language-specific assignments: '${arguments.languageAssignmentMapping}'. ${arguments.assignmentType ? 'Assignment type: ' + arguments.assignmentType : ''} ${arguments.reviewDeadline ? 'Review deadline: ' + arguments.reviewDeadline : ''}"
 		}
 	],
 	"tools_generated": true,
-	"prompts_generated": false,
+	"prompts_generated": true,
 	"keywords": [
 		"lokalise",
 		"translation",
 		"localization",
 		"i18n",
+		"internationalization",
 		"l10n",
 		"ai",
 		"claude",
-		"chat",
-		"project management",
-		"keys",
-		"strings",
+		"assistant",
 		"automation",
 		"workflow",
-		"api",
-		"team",
-		"language",
-		"content",
+		"project-management",
+		"team-collaboration",
+		"bulk-operations",
+		"translation-management",
+		"content-management",
+		"global-expansion",
+		"multilingual",
+		"api-integration",
+		"productivity",
 		"devops",
-		"productivity"
+		"ci-cd",
+		"natural-language",
+		"conversation",
+		"enterprise"
 	],
 	"license": "MIT",
 	"compatibility": {
 		"claude_desktop": ">=0.10.0",
 		"platforms": ["darwin", "win32", "linux"],
 		"runtimes": {
-			"node": ">=20.0.0"
+			"node": ">=18.0.0"
 		}
 	}
 }

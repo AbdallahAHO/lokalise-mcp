@@ -180,28 +180,28 @@ function registerTools(server: McpServer) {
 
 	server.tool(
 		"lokalise_list_team_users",
-		"Lists all users in a Lokalise team with pagination support",
+		"Lists all users in a Lokalise team with pagination support. Required: teamId. Optional: limit (100), page. Use to audit team composition, check access levels, or prepare team changes. Returns: Users with roles, permissions, and activity status.",
 		ListTeamusersToolArgs.shape,
 		handleListTeamusers,
 	);
 
 	server.tool(
 		"lokalise_get_team_user",
-		"Gets detailed information about a specific user in a team",
+		"Gets detailed information about a specific user in a team. Required: teamId, userId. Use to verify user permissions, check role assignments, or investigate access issues. Returns: Complete user profile with all team permissions and administrative rights.",
 		GetTeamusersToolArgs.shape,
 		handleGetTeamusers,
 	);
 
 	server.tool(
 		"lokalise_update_team_user",
-		"Updates a team user's role (owner, admin, member, or biller)",
+		"Updates a team user's role (owner, admin, member, or biller). Required: teamId, userId, role. Use to manage permissions, promote/demote, or adjust access levels. Returns: Updated user profile with new role and permissions.",
 		UpdateTeamusersToolArgs.shape,
 		handleUpdateTeamusers,
 	);
 
 	server.tool(
 		"lokalise_delete_team_user",
-		"Removes a user from a Lokalise team",
+		"Removes a user from a Lokalise team. Required: teamId, userId. Use to remove members, clean up permissions, or manage team structure. Returns: Success message with user details.",
 		DeleteTeamusersToolArgs.shape,
 		handleDeleteTeamusers,
 	);
