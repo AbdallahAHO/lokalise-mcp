@@ -337,7 +337,7 @@ lokalise-mcp  # Run the server
 ### 🔑 **Get Your API Key**
 
 1. Log in to [Lokalise](https://app.lokalise.com)
-2. Go to **Settings** → **API Tokens**
+2. Go to **Profile** → **API Tokens** ([https://app.lokalise.com/profile#apitokens](https://app.lokalise.com/profile#apitokens))
 3. Click **Generate new token**
 4. Copy and save securely
 
@@ -370,7 +370,7 @@ The Lokalise API key can be configured in multiple ways (in order of priority):
 ### Getting Your API Token
 
 1. Log in to [Lokalise](https://app.lokalise.com)
-2. Navigate to **Settings** → **API Tokens**
+2. Navigate to **Profile** → **API Tokens** ([https://app.lokalise.com/profile#apitokens](https://app.lokalise.com/profile#apitokens))
 3. Click **Generate new token**
 4. Copy the token and save it securely
 
