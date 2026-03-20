@@ -54,11 +54,12 @@ export interface CreateKeysParams {
 	project_id: string;
 	keys: Array<{
 		key_name: string;
+		is_plural?: boolean;
 		description?: string;
 		platforms: SupportedPlatforms[];
 		translations?: Array<{
 			language_iso: string;
-			translation: string;
+			translation: string | Record<string, string>;
 		}>;
 		tags?: string[];
 	}>;
@@ -222,6 +223,7 @@ export async function createKeys(
 		const apiParams = {
 			keys: options.keys.map((key) => ({
 				key_name: key.key_name,
+				is_plural: key.is_plural || false,
 				description: key.description,
 				platforms: key.platforms,
 				translations: key.translations || [],

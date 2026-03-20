@@ -316,7 +316,7 @@ function registerTools(server: McpServer) {
 	// Create Keys Tool
 	server.tool(
 		"lokalise_create_keys",
-		"Adds new UI text or content to be translated (up to 1000 keys per request). Required: projectId, keys array with {key_name, platforms}. Optional per key: description, tags, translations. Use for new features, initial setup, or content expansion. Returns: Created keys with IDs and any errors. Tip: Include base language translations to speed up workflow. Pairs with: lokalise_list_keys to verify.",
+		"Adds new UI text or content to be translated (up to 1000 keys per request). Required: projectId, keys array with {key_name, platforms}. Optional per key: description, is_plural, tags, translations. For plural keys, set is_plural: true and provide translations as objects with CLDR plural categories (e.g. {one: '1 item', other: '%s items', few: '...', many: '...'}). Use for new features, initial setup, or content expansion. Returns: Created keys with IDs and any errors. Tip: Include base language translations to speed up workflow. Pairs with: lokalise_list_keys to verify.",
 		CreateKeysToolArgs.shape,
 		handleCreateKeys,
 	);
