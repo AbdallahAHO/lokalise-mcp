@@ -53,6 +53,25 @@ export type GetKeyToolArgsType = z.infer<typeof GetKeyToolArgs>;
 /**
  * Zod schema for the create keys tool arguments.
  */
+/**
+ * Zod schema for plural translation forms.
+ * Used when is_plural is true — the translation field accepts an object
+ * with CLDR plural categories instead of a plain string.
+ */
+const PluralFormsSchema = z
+	.object({
+		zero: z.string().optional().describe("Zero form"),
+		one: z.string().optional().describe("Singular form"),
+		two: z.string().optional().describe("Two form"),
+		few: z.string().optional().describe("Few form (e.g. for Polish, Arabic)"),
+		many: z
+			.string()
+			.optional()
+			.describe("Many form (e.g. for Polish, Arabic)"),
+		other: z.string().optional().describe("General plural form"),
+	})
+	.describe("Plural forms object for plural keys");
+
 export const CreateKeysToolArgs = z
 	.object({
 		projectId: z.string().describe("Project ID to create keys in"),
@@ -60,6 +79,12 @@ export const CreateKeysToolArgs = z
 			.array(
 				z.object({
 					key_name: z.string().describe("Name of the key"),
+					is_plural: z
+						.boolean()
+						.optional()
+						.describe(
+							"Whether this key supports plural forms (one/other/few/many/zero)",
+						),
 					description: z
 						.string()
 						.optional()
@@ -72,7 +97,18 @@ export const CreateKeysToolArgs = z
 						.array(
 							z.object({
 								language_iso: z.string().describe("Language ISO code"),
-								translation: z.string().describe("Translation text"),
+								translation: z
+									.union([
+										z
+											.string()
+											.describe(
+												"Translation text for non-plural keys",
+											),
+										PluralFormsSchema,
+									])
+									.describe(
+										"Translation text (string) or plural forms object (with one/other/few/many/zero) for plural keys",
+									),
 							}),
 						)
 						.optional()

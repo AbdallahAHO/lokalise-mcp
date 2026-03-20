@@ -118,6 +118,7 @@ async function createKeys(
 			project_id: args.projectId,
 			keys: args.keys.map((key) => ({
 				key_name: key.key_name,
+				is_plural: key.is_plural,
 				description: key.description,
 				platforms: key.platforms,
 				translations: key.translations,
